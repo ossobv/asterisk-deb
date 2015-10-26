@@ -1,0 +1,14 @@
+Enable the aelparse application.
+
+diff --git a/utils/utils.xml b/utils/utils.xml
+index 58d2932..79162f5 100644
+--- a/utils/utils.xml
++++ b/utils/utils.xml
+@@ -1,6 +1,6 @@
+ <category name="MENUSELECT_UTILS" displayname="Utilities" positive_output="yes">
+   <member name="aelparse">
+-	<defaultenabled>no</defaultenabled>
++	<defaultenabled>yes</defaultenabled>
+ 	<support_level>extended</support_level>
+   </member>
+   <member name="astcanary">

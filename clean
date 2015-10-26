@@ -1,0 +1,6 @@
+aclocal.m4
+doc/core-en_US.xml
+utils/poll.c
+menuselect/mxml/mxml.pc
+menuselect.makeopts
+menuselect/configure.lineno

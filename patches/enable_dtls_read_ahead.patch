@@ -1,0 +1,28 @@
+From: Jeremy Lainé <jeremy.laine@m4x.org>
+Subject: Fix DTLS when used with patched OpenSSL
+Bug: https://issues.asterisk.org/jira/browse/ASTERISK-24711
+
+A recent security fix for OpenSSL broke DTLS negotiation for many
+applications. This was caused by read ahead not being enabled when it
+should be. While a commit has gone into OpenSSL to force read ahead
+on for DTLS it may take some time for a release to be made and the
+change to be present in distributions (if at all). As enabling read
+ahead is a simple one line change this commit does that and fixes
+the issue.
+
+See also:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=775502
+
+diff --git a/res/res_rtp_asterisk.c b/res/res_rtp_asterisk.c
+index ec3f147..a638572 100644
+--- a/res/res_rtp_asterisk.c
++++ b/res/res_rtp_asterisk.c
+@@ -1260,6 +1260,8 @@ static int ast_rtp_dtls_set_configuration(struct ast_rtp_instance *instance, con
+ 		return -1;
+ 	}
+ 
++	SSL_CTX_set_read_ahead(rtp->ssl_ctx, 1);
++
+ 	rtp->dtls_verify = dtls_cfg->verify;
+ 
+ 	SSL_CTX_set_verify(rtp->ssl_ctx, (rtp->dtls_verify & AST_RTP_DTLS_VERIFY_FINGERPRINT) || (rtp->dtls_verify & AST_RTP_DTLS_VERIFY_CERTIFICATE) ?

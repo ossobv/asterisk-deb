@@ -1,0 +1,12 @@
+Description: reenable some drivers, currently chan_vpb
+Author: Tzafrir Cohen <tzafrir.cohen@xorcom.com>
+--- a/channels/chan_vpb.cc
++++ b/channels/chan_vpb.cc
+@@ -31,7 +31,6 @@
+ 
+ /*** MODULEINFO
+ 	<depend>vpb</depend>
+-	<defaultenabled>no</defaultenabled>
+ 	<support_level>extended</support_level>
+  ***/
+ 

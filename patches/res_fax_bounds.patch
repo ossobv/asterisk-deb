@@ -1,0 +1,17 @@
+From: Jeremy Lainé <jeremy.laine@m4x.org>
+Subject: out of bounds error in update_modem_bits
+Bug: https://issues.asterisk.org/jira/browse/ASTERISK-24357
+
+diff --git a/res/res_fax.c b/res/res_fax.c
+index 1678256..5413fa5 100644
+--- a/res/res_fax.c
++++ b/res/res_fax.c
+@@ -585,7 +585,7 @@ static int update_modem_bits(enum ast_fax_modems *bits, const char *value)
+ 		m[i] = NULL;
+ 	} else {
+ 		tok = strtok(v, ", ");
+-		while (tok && (i < 5)) {
++		while (tok && (i < 4)) {
+ 			m[i++] = tok;
+ 			tok = strtok(NULL, ", ");
+ 		}

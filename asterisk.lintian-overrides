@@ -1,0 +1,3 @@
+asterisk: package-contains-empty-directory
+# astcanary is not supposed to be invoked manually
+asterisk: binary-without-manpage usr/sbin/astcanary

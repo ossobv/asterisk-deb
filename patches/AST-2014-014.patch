@@ -1,0 +1,83 @@
+From 90cdc0d1c75ac44837da9ff4a6cecf754d99e4f9 Mon Sep 17 00:00:00 2001
+From: Joshua Colp <jcolp@digium.com>
+Date: Thu, 20 Nov 2014 14:20:08 +0000
+Subject: High call load may result in hung channels in ConfBridge
+CVE: CVE-2014-8414
+Origin: http://svnview.digium.com/svn/asterisk?view=rev&rev=428299
+Bug: https://issues.asterisk.org/jira/browse/ASTERISK-24440
+
+ConfBridge is the voice conferencing application in Asterisk.
+
+Under load it was possible for the bridging API, and thus ConfBridge, to get
+channels that may have hung up stuck in it. This is because handling of state
+transitions for a bridged channel within a bridge was not protected and simply
+set the new state without regard to the existing state. If the existing state
+had been hung up this would get overwritten.
+
+This change adds locking to protect changing of the state and also
+takes into consideration the existing state.
+
+In the default configuration ConfBridge is not used, but its useage is
+common, often for unauthenticated remote users.
+
+Review: https://reviewboard.asterisk.org/r/4173/
+See Also: http://downloads.asterisk.org/pub/security/AST-2014-014.html
+---
+ main/bridging.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
+
+diff --git a/main/bridging.c b/main/bridging.c
+index a36ccf9..0f8f4e8 100644
+--- a/main/bridging.c
++++ b/main/bridging.c
+@@ -120,8 +120,22 @@ int ast_bridge_technology_unregister(struct ast_bridge_technology *technology)
+ 
+ void ast_bridge_change_state(struct ast_bridge_channel *bridge_channel, enum ast_bridge_channel_state new_state)
+ {
+-	/* Change the state on the bridge channel */
+-	bridge_channel->state = new_state;
++	/* Change the state on the bridge channel with some manner of intelligence. */
++	ao2_lock(bridge_channel);
++	switch (bridge_channel->state) {
++	case AST_BRIDGE_CHANNEL_STATE_DEPART:
++		break;
++	case AST_BRIDGE_CHANNEL_STATE_END:
++	case AST_BRIDGE_CHANNEL_STATE_HANGUP:
++		if (new_state != AST_BRIDGE_CHANNEL_STATE_DEPART) {
++			break;
++		}
++		/* Fall through */
++	default:
++		bridge_channel->state = new_state;
++		break;
++	}
++	ao2_unlock(bridge_channel);
+ 
+ 	/* Only poke the channel's thread if it is not us */
+ 	if (!pthread_equal(pthread_self(), bridge_channel->thread)) {
+@@ -130,8 +144,6 @@ void ast_bridge_change_state(struct ast_bridge_channel *bridge_channel, enum ast
+ 		ast_cond_signal(&bridge_channel->cond);
+ 		ao2_unlock(bridge_channel);
+ 	}
+-
+-	return;
+ }
+ 
+ /*! \brief Helper function to poke the bridge thread */
+@@ -1147,8 +1159,12 @@ static void *bridge_channel_thread(void *data)
+ 	state = bridge_channel_join(bridge_channel);
+ 
+ 	/* If no other thread is going to take the channel then hang it up, or else we would have to service it until something else came along */
+-	if (bridge_channel->allow_impart_hangup && (state == AST_BRIDGE_CHANNEL_STATE_END || state == AST_BRIDGE_CHANNEL_STATE_HANGUP)) {
++	if (bridge_channel->allow_impart_hangup
++		&& state != AST_BRIDGE_CHANNEL_STATE_DEPART) {
+ 		ast_hangup(bridge_channel->chan);
++
++		/* nobody is waiting to join me. */
++		pthread_detach(pthread_self());
+ 	}
+ 
+ 	/* cleanup */
+-- 
+2.1.3
+

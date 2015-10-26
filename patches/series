@@ -1,0 +1,43 @@
+# upstream fixes
+allow-tilde-destdir
+
+hack-multiple-app-voicemail
+# Not used ATM. See comment in patch:
+#make-clean-fixes
+#
+#h323-no-deps-on-asterisk
+#h323-workaround-openh323-segfault
+
+astgenkey-security
+
+# bugfixes on top of everything
+sound_files
+#h323-extra-target
+mpglib
+enable_addons
+no_uname
+
+ilbc_disable
+astdatadir
+pjproject
+
+# Backport of dynamic generation of DAHDI channels:
+dahdi_create_channels
+pri_destroy_span_prilist.patch
+sigpri_handle_enodev_1.patch
+
+reenable
+ignore_failed_channels.patch
+smsq_enable.patch
+escape_manpage_hyphen.patch
+aelparse_enable.patch
+res_fax_bounds.patch
+neon_version_check.patch
+enable_dtls_read_ahead.patch
+
+AST-2014-012.patch
+AST-2014-014.patch
+AST-2014-017.patch
+AST-2014-018.patch
+AST-2014-019.patch
+AST-2015-002.patch

@@ -1,0 +1,77 @@
+From: Tzafrir Cohen <tzafrir.cohen@xorcom.com
+Subject: handle ENODEV on sig_pri
+Bug: https://issues.asterisk.org/jira/browse/ASTERISK-23554
+
+Handle ENODEV error in libpri following a device removal.
+
+See also: https://reviewboard.asterisk.org/r/3548
+
+---
+ channels/chan_dahdi.c |    3 ++-
+ channels/sig_pri.c    |    8 ++++++++
+ channels/sig_pri.h    |    2 ++
+ 3 files changed, 12 insertions(+), 1 deletions(-)
+
+diff --git a/channels/chan_dahdi.c b/channels/chan_dahdi.c
+index c21d593..b6b644f 100644
+--- a/channels/chan_dahdi.c
++++ b/channels/chan_dahdi.c
+@@ -1795,7 +1795,6 @@ static void release_doomed_pris(void) {
+ 
+ #ifdef HAVE_PRI
+ /*!
+- * \internal
+  * \brief Queue a span for destruction
+  * \since 13.0
+  *
+@@ -3617,6 +3616,7 @@ struct sig_pri_callback sig_pri_callbacks =
+ 	.dial_digits = my_pri_dial_digits,
+ 	.open_media = my_pri_ss7_open_media,
+ 	.ami_channel_event = my_ami_channel_event,
++	.destroy_later = pri_queue_for_destruction,
+ };
+ #endif	/* defined(HAVE_PRI) */
+ 
+@@ -15146,6 +15146,7 @@ static void pri_destroy_span(struct sig_pri_span *pri)
+ 	for (i = 0; i < SIG_PRI_NUM_DCHANS; i++) {
+ 		ast_debug(4, "closing pri_fd %d\n", i);
+ 		dahdi_close_pri_fd(dahdi_pri, i);
++		dahdi_pri->dchannels[i] = 0;
+ 	}
+ 	sig_pri_init_pri(pri);
+ 	ast_debug(1, "PRI span %d destroyed\n", pri->span);
+diff --git a/channels/sig_pri.c b/channels/sig_pri.c
+index 1d9067a..5636594 100644
+--- a/channels/sig_pri.c
++++ b/channels/sig_pri.c
+@@ -6301,6 +6301,14 @@ static void *pri_dchannel(void *vpri)
+ 				}
+ 				if (e)
+ 					break;
++				
++				if ((errno != 0) && (errno != EINTR)) {
++					ast_log(LOG_NOTICE, "pri_check_event returned error %d (%s)\n",
++						errno, strerror(errno));
++				}
++				if (errno == ENODEV) {
++					sig_pri_callbacks.destroy_later(pri);
++				}
+ 			}
+ 		} else if (errno != EINTR)
+ 			ast_log(LOG_WARNING, "pri_event returned error %d (%s)\n", errno, strerror(errno));
+diff --git a/channels/sig_pri.h b/channels/sig_pri.h
+index 43acb12..7bfbc79 100644
+--- a/channels/sig_pri.h
++++ b/channels/sig_pri.h
+@@ -229,6 +229,8 @@ struct sig_pri_callback {
+ 	void (*module_ref)(void);
+ 	/*! Unreference the parent module. */
+ 	void (*module_unref)(void);
++	/*! Mark the span for destruction. */
++	void (*destroy_later)(struct sig_pri_span *pri);
+ };
+ 
+ /*! Global sig_pri callbacks to the upper layer. */
+-- 
+1.7.1
+

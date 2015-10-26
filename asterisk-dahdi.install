@@ -1,0 +1,5 @@
+usr/lib/asterisk/modules/app_flash.so
+usr/lib/asterisk/modules/app_dahdiras.so
+usr/lib/asterisk/modules/chan_dahdi.so
+usr/lib/asterisk/modules/codec_dahdi.so
+usr/lib/asterisk/modules/res_timing_dahdi.so

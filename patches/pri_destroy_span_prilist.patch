@@ -1,0 +1,136 @@
+From: Tzafrir Cohen <tzafrir.cohen@xorcom.com>
+Subject: defer destructions of pri spans
+Bug: https://issues.asterisk.org/jira/browse/ASTERISK-23554
+
+Fixes a deadlock in destruction of PRI spans
+
+See also: https://reviewboard.asterisk.org/r/3548
+
+---
+ channels/chan_dahdi.c |   82 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 files changed, 79 insertions(+), 3 deletions(-)
+
+diff --git a/channels/chan_dahdi.c b/channels/chan_dahdi.c
+index fd5abe2..c21d593 100644
+--- a/channels/chan_dahdi.c
++++ b/channels/chan_dahdi.c
+@@ -1353,6 +1353,14 @@ static struct dahdi_pvt *iflist = NULL;	/*!< Main interface list start */
+ static struct dahdi_pvt *ifend = NULL;	/*!< Main interface list end */
+ 
+ #if defined(HAVE_PRI)
++struct doomed_pri {
++	struct sig_pri_span *pri;
++	AST_LIST_ENTRY(doomed_pri) list;
++};
++static AST_LIST_HEAD_STATIC(doomed_pris, doomed_pri);
++
++static void pri_destroy_span(struct sig_pri_span *pri);
++
+ static struct dahdi_parms_pseudo {
+ 	int buf_no;					/*!< Number of buffers */
+ 	int buf_policy;				/*!< Buffer policy */
+@@ -1754,6 +1762,75 @@ static int analogsub_to_dahdisub(enum analog_sub analogsub)
+ 	return index;
+ }
+ 
++/*!
++ * \internal
++ * \brief release all members on the doomed pris list
++ * \since 13.0
++ *
++ * Called priodically by the monitor threads to release spans marked for
++ * removal.
++ */
++static void release_doomed_pris(void) {
++#ifdef HAVE_PRI
++	struct doomed_pri *entry;
++	AST_LIST_HEAD_NOLOCK(doomed_pris, doomed_pri) doomed_list;
++
++	/* Move the global list to our local list. This prevents deadlocks with
++ 	 * any pri->lock.
++ 	 */
++	AST_LIST_LOCK(&doomed_pris);
++	doomed_list.first = doomed_pris.first;
++	doomed_list.last = doomed_pris.last;
++	doomed_pris.first = doomed_pris.last = NULL;
++	AST_LIST_UNLOCK(&doomed_pris);
++
++	AST_LIST_TRAVERSE_SAFE_BEGIN(&doomed_list, entry, list) {
++		AST_LIST_REMOVE_CURRENT(list);
++		pri_destroy_span(entry->pri);
++		ast_free(entry);
++	}
++	AST_LIST_TRAVERSE_SAFE_END;
++#endif
++}
++
++#ifdef HAVE_PRI
++/*!
++ * \internal
++ * \brief Queue a span for destruction
++ * \since 13.0
++ *
++ * \param pri the span to destroy
++ *
++ * Add a span to the list of spans to be destroyed later on
++ * by the monitor thread. Allows destroying a span while holding its
++ * lock.
++ */
++static void pri_queue_for_destruction(struct sig_pri_span *pri) {
++	struct doomed_pri *entry;
++	int len = 0;
++
++	AST_LIST_LOCK(&doomed_pris);
++	AST_LIST_TRAVERSE(&doomed_pris, entry, list) {
++		if (entry->pri == pri) {
++			AST_LIST_UNLOCK(&doomed_pris);
++			return;
++		}
++		len++;
++	}
++	entry = ast_calloc(sizeof(struct doomed_pri), 1);
++	if (!entry) {
++		/* Nothing useful to do here. Panic? */
++		ast_log(LOG_WARNING, "Failed allocating memory for a doomed_pri.\n");
++		AST_LIST_UNLOCK(&doomed_pris);
++		return;
++	}
++	entry->pri = pri;
++	ast_debug(4, "Queue span %d for destruction.\n", pri->span);
++	AST_LIST_INSERT_TAIL(&doomed_pris, entry, list);
++	AST_LIST_UNLOCK(&doomed_pris);
++}
++#endif
++
+ static enum analog_event dahdievent_to_analogevent(int event);
+ static int bump_gains(struct dahdi_pvt *p);
+ static int dahdi_setlinear(int dfd, int linear);
+@@ -3229,8 +3306,6 @@ static int sig_pri_tone_to_dahditone(enum sig_pri_tone tone)
+ #endif	/* defined(HAVE_PRI) */
+ 
+ #if defined(HAVE_PRI)
+-static void pri_destroy_span(struct sig_pri_span *pri);
+-
+ static void my_handle_dchan_exception(struct sig_pri_span *pri, int index)
+ {
+ 	int x;
+@@ -3259,7 +3334,7 @@ static void my_handle_dchan_exception(struct sig_pri_span *pri, int index)
+ 		pri_event_noalarm(pri, index, 0);
+ 		break;
+ 	case DAHDI_EVENT_REMOVED:
+-		pri_destroy_span(pri);
++		pri_queue_for_destruction(pri);
+ 		break;
+ 	default:
+ 		break;
+@@ -12172,6 +12247,7 @@ static void *do_monitor(void *data)
+ 				dahdi_destroy_channel_range(doomed->channel, doomed->channel);
+ 				doomed = NULL;
+ 			}
++			release_doomed_pris();
+ 			if (!i) {
+ 				break;
+ 			}
+-- 
+1.7.1
+
