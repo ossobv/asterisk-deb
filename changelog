@@ -20,6 +20,11 @@ asterisk (1:11.20.0-osso0~jessie) jessie; urgency=low
   * Updated SAVED_ABI_HASH after buildopts.h change from ASTERISK-25028.
   * Added parallel building using DEB_BUILD_OPTIONS=parallel=6, see:
     https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778751
+  * asterisk.init: Fixed safe_asterisk quick restart cycle that did
+    ended up with a stopped Asterisk, see:
+    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778746
+  * asterisk.init: Added mysql-proxy to the list of optional start
+    dependencies.
 
  -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Mon, 27 Oct 2015 11:01:17 +0100
 
