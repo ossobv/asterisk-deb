@@ -17,6 +17,7 @@ asterisk (1:11.20.0-osso0~jessie) jessie; urgency=low
     - neon_version_check.patch
     - res_fax_bounds.patch
     - undeprecate
+  * Updated SAVED_ABI_HASH after buildopts.h change from ASTERISK-25028.
 
  -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Mon, 27 Oct 2015 08:51:47 +0100
 
