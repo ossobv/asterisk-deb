@@ -13,13 +13,11 @@ the issue.
 See also:
 https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=775502
 
-diff --git a/res/res_rtp_asterisk.c b/res/res_rtp_asterisk.c
-index ec3f147..a638572 100644
 --- a/res/res_rtp_asterisk.c
 +++ b/res/res_rtp_asterisk.c
-@@ -1260,6 +1260,8 @@ static int ast_rtp_dtls_set_configuration(struct ast_rtp_instance *instance, con
- 		return -1;
+@@ -1313,6 +1313,8 @@ static int ast_rtp_dtls_set_configuratio
  	}
+ #endif
  
 +	SSL_CTX_set_read_ahead(rtp->ssl_ctx, 1);
 +

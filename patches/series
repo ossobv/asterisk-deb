@@ -1,5 +1,4 @@
 # upstream fixes
-allow-tilde-destdir
 
 hack-multiple-app-voicemail
 # Not used ATM. See comment in patch:
@@ -29,15 +28,5 @@ sigpri_handle_enodev_1.patch
 reenable
 ignore_failed_channels.patch
 smsq_enable.patch
-escape_manpage_hyphen.patch
 aelparse_enable.patch
-res_fax_bounds.patch
-neon_version_check.patch
 enable_dtls_read_ahead.patch
-
-AST-2014-012.patch
-AST-2014-014.patch
-AST-2014-017.patch
-AST-2014-018.patch
-AST-2014-019.patch
-AST-2015-002.patch

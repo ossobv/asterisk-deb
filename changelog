@@ -1,3 +1,25 @@
+asterisk (1:11.20.0-osso0~jessie) jessie; urgency=low
+
+  * Refreshed patches:
+    - enable_dtls_read_ahead.patch
+    - pjproject
+  * Removed unused and/or obsoleted patches:
+    - AST-2014-012.patch
+    - AST-2014-014.patch
+    - AST-2014-017.patch
+    - AST-2014-018.patch
+    - AST-2014-019.patch
+    - AST-2015-002.patch
+    - allow-tilde-destdir
+    - dahdi_event_removed_dchan
+    - escape_manpage_hyphen.patch
+    - menuselect_weakref
+    - neon_version_check.patch
+    - res_fax_bounds.patch
+    - undeprecate
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Mon, 27 Oct 2015 08:51:47 +0100
+
 asterisk (1:11.13.1~dfsg-3) UNRELEASED; urgency=high
 
   * Add a placeholder conf in manager.d (Closes: #776080).
