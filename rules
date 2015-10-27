@@ -48,6 +48,13 @@ endif
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL_PROGRAM += -s
 endif
+# You can now do this:
+# DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc
+# See: https://www.debian.org/doc/debian-policy/ch-source.html
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+       NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+       BUILDFLAGS += -j$(NUMJOBS)
+endif
 
 DEBVERSION:=$(shell dpkg-parsechangelog | sed -n -e 's/Version: //p')
 DEB_NOEPOCH_VERSION:=$(shell echo $(DEBVERSION) | cut -d':' -f 2)
