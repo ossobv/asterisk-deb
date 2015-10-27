@@ -34,8 +34,11 @@ asterisk (1:11.20.0-osso0~jessie) jessie; urgency=low
     samples into /etc/asterisk anymore. If you want the samples, you
     should take them from
     /usr/share/doc/asterisk-config/examples/configs.
+  * Enabled codec_ilbc support at customer request. We can safely go
+    against the Debian policy of not including libraries. (A better
+    fix would be to package libilbc. In the future.)
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Mon, 27 Oct 2015 11:45:56 +0100
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Tue, 27 Oct 2015 12:05:48 +0100
 
 asterisk (1:11.13.1~dfsg-3) UNRELEASED; urgency=high
 
