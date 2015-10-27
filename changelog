@@ -25,8 +25,17 @@ asterisk (1:11.20.0-osso0~jessie) jessie; urgency=low
     https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778746
   * asterisk.init: Added mysql-proxy to the list of optional start
     dependencies.
+  * Altered post-installation setup: no automatic restart is performed;
+    instead a restart-convenient is scheduled. The implication of this
+    is that security updates won't get pushed until your server reaches
+    0 open calls. (And updates to the safe_asterisk wrapper will not
+    get updated automatically at all.)
+  * Altered post-installation setup: the config package does not write
+    samples into /etc/asterisk anymore. If you want the samples, you
+    should take them from
+    /usr/share/doc/asterisk-config/examples/configs.
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Mon, 27 Oct 2015 11:01:17 +0100
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Mon, 27 Oct 2015 11:45:56 +0100
 
 asterisk (1:11.13.1~dfsg-3) UNRELEASED; urgency=high
 

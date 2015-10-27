@@ -143,7 +143,7 @@ SUBPACKS_EXTRA_DIRS = $(SUBPACKS_EXTRA:%=$(CURDIR)/debian/asterisk-%)
 SUBPACKS_EXTRA_DIRS_MOD = $(SUBPACKS_EXTRA_DIRS:%=%/usr/lib/asterisk/modules)
 
 override_dh_auto_install:
-	$(FETCH_ENV) dh_auto_install -- $(BUILDFLAGS) samples
+	$(FETCH_ENV) dh_auto_install -- $(BUILDFLAGS)
 	cp -a configs $(CURDIR)/debian/tmp/usr/share/asterisk/conf
 	$(RM) -f $(CURDIR)/debian/tmp/usr/sbin/conf2ael
 	$(RM) -f $(CURDIR)/debian/tmp/usr/sbin/muted
@@ -175,6 +175,9 @@ override_dh_fixperms:
 
 override_dh_strip:
 	dh_strip -a --dbg-package=asterisk-dbg
+
+override_dh_installinit:
+	dh_installinit --noscripts
 
 print-version:
 	@@echo "Debian version:          $(DEBVERSION)"

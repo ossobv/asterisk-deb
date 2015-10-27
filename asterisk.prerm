@@ -5,4 +5,8 @@ set -e
 rmdir /usr/local/share/asterisk/sounds 2>/dev/null || true
 rmdir /usr/local/share/asterisk        2>/dev/null || true
 
+if [ -x "/etc/init.d/asterisk" ]; then
+    invoke-rc.d asterisk restart-convenient || exit $?
+fi
+
 #DEBHELPER#
