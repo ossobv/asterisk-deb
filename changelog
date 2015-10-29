@@ -1,4 +1,4 @@
-asterisk (1:11.20.0-osso0~jessie) jessie; urgency=low
+asterisk (1:11.20.0-osso0.1~jessie) jessie; urgency=low
 
   * Refreshed patches:
     - enable_dtls_read_ahead.patch
@@ -37,8 +37,10 @@ asterisk (1:11.20.0-osso0~jessie) jessie; urgency=low
   * Enabled codec_ilbc support at customer request. We can safely go
     against the Debian policy of not including libraries. (A better
     fix would be to package libilbc. In the future.)
+  * Enabled app_meetme and app_setcallerid for easier migration from
+    older Asterisken.
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Tue, 27 Oct 2015 12:05:48 +0100
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Thu, 29 Oct 2015 16:33:47 +0100
 
 asterisk (1:11.13.1~dfsg-3) UNRELEASED; urgency=high
 

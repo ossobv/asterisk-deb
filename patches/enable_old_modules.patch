@@ -1,0 +1,30 @@
+From: Walter Doekes <wjdoekes+asterdeb@osso.nl>
+Subject: enable app_meetme.so, app_setcallerid.so
+Applied-Upsteam: no
+
+This easer customer upgrade paths.
+
+diff --git a/apps/app_meetme.c b/apps/app_meetme.c
+index 2d8d556..4e479f4 100644
+--- a/apps/app_meetme.c
++++ b/apps/app_meetme.c
+@@ -31,7 +31,6 @@
+ 
+ /*** MODULEINFO
+ 	<depend>dahdi</depend>
+-	<defaultenabled>no</defaultenabled>
+ 	<support_level>extended</support_level>
+ 	<replacement>app_confbridge</replacement>
+  ***/
+diff --git a/apps/app_setcallerid.c b/apps/app_setcallerid.c
+index 6fa3170..1f258b5 100644
+--- a/apps/app_setcallerid.c
++++ b/apps/app_setcallerid.c
+@@ -26,7 +26,6 @@
+  */
+ 
+ /*** MODULEINFO
+-	<defaultenabled>no</defaultenabled>
+ 	<support_level>deprecated</support_level>
+ 	<replacement>func_callerid</replacement>
+  ***/

@@ -29,3 +29,5 @@ ignore_failed_channels.patch
 smsq_enable.patch
 aelparse_enable.patch
 enable_dtls_read_ahead.patch
+
+enable_old_modules.patch
