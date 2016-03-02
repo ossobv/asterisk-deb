@@ -1,4 +1,4 @@
-asterisk (1:11.20.0-osso0.1~jessie) jessie; urgency=low
+asterisk (1:11.20.0-osso1~jessie) jessie; urgency=low
 
   * Refreshed patches:
     - enable_dtls_read_ahead.patch
