@@ -31,3 +31,7 @@ aelparse_enable.patch
 enable_dtls_read_ahead.patch
 
 enable_old_modules.patch
+
+# backports
+backport_no_pipe_delimiter_warn.patch
+backport_wideband_moh.patch

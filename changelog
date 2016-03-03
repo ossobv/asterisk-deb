@@ -1,3 +1,13 @@
+asterisk (1:11.21.2-osso0~jessie) jessie; urgency=low
+
+  * Bump version to 11.21.2.
+  * Added backport of warnings/verbose message change; including the
+    the removal of the warning about the dialplan using a comma (,)
+    instead of a pipe (|) as delimited.
+  * Added backport of fix to get wideband musiconhold audio.
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Thu, 03 Mar 2016 10:06:21 +0100
+
 asterisk (1:11.20.0-osso1~jessie) jessie; urgency=low
 
   * Refreshed patches:

@@ -1,0 +1,160 @@
+commit 6d57ecd48c2efa36973ebcf204ffed0ed8a39580
+Author: Walter Doekes <walter+asterisk@wjd.nu>
+Date:   Wed Oct 17 14:24:52 2012 +0000
+
+    Change a few warnings to debug and the inverse.
+    
+    Remove the "RTP Read too short" warning for RTP keepalives. Remove the
+    the warning about the application delimiter switch from pipe to comma.
+    (You should've done this by now.) Make cdr_odbc report more when an
+    insert fails. Make chan_sip warn less when the peer wants SRTP (and we
+    don't) or sends a zero port to disable a media type.
+    
+    Review: https://reviewboard.asterisk.org/r/2167
+    (closes issue ASTERISK-20538)
+    
+    
+    git-svn-id: https://origsvn.digium.com/svn/asterisk/trunk@375137 65c4cc65-6c06-0410-ace0-fbb531ad65f3
+
+--- a/cdr/cdr_odbc.c
++++ b/cdr/cdr_odbc.c
+@@ -92,7 +92,7 @@ static SQLHSTMT execute_cb(struct odbc_o
+ 	ODBC_res = SQLAllocHandle(SQL_HANDLE_STMT, obj->con, &stmt);
+ 
+ 	if ((ODBC_res != SQL_SUCCESS) && (ODBC_res != SQL_SUCCESS_WITH_INFO)) {
+-		ast_verb(11, "cdr_odbc: Failure in AllocStatement %d\n", ODBC_res);
++		ast_log(LOG_WARNING, "cdr_odbc: Failure in AllocStatement %d\n", ODBC_res);
+ 		SQLFreeHandle(SQL_HANDLE_STMT, stmt);
+ 		return NULL;
+ 	}
+@@ -145,7 +145,7 @@ static SQLHSTMT execute_cb(struct odbc_o
+ 	ODBC_res = SQLExecDirect(stmt, (unsigned char *)sqlcmd, SQL_NTS);
+ 
+ 	if ((ODBC_res != SQL_SUCCESS) && (ODBC_res != SQL_SUCCESS_WITH_INFO)) {
+-		ast_verb(11, "cdr_odbc: Error in ExecDirect: %d\n", ODBC_res);
++		ast_log(LOG_WARNING, "cdr_odbc: Error in ExecDirect: %d, query is: %s\n", ODBC_res, sqlcmd);
+ 		SQLFreeHandle(SQL_HANDLE_STMT, stmt);
+ 		return NULL;
+ 	}
+--- a/channels/chan_sip.c
++++ b/channels/chan_sip.c
+@@ -10004,7 +10004,7 @@ static int process_sdp(struct sip_pvt *p
+ 				sprintf(offer->decline_m_line, "m=audio 0 %s %s\r\n", protocol, codecs);
+ 
+ 				if (x == 0) {
+-					ast_log(LOG_WARNING, "Ignoring audio media offer because port number is zero\n");
++					ast_debug(1, "Ignoring audio media offer because port number is zero\n");
+ 					continue;
+ 				}
+ 
+@@ -10113,7 +10113,7 @@ static int process_sdp(struct sip_pvt *p
+ 				sprintf(offer->decline_m_line, "m=video 0 %s %s\r\n", protocol, codecs);
+ 
+ 				if (x == 0) {
+-					ast_log(LOG_WARNING, "Ignoring video stream offer because port number is zero\n");
++					ast_debug(1, "Ignoring video stream offer because port number is zero\n");
+ 					continue;
+ 				}
+ 
+@@ -10191,7 +10191,7 @@ static int process_sdp(struct sip_pvt *p
+ 				sprintf(offer->decline_m_line, "m=text 0 %s %s\r\n", protocol, codecs);
+ 
+ 				if (x == 0) {
+-					ast_log(LOG_WARNING, "Ignoring text stream offer because port number is zero\n");
++					ast_debug(1, "Ignoring text stream offer because port number is zero\n");
+ 					continue;
+ 				}
+ 
+@@ -10254,7 +10254,7 @@ static int process_sdp(struct sip_pvt *p
+ 				strcpy(offer->decline_m_line, "m=image 0 udptl t38\r\n");
+ 
+ 				if (x == 0) {
+-					ast_log(LOG_WARNING, "Ignoring image stream offer because port number is zero\n");
++					ast_debug(1, "Ignoring image stream offer because port number is zero\n");
+ 					continue;
+ 				}
+ 
+@@ -10640,7 +10640,7 @@ static int process_sdp(struct sip_pvt *p
+ 			ast_sockaddr_set_port(isa, udptlportno);
+ 			ast_udptl_set_peer(p->udptl, isa);
+ 			if (debug)
+-				ast_debug(1,"Peer T.38 UDPTL is at port %s\n", ast_sockaddr_stringify(isa));
++				ast_debug(1, "Peer T.38 UDPTL is at port %s\n", ast_sockaddr_stringify(isa));
+ 
+ 			/* verify the far max ifp can be calculated. this requires far max datagram to be set. */
+ 			if (!ast_udptl_get_far_max_datagram(p->udptl)) {
+@@ -21684,7 +21684,7 @@ static void handle_request_info(struct s
+ 		}
+ 		/* Send the feature code to the PBX as DTMF, just like the handset had sent it */
+ 		f.len = 100;
+-		for (j=0; j < strlen(feat->exten); j++) {
++		for (j = 0; j < strlen(feat->exten); j++) {
+ 			f.subclass.integer = feat->exten[j];
+ 			ast_queue_frame(p->owner, &f);
+ 			if (sipdebug) {
+@@ -21775,7 +21775,7 @@ static char *sip_do_debug(struct ast_cli
+ 			ast_cli(a->fd, "SIP Debugging Disabled\n");
+ 			return CLI_SUCCESS;
+ 		}
+-	} else if (a->argc == e->args +1) {/* ip/peer */
++	} else if (a->argc == e->args + 1) { /* ip/peer */
+ 		if (!strcasecmp(what, "ip"))
+ 			return sip_do_debug_ip(a->fd, a->argv[e->args]);
+ 		else if (!strcasecmp(what, "peer"))
+@@ -28112,11 +28112,12 @@ static int handle_request_subscribe(stru
+ 		accept = __get_header(req, "Accept", &start);
+ 		while (!found_supported && !ast_strlen_zero(accept)) {
+ 			found_supported = strcmp(accept, "application/simple-message-summary") ? 0 : 1;
+-			if (!found_supported && (option_debug > 2)) {
+-				ast_debug(1, "Received SIP mailbox subscription for unknown format: %s\n", accept);
++			if (!found_supported) {
++				ast_debug(3, "Received SIP mailbox subscription for unknown format: %s\n", accept);
+ 			}
+ 			accept = __get_header(req, "Accept", &start);
+ 		}
++		/* If !start, there is no Accept header at all */
+ 		if (start && !found_supported) {
+ 			/* Format requested that we do not support */
+ 			transmit_response(p, "406 Not Acceptable", req);
+@@ -33534,7 +33535,7 @@ static void sip_send_all_mwi_subscriptio
+ static int setup_srtp(struct sip_srtp **srtp)
+ {
+ 	if (!ast_rtp_engine_srtp_is_registered()) {
+-		ast_log(LOG_ERROR, "No SRTP module loaded, can't setup SRTP session.\n");
++		ast_debug(1, "No SRTP module loaded, can't setup SRTP session.\n");
+ 		return -1;
+ 	}
+ 
+--- a/main/pbx.c
++++ b/main/pbx.c
+@@ -1670,12 +1670,6 @@ int pbx_exec(struct ast_channel *c,	/*!<
+ 
+ 	if (app->module)
+ 		u = __ast_module_user_add(app->module, c);
+-	if (strcasecmp(app->name, "system") && !ast_strlen_zero(data) &&
+-			strchr(data, '|') && !strchr(data, ',') && !ast_opt_dont_warn) {
+-		ast_log(LOG_WARNING, "The application delimiter is now the comma, not "
+-			"the pipe.  Did you forget to convert your dialplan?  (%s(%s))\n",
+-			app->name, (char *) data);
+-	}
+ 	res = app->execute(c, S_OR(data, ""));
+ 	if (app->module && u)
+ 		__ast_module_user_remove(app->module, u);
+--- a/res/res_rtp_asterisk.c
++++ b/res/res_rtp_asterisk.c
+@@ -4224,7 +4224,14 @@ static struct ast_frame *ast_rtp_read(st
+ 
+ 	/* Make sure the data that was read in is actually enough to make up an RTP packet */
+ 	if (res < hdrlen) {
+-		ast_log(LOG_WARNING, "RTP Read too short\n");
++		/* If this is a keepalive containing only nulls, don't bother with a warning */
++		int i;
++		for (i = 0; i < res; ++i) {
++			if (rtp->rawdata[AST_FRIENDLY_OFFSET + i] != '\0') {
++				ast_log(LOG_WARNING, "RTP Read too short\n");
++				return &ast_null_frame;
++			}
++		}
+ 		return &ast_null_frame;
+ 	}
+ 
