@@ -1,3 +1,12 @@
+asterisk (1:11.21.2-osso0~wheezy) wheezy; urgency=low
+
+  * Create build for wheezy.
+  * Drop "pie" from hardening flags. It appears to get invoked for
+    modules for dynamic modules too, causing the build to fail. (It
+    takes -fPIC instead.)
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Thu, 03 Mar 2016 11:16:30 +0100
+
 asterisk (1:11.21.2-osso0~jessie) jessie; urgency=low
 
   * Bump version to 11.21.2.
