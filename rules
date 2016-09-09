@@ -158,6 +158,10 @@ override_dh_install:
 		    ; cd $(CURDIR)/debian/asterisk-modules/usr/lib/asterisk/modules \
 		    && rm -f $$extra_packs
 
+	# Copy default safe_asterisk config.
+	install -m644 -D $(CURDIR)/debian/examples/safe_asterisk/startup.d--mail-backtrace.sh \
+		$(CURDIR)/debian/asterisk-config/etc/asterisk/startup.d/mail-backtrace.sh
+
 	# Rename dh_install file for -imapstorage and -odbcstorage.
 	mv $(CURDIR)/debian/asterisk-voicemail-imapstorage/usr/lib/asterisk/modules/app_voicemail_imapstorage.so \
 		$(CURDIR)/debian/asterisk-voicemail-imapstorage/usr/lib/asterisk/modules/app_voicemail.so

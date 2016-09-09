@@ -1,3 +1,18 @@
+asterisk (1:11.23.1-osso1~wheezy) wheezy; urgency=low
+
+  * Add ASTERISK-26350_safe_asterisk_wo_tty9.patch so safe_asterisk works
+    without tty9.
+  * Auto-add mail-backtrace.sh to /etc/asterisk/startup.d.
+  * Do the restart-convenient in asterisk.postinst, not prerm (closes #3).
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri,  9 Sep 2016 15:21:00 +0200
+
+asterisk (1:11.23.1-osso0~jessie) jessie; urgency=low
+
+  * Bump version to 11.23.1.
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri,  9 Sep 2016 10:19:14 +0200
+
 asterisk (1:11.21.2-osso1~jessie) jessie; urgency=low
 
   * Fix logrotate.

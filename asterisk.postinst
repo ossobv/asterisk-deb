@@ -101,12 +101,20 @@ case "$1" in
     ;;
 esac
 
-# Since we use a dh_installinit --noscripts in rules,
-# The following is added here manually.
-# This will fail when an asterisk is already running and that is intended.
+# Since we use a dh_installinit --noscripts in rules, the following is
+# added here manually. Starting asterisk while it's running is a no-op.
+# That's intended behaviour.
+# (The <hash>DEBHELPER<hash> comment below will get replaced by void.)
 if [ -x "/etc/init.d/asterisk" ]; then
     update-rc.d asterisk defaults >/dev/null
-    invoke-rc.d asterisk start || exit $?
+    # Regular DEBHELPER code would do this:
+    #invoke-rc.d asterisk start || exit $?
+    # We do this:
+    if ! invoke-rc.d asterisk status >/dev/null 2>&1; then
+        invoke-rc.d asterisk start || exit $?
+    else
+        invoke-rc.d asterisk restart-convenient
+    fi
 fi
 
 # dh_installdeb will replace this with shell code automatically
