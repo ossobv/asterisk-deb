@@ -5,8 +5,15 @@ set -e
 rmdir /usr/local/share/asterisk/sounds 2>/dev/null || true
 rmdir /usr/local/share/asterisk        2>/dev/null || true
 
-if [ -x "/etc/init.d/asterisk" ]; then
-    invoke-rc.d asterisk restart-convenient || exit $?
+# The following bit is placed here manually instead of through the
+# <hash>DEBHELPER<hash> replacement.
+# # if [ -x "/etc/init.d/asterisk" ]; then
+# #     invoke-rc.d asterisk stop || exit $?
+# # fi
+# Only for "prerm remove" do we stop asterisk. In all other cases we
+# wait for the postinst of the new version to "restart when convenient".
+if [ "$1" = "remove" -a -z "$2" ]; then
+    invoke-rc.d asterisk stop || exit $?
 fi
 
 #DEBHELPER#
