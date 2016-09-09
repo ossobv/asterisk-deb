@@ -1,3 +1,9 @@
+asterisk (1:11.23.1-osso0~jessie) jessie; urgency=low
+
+  * Bump version to 11.23.1.
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri,  9 Sep 2016 10:19:14 +0200
+
 asterisk (1:11.21.2-osso1~jessie) jessie; urgency=low
 
   * Fix logrotate.
