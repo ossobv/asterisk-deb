@@ -33,7 +33,7 @@ Installing build dependencies (11-jessie):
 
     # apt-get install libncurses5-dev libjansson-dev libxml2-dev \
         libsqlite3-dev libreadline-dev unixodbc-dev libmysqlclient-dev
-    # apt-get install corosync-dev libcurl4-openssl-dev \
+    # apt-get install corosync-dev dahdi-source libcurl4-openssl-dev \
         libgsm1-dev libtonezone-dev libasound2-dev libpq-dev \
         libbluetooth-dev autoconf libnewt-dev libsqlite0-dev \
         libspeex-dev libspeexdsp-dev libpopt-dev libiksemel-dev \
