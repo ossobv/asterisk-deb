@@ -37,7 +37,7 @@ A trivial backport from trunk / 12.
  static struct dahdi_ring_cadence cadences[NUM_CADENCE_MAX] = {
  	{ { 125, 125, 2000, 4000 } },			/*!< Quick chirp followed by normal ring */
  	{ { 250, 250, 500, 1000, 250, 250, 500, 4000 } }, /*!< British style ring */
-@@ -1391,6 +1393,18 @@ struct dahdi_chan_conf {
+@@ -1392,6 +1394,18 @@ struct dahdi_chan_conf {
  	 * \note Set from the "smdiport" string read in from chan_dahdi.conf
  	 */
  	char smdi_port[SMDI_MAX_FILENAME_LEN];
@@ -56,7 +56,7 @@ A trivial backport from trunk / 12.
  };
  
  /*! returns a new dahdi_chan_conf with default values (by-value) */
-@@ -3217,7 +3231,7 @@ static int sig_pri_tone_to_dahditone(enu
+@@ -3226,7 +3240,7 @@ static int sig_pri_tone_to_dahditone(enu
  #endif	/* defined(HAVE_PRI) */
  
  #if defined(HAVE_PRI)
@@ -65,7 +65,7 @@ A trivial backport from trunk / 12.
  
  static void my_handle_dchan_exception(struct sig_pri_span *pri, int index)
  {
-@@ -3247,7 +3261,7 @@ static void my_handle_dchan_exception(st
+@@ -3256,7 +3270,7 @@ static void my_handle_dchan_exception(st
  		pri_event_noalarm(pri, index, 0);
  		break;
  	case DAHDI_EVENT_REMOVED:
@@ -74,7 +74,7 @@ A trivial backport from trunk / 12.
  		break;
  	default:
  		break;
-@@ -11670,29 +11684,121 @@ static int mwi_send_process_event(struct
+@@ -11709,29 +11723,122 @@ static int mwi_send_process_event(struct
  	return handled;
  }
  
@@ -217,7 +217,7 @@ A trivial backport from trunk / 12.
  				doomed = NULL;
  			}
  			if (!i) {
-@@ -14497,10 +14599,21 @@ static int prepare_pri(struct dahdi_pri
+@@ -14552,10 +14655,21 @@ static int prepare_pri(struct dahdi_pri
  	for (i = 0; i < SIG_PRI_NUM_DCHANS; i++) {
  		if (!pri->dchannels[i])
  			break;
@@ -241,7 +241,7 @@ A trivial backport from trunk / 12.
  			return -1;
  		}
  		memset(&p, 0, sizeof(p));
-@@ -14901,22 +15014,44 @@ static char *handle_pri_show_spans(struc
+@@ -14956,22 +15070,44 @@ static char *handle_pri_show_spans(struc
   *
   * \param pri the pri span
   *
@@ -313,7 +313,7 @@ A trivial backport from trunk / 12.
  
  	switch (cmd) {
  	case CLI_INIT:
-@@ -14958,25 +15092,13 @@ static char *handle_pri_destroy_span(str
+@@ -15013,25 +15148,13 @@ static char *handle_pri_destroy_span(str
  			a->argv[3], 1, NUM_SPANS);
  		return CLI_SUCCESS;
  	}
@@ -342,7 +342,7 @@ A trivial backport from trunk / 12.
  	return CLI_SUCCESS;
  }
  
-@@ -15428,26 +15550,97 @@ static struct ast_cli_entry dahdi_mfcr2_
+@@ -15483,26 +15606,97 @@ static struct ast_cli_entry dahdi_mfcr2_
  
  #endif /* HAVE_OPENR2 */
  
@@ -449,7 +449,7 @@ A trivial backport from trunk / 12.
  }
  
  static void dahdi_softhangup_all(void)
-@@ -15478,7 +15671,6 @@ retry:
+@@ -15533,7 +15727,6 @@ retry:
  	ast_mutex_unlock(&iflock);
  }
  
@@ -457,7 +457,7 @@ A trivial backport from trunk / 12.
  static int dahdi_restart(void)
  {
  #if defined(HAVE_PRI) || defined(HAVE_SS7)
-@@ -16254,7 +16446,8 @@ static struct ast_cli_entry dahdi_cli[]
+@@ -16322,7 +16515,8 @@ static struct ast_cli_entry dahdi_cli[]
  	AST_CLI_DEFINE(handle_dahdi_show_cadences, "List cadences"),
  	AST_CLI_DEFINE(dahdi_show_channels, "Show active DAHDI channels"),
  	AST_CLI_DEFINE(dahdi_show_channel, "Show information on a channel"),
@@ -467,7 +467,7 @@ A trivial backport from trunk / 12.
  	AST_CLI_DEFINE(dahdi_restart_cmd, "Fully restart DAHDI channels"),
  	AST_CLI_DEFINE(dahdi_show_status, "Show all DAHDI cards status"),
  	AST_CLI_DEFINE(dahdi_show_version, "Show the DAHDI version in use"),
-@@ -17278,7 +17471,7 @@ static char *parse_spanchan(char *chanst
+@@ -17352,7 +17546,7 @@ static char *parse_spanchan(char *chanst
  	return p;
  }
  
@@ -476,7 +476,7 @@ A trivial backport from trunk / 12.
  {
  	char *c, *chan;
  	char *subdir;
-@@ -17301,8 +17494,6 @@ static int build_channels(struct dahdi_c
+@@ -17375,8 +17569,6 @@ static int build_channels(struct dahdi_c
  			finish = start;
  		} else if (!strcasecmp(chan, "pseudo")) {
  			finish = start = CHAN_PSEUDO;
@@ -485,7 +485,7 @@ A trivial backport from trunk / 12.
  		} else {
  			ast_log(LOG_ERROR, "Syntax error parsing '%s' at '%s'\n", value, chan);
  			return -1;
-@@ -17332,6 +17523,12 @@ static int build_channels(struct dahdi_c
+@@ -17406,6 +17598,12 @@ static int build_channels(struct dahdi_c
  					}
  				}
  			}
@@ -498,7 +498,7 @@ A trivial backport from trunk / 12.
  			tmp = mkintf(real_channel, conf, reload);
  
  			if (tmp) {
-@@ -17341,6 +17538,9 @@ static int build_channels(struct dahdi_c
+@@ -17415,6 +17613,9 @@ static int build_channels(struct dahdi_c
  						(reload == 1) ? "reconfigure" : "register", value);
  				return -1;
  			}
@@ -508,7 +508,7 @@ A trivial backport from trunk / 12.
  		}
  	}
  
-@@ -17527,7 +17727,6 @@ static int process_dahdi(struct dahdi_ch
+@@ -17601,7 +17802,6 @@ static int process_dahdi(struct dahdi_ch
  {
  	struct dahdi_pvt *tmp;
  	int y;
@@ -516,7 +516,7 @@ A trivial backport from trunk / 12.
  	struct ast_variable *dahdichan = NULL;
  
  	for (; v; v = v->next) {
-@@ -17540,7 +17739,7 @@ static int process_dahdi(struct dahdi_ch
+@@ -17614,7 +17814,7 @@ static int process_dahdi(struct dahdi_ch
  				ast_log(LOG_WARNING, "Channel '%s' ignored.\n", v->value);
  				continue;
  			}
@@ -525,7 +525,7 @@ A trivial backport from trunk / 12.
  				if (confp->ignore_failed_channels) {
  					ast_log(LOG_WARNING, "Channel '%s' failure ignored: ignore_failed_channels.\n", v->value);
  					continue;
-@@ -18673,8 +18872,7 @@ static int process_dahdi(struct dahdi_ch
+@@ -18750,8 +18950,7 @@ static int process_dahdi(struct dahdi_ch
  
  	if (dahdichan) {
  		/* Process the deferred dahdichan value. */
@@ -535,7 +535,7 @@ A trivial backport from trunk / 12.
  			if (confp->ignore_failed_channels) {
  				ast_log(LOG_WARNING,
  					"Dahdichan '%s' failure ignored: ignore_failed_channels.\n",
-@@ -18697,7 +18895,7 @@ static int process_dahdi(struct dahdi_ch
+@@ -18783,7 +18982,7 @@ static int process_dahdi(struct dahdi_ch
  
  	/*< \todo why check for the pseudo in the per-channel section.
  	 * Any actual use for manual setup of the pseudo channel? */
@@ -544,7 +544,7 @@ A trivial backport from trunk / 12.
  		/* use the default configuration for a channel, so
  		   that any settings from real configured channels
  		   don't "leak" into the pseudo channel config
-@@ -18711,6 +18909,7 @@ static int process_dahdi(struct dahdi_ch
+@@ -18797,6 +18996,7 @@ static int process_dahdi(struct dahdi_ch
  		}
  		if (tmp) {
  			ast_verb(3, "Automatically generated pseudo channel\n");
@@ -552,7 +552,7 @@ A trivial backport from trunk / 12.
  		} else {
  			ast_log(LOG_WARNING, "Unable to register pseudo channel!\n");
  		}
-@@ -18990,7 +19189,8 @@ static int setup_dahdi_int(int reload, s
+@@ -19076,7 +19276,8 @@ static int setup_dahdi_int(int reload, s
  	if (reload != 1) {
  		int x;
  		for (x = 0; x < NUM_SPANS; x++) {

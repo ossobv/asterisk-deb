@@ -17,11 +17,9 @@ untouched and /dev/tty9 and /dev/vc/9 aren't found.
 Change-Id: I2c7cdba549b77f418a0af4cb1227e8e6fe4148fc
 ---
 
-diff --git a/contrib/scripts/safe_asterisk b/contrib/scripts/safe_asterisk
-index 62f3dad..66213a5 100644
 --- a/contrib/scripts/safe_asterisk
 +++ b/contrib/scripts/safe_asterisk
-@@ -120,13 +120,20 @@
+@@ -119,13 +119,20 @@ if test -n "$TTY" && test "$TTY" != "no"
  		TTY=tty${TTY}
  	elif test -c /dev/vc/${TTY}; then
  		TTY=vc/${TTY}

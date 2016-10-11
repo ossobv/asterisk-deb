@@ -11,7 +11,7 @@ Date:   Fri Jan 17 14:17:04 2014 +0000
 
 --- a/res/res_musiconhold.c
 +++ b/res/res_musiconhold.c
-@@ -690,7 +690,8 @@ static void *monmp3thread(void *data)
+@@ -693,7 +693,8 @@ static void *monmp3thread(void *data)
  					ast_log(LOG_ERROR, "Failed to acknowledge timer for mp3player\n");
  					return NULL;
  				}
@@ -21,7 +21,7 @@ Date:   Fri Jan 17 14:17:04 2014 +0000
  			} else {
  				ast_log(LOG_WARNING, "poll() failed: %s\n", strerror(errno));
  				res = 0;
-@@ -711,8 +712,12 @@ static void *monmp3thread(void *data)
+@@ -714,8 +715,12 @@ static void *monmp3thread(void *data)
  				ast_log(LOG_NOTICE, "Request to schedule in the past?!?!\n");
  				deadline = tv_tmp;
  			}
