@@ -1,3 +1,12 @@
+asterisk (1:11.23.1-osso2~jessie) jessie; urgency=low
+
+  * Add ASTERISK-26464_add_PickupOld1v4_application.patch that provides
+    PickupOld1v4() with Asterisk 1.4 Pickup() semantics.
+  * Refreshed quilt patches and fixed compile warning in one of the dahdi
+    patches.
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Thu, 13 Oct 2016 14:12:54 +0200
+
 asterisk (1:11.23.1-osso1~jessie) jessie; urgency=low
 
   * Add ASTERISK-26350_safe_asterisk_wo_tty9.patch so safe_asterisk works

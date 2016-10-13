@@ -1,5 +1,6 @@
 # upstream fixes
 ASTERISK-26350_safe_asterisk_wo_tty9.patch
+ASTERISK-26464_add_PickupOld1v4_application.patch
 
 hack-multiple-app-voicemail
 # Not used ATM. See comment in patch:
