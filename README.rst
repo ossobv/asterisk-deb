@@ -180,7 +180,7 @@ against changes in ``asterdeb-osso``.
 Known problems
 --------------
 
-After quilting, you may run into this::
+After quilting or a failed build, you may run into this::
 
     make[1]: Entering directory '/home/osso/asterisk/asterisk-11.25.1'
     if [ ! -r configure.debian_sav ]; then cp -a configure configure.debian_sav; fi
@@ -188,8 +188,8 @@ After quilting, you may run into this::
     debian/rules:76: recipe for target 'override_dh_autoreconf' failed
     make[1]: *** [override_dh_autoreconf] Error 1
 
-That is fixed either by forcing the correct timestamps, or by using a pristine
-config directory.
+That is fixed either by forcing configure to be back in place, or simply by
+using a pristine Asterisk source directory.
 
 
 
