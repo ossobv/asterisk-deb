@@ -1,7 +1,5 @@
 Enable the aelparse application.
 
-diff --git a/utils/utils.xml b/utils/utils.xml
-index 58d2932..79162f5 100644
 --- a/utils/utils.xml
 +++ b/utils/utils.xml
 @@ -1,6 +1,6 @@

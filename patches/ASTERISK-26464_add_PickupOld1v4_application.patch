@@ -1,0 +1,267 @@
+Subject: Pickup() semantics changed between 1.4 and 1.8; add PickupOld1v4.
+Author: Walter Doekes <walter+github@wjd.nu>
+Last-Update: 2016-10-13
+Bug: https://issues.asterisk.org/jira/browse/ASTERISK-26464
+
+Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
+
+--- a/apps/app_directed_pickup.c
++++ b/apps/app_directed_pickup.c
+@@ -92,6 +92,9 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revisi
+ 			<replaceable>context</replaceable> is set on matching channels by the
+ 			channel driver for the device.</para></note>
+ 		</description>
++		<see-also>
++			<ref type="application">PickupOld1v4</ref>
++		</see-also>
+ 	</application>
+ 	<application name="PickupChan" language="en_US">
+ 		<synopsis>
+@@ -114,10 +117,58 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revisi
+ 			<para>This will pickup a specified <replaceable>channel</replaceable> if ringing.</para>
+ 		</description>
+ 	</application>
++	<application name="PickupOld1v4" language="en_US">
++		<synopsis>
++			Directed extension call pickup like it used to work before Asterisk 1.8;
++			it behaves as the one in Asterisk 1.4.
++		</synopsis>
++		<syntax>
++			<parameter name="targets" argsep="&amp;">
++				<argument name="extension" argsep="@" required="true">
++					<para>Specification of the pickup target.</para>
++					<argument name="extension" required="true"/>
++					<argument name="context" />
++				</argument>
++				<argument name="extension2" argsep="@" multiple="true">
++					<para>Additional specifications of pickup targets.</para>
++					<argument name="extension2" required="true"/>
++					<argument name="context2"/>
++				</argument>
++			</parameter>
++		</syntax>
++		<description>
++			<para>This application can pickup a specified ringing channel like it did
++			before Asterisk 1.4. The REGULAR <literal>Pickup()</literal>
++			matches the <replaceable>context</replaceable> with the channel
++			<literal>context</literal> whereas THIS ONE matches the
++			<literal>dialcontext</literal>; the context where the
++			<literal>Dial()</literal> application was called.</para>
++			<para>Take this dialplan:</para>
++			<para>  [incoming]</para>
++			<para>  exten => 200,1,Goto(outgoing,call,1)</para>
++			<para>  exten => *200,1,Goto(pickup,both,1)</para>
++			<para>  [outgoing]</para>
++			<para>  exten => call,1,Dial(SIP/alice)</para>
++			<para>  [pickup]</para>
++			<para>  exten => both,1,Pickup(call@incoming)</para>
++			<para>  exten => both,n,PickupOld1v4(call@outgoing)</para>
++			<note><para>Compare the two pickup styles in
++			<literal>[pickup]</literal>. They will both match the call to
++			<literal>SIP/alice</literal>, but the <literal>PickupOld1v4()</literal>
++			application has more intuitive semantics.</para></note>
++		</description>
++		<see-also>
++			<ref type="application">Pickup</ref>
++		</see-also>
++	</application>
+  ***/
+ 
++#define PICKUP_MODE_DEFAULT 0
++#define PICKUP_MODE_OLD1V4 1
++
+ static const char app[] = "Pickup";
+ static const char app2[] = "PickupChan";
++static const char app3[] = "PickupOld1v4";
+ 
+ struct pickup_by_name_args {
+ 	const char *name;
+@@ -187,13 +238,18 @@ static int pickup_by_channel(struct ast_
+ }
+ 
+ /* Attempt to pick up specified extension with context */
+-static int pickup_by_exten(struct ast_channel *chan, const char *exten, const char *context)
++static int pickup_by_exten(struct ast_channel *chan, const char *exten, const char *context, int old1v4)
+ {
+ 	struct ast_channel *target = NULL;/*!< Potential pickup target */
+ 	struct ast_channel_iterator *iter;
+ 	int res = -1;
+ 
+-	if (!(iter = ast_channel_iterator_by_exten_new(exten, context))) {
++	if (old1v4 == PICKUP_MODE_OLD1V4) {
++		iter = ast_channel_iterator_by_exten_and_dialcontext(exten, context);
++	} else {
++		iter = ast_channel_iterator_by_exten_new(exten, context);
++	}
++	if (!iter) {
+ 		return -1;
+ 	}
+ 
+@@ -269,17 +325,12 @@ static int pickup_by_group(struct ast_ch
+ 	return res;
+ }
+ 
+-/* application entry point for Pickup() */
+-static int pickup_exec(struct ast_channel *chan, const char *data)
++static int pickup_exec_by_mode(struct ast_channel *chan, const char *data, int old1v4)
+ {
+ 	char *tmp;
+ 	char *exten;
+ 	char *context;
+ 
+-	if (ast_strlen_zero(data)) {
+-		return pickup_by_group(chan) ? 0 : -1;
+-	}
+-
+ 	/* Parse extension (and context if there) */
+ 	tmp = ast_strdupa(data);
+ 	while (!ast_strlen_zero(tmp) && (exten = strsep(&tmp, "&"))) {
+@@ -294,7 +345,7 @@ static int pickup_exec(struct ast_channe
+ 			if (ast_strlen_zero(context)) {
+ 				context = (char *) ast_channel_context(chan);
+ 			}
+-			if (!pickup_by_exten(chan, exten, context)) {
++			if (!pickup_by_exten(chan, exten, context, old1v4)) {
+ 				/* Pickup successful.  Stop the dialplan this channel is a zombie. */
+ 				return -1;
+ 			}
+@@ -306,6 +357,27 @@ static int pickup_exec(struct ast_channe
+ 	return 0;
+ }
+ 
++/* application entry point for Pickup() */
++static int pickup_exec(struct ast_channel *chan, const char *data)
++{
++	if (ast_strlen_zero(data)) {
++		return pickup_by_group(chan) ? 0 : -1;
++	}
++
++	return pickup_exec_by_mode(chan, data, PICKUP_MODE_DEFAULT);
++}
++
++/* application entry point for PickupOld1v4() */
++static int pickupold1v4_exec(struct ast_channel *chan, const char *data)
++{
++	if (ast_strlen_zero(data)) {
++		ast_log(LOG_WARNING, "Pickup requires an argument (extension)!\n");
++		return -1;
++	}
++
++	return pickup_exec_by_mode(chan, data, PICKUP_MODE_OLD1V4);
++}
++
+ /* Find channel for pick up specified by partial channel name */ 
+ static int find_by_part(void *obj, void *arg, void *data, int flags)
+ {
+@@ -391,6 +463,7 @@ static int unload_module(void)
+ 
+ 	res = ast_unregister_application(app);
+ 	res |= ast_unregister_application(app2);
++	res |= ast_unregister_application(app3);
+ 
+ 	return res;
+ }
+@@ -401,6 +474,7 @@ static int load_module(void)
+ 
+ 	res = ast_register_application_xml(app, pickup_exec);
+ 	res |= ast_register_application_xml(app2, pickupchan_exec);
++	res |= ast_register_application_xml(app3, pickupold1v4_exec);
+ 
+ 	return res;
+ }
+--- a/include/asterisk/channel.h
++++ b/include/asterisk/channel.h
+@@ -2570,6 +2570,30 @@ struct ast_channel_iterator;
+ struct ast_channel_iterator *ast_channel_iterator_destroy(struct ast_channel_iterator *i);
+ 
+ /*!
++ * \brief Create a new channel iterator based on extension and context (old style)
++ *
++ * \param exten The extension that channels must be in
++ * \param dialcontext The dialcontext that channels must be in (not regular context)
++ *
++ * After creating an iterator using this function, the ast_channel_iterator_next()
++ * function can be used to iterate through all channels that are currently
++ * in the specified dialcontext and extension.
++ *
++ * \note You must call ast_channel_iterator_destroy() when done.
++ *
++ * \note This function was added to support pre-1.8 Pickup() behaviour which
++ *    was changed by commit cba19c8a671. That commit altered the pickup from
++ *    checking the "dialcontext" to checking the "context".
++ *
++ * \retval NULL on failure
++ * \retval a new channel iterator based on the specified parameters
++ *
++ * \since UNRELEASED
++ */
++struct ast_channel_iterator *ast_channel_iterator_by_exten_and_dialcontext(
++	const char *exten, const char *dialcontext);
++
++/*!
+  * \brief Create a new channel iterator based on extension
+  *
+  * \param exten The extension that channels must be in
+--- a/main/channel.c
++++ b/main/channel.c
+@@ -1483,6 +1483,29 @@ static int ast_channel_by_name_cb(void *
+ 	return ret;
+ }
+ 
++static int ast_channel_by_exten_and_dialcontext_cb(void *obj, void *arg, void *data, int flags)
++{
++	struct ast_channel *chan = obj;
++	char *dialcontext = arg;
++	char *exten = data;
++	int ret = CMP_MATCH;
++
++	if (ast_strlen_zero(exten) || ast_strlen_zero(dialcontext)) {
++		ast_log(LOG_ERROR, "BUG! Must have a dialcontext and extension to match!\n");
++		return CMP_STOP;
++	}
++
++	ast_channel_lock(chan);
++	if (strcasecmp(ast_channel_dialcontext(chan), dialcontext)) {
++		ret = 0; /* Context match failed, continue */
++	} else if (strcasecmp(ast_channel_exten(chan), exten) && strcasecmp(ast_channel_macroexten(chan), exten)) {
++		ret = 0; /* Extension match failed, continue */
++	}
++	ast_channel_unlock(chan);
++
++	return ret;
++}
++
+ static int ast_channel_by_exten_cb(void *obj, void *arg, void *data, int flags)
+ {
+ 	struct ast_channel *chan = obj;
+@@ -1545,6 +1568,30 @@ struct ast_channel_iterator *ast_channel
+ 	return NULL;
+ }
+ 
++/*! Like ast_channel_iterator_by_exten_new, except it picks up channels by
++ * exten+dialcontext instead of exten+context. This re-introduces Pickup()
++ * behaviour removed in 1.8 in commit cba19c8a671. */
++struct ast_channel_iterator *ast_channel_iterator_by_exten_and_dialcontext(
++	const char *exten, const char *dialcontext)
++{
++	struct ast_channel_iterator *i;
++	char *l_exten = (char *) exten;
++	char *l_dialcontext = (char *) dialcontext;
++
++	if (!(i = ast_calloc(1, sizeof(*i)))) {
++		return NULL;
++	}
++
++	i->active_iterator = (void *) ast_channel_callback(ast_channel_by_exten_and_dialcontext_cb,
++			l_dialcontext, l_exten, OBJ_MULTIPLE);
++	if (!i->active_iterator) {
++		ast_free(i);
++		return NULL;
++	}
++
++	return i;
++}
++
+ struct ast_channel_iterator *ast_channel_iterator_by_exten_new(const char *exten, const char *context)
+ {
+ 	struct ast_channel_iterator *i;

@@ -12,11 +12,9 @@ See also: https://reviewboard.asterisk.org/r/3548
  channels/sig_pri.h    |    2 ++
  3 files changed, 12 insertions(+), 1 deletions(-)
 
-diff --git a/channels/chan_dahdi.c b/channels/chan_dahdi.c
-index c21d593..b6b644f 100644
 --- a/channels/chan_dahdi.c
 +++ b/channels/chan_dahdi.c
-@@ -1795,7 +1795,6 @@ static void release_doomed_pris(void) {
+@@ -1797,7 +1797,6 @@ static void release_doomed_pris(void) {
  
  #ifdef HAVE_PRI
  /*!
@@ -24,7 +22,7 @@ index c21d593..b6b644f 100644
   * \brief Queue a span for destruction
   * \since 13.0
   *
-@@ -3617,6 +3616,7 @@ struct sig_pri_callback sig_pri_callbacks =
+@@ -3628,6 +3627,7 @@ struct sig_pri_callback sig_pri_callback
  	.dial_digits = my_pri_dial_digits,
  	.open_media = my_pri_ss7_open_media,
  	.ami_channel_event = my_ami_channel_event,
@@ -32,7 +30,7 @@ index c21d593..b6b644f 100644
  };
  #endif	/* defined(HAVE_PRI) */
  
-@@ -15146,6 +15146,7 @@ static void pri_destroy_span(struct sig_pri_span *pri)
+@@ -15190,6 +15190,7 @@ static void pri_destroy_span(struct sig_
  	for (i = 0; i < SIG_PRI_NUM_DCHANS; i++) {
  		ast_debug(4, "closing pri_fd %d\n", i);
  		dahdi_close_pri_fd(dahdi_pri, i);
@@ -40,11 +38,9 @@ index c21d593..b6b644f 100644
  	}
  	sig_pri_init_pri(pri);
  	ast_debug(1, "PRI span %d destroyed\n", pri->span);
-diff --git a/channels/sig_pri.c b/channels/sig_pri.c
-index 1d9067a..5636594 100644
 --- a/channels/sig_pri.c
 +++ b/channels/sig_pri.c
-@@ -6301,6 +6301,14 @@ static void *pri_dchannel(void *vpri)
+@@ -6285,6 +6285,14 @@ static void *pri_dchannel(void *vpri)
  				}
  				if (e)
  					break;
@@ -59,8 +55,6 @@ index 1d9067a..5636594 100644
  			}
  		} else if (errno != EINTR)
  			ast_log(LOG_WARNING, "pri_event returned error %d (%s)\n", errno, strerror(errno));
-diff --git a/channels/sig_pri.h b/channels/sig_pri.h
-index 43acb12..7bfbc79 100644
 --- a/channels/sig_pri.h
 +++ b/channels/sig_pri.h
 @@ -229,6 +229,8 @@ struct sig_pri_callback {
@@ -72,6 +66,3 @@ index 43acb12..7bfbc79 100644
  };
  
  /*! Global sig_pri callbacks to the upper layer. */
--- 
-1.7.1
-

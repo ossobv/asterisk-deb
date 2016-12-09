@@ -10,11 +10,9 @@ See also: https://reviewboard.asterisk.org/r/3548
  channels/chan_dahdi.c |   82 +++++++++++++++++++++++++++++++++++++++++++++++--
  1 files changed, 79 insertions(+), 3 deletions(-)
 
-diff --git a/channels/chan_dahdi.c b/channels/chan_dahdi.c
-index fd5abe2..c21d593 100644
 --- a/channels/chan_dahdi.c
 +++ b/channels/chan_dahdi.c
-@@ -1353,6 +1353,14 @@ static struct dahdi_pvt *iflist = NULL;	/*!< Main interface list start */
+@@ -1353,6 +1353,14 @@ static struct dahdi_pvt *iflist = NULL;
  static struct dahdi_pvt *ifend = NULL;	/*!< Main interface list end */
  
  #if defined(HAVE_PRI)
@@ -29,7 +27,7 @@ index fd5abe2..c21d593 100644
  static struct dahdi_parms_pseudo {
  	int buf_no;					/*!< Number of buffers */
  	int buf_policy;				/*!< Buffer policy */
-@@ -1754,6 +1762,75 @@ static int analogsub_to_dahdisub(enum analog_sub analogsub)
+@@ -1756,6 +1764,75 @@ static int analogsub_to_dahdisub(enum an
  	return index;
  }
  
@@ -105,7 +103,7 @@ index fd5abe2..c21d593 100644
  static enum analog_event dahdievent_to_analogevent(int event);
  static int bump_gains(struct dahdi_pvt *p);
  static int dahdi_setlinear(int dfd, int linear);
-@@ -3229,8 +3306,6 @@ static int sig_pri_tone_to_dahditone(enum sig_pri_tone tone)
+@@ -3240,8 +3317,6 @@ static int sig_pri_tone_to_dahditone(enu
  #endif	/* defined(HAVE_PRI) */
  
  #if defined(HAVE_PRI)
@@ -114,7 +112,7 @@ index fd5abe2..c21d593 100644
  static void my_handle_dchan_exception(struct sig_pri_span *pri, int index)
  {
  	int x;
-@@ -3259,7 +3334,7 @@ static void my_handle_dchan_exception(struct sig_pri_span *pri, int index)
+@@ -3270,7 +3345,7 @@ static void my_handle_dchan_exception(st
  		pri_event_noalarm(pri, index, 0);
  		break;
  	case DAHDI_EVENT_REMOVED:
@@ -123,7 +121,7 @@ index fd5abe2..c21d593 100644
  		break;
  	default:
  		break;
-@@ -12172,6 +12247,7 @@ static void *do_monitor(void *data)
+@@ -12213,6 +12288,7 @@ static void *do_monitor(void *data)
  				dahdi_destroy_channel_range(doomed->channel, doomed->channel);
  				doomed = NULL;
  			}
@@ -131,6 +129,3 @@ index fd5abe2..c21d593 100644
  			if (!i) {
  				break;
  			}
--- 
-1.7.1
-

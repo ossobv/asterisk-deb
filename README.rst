@@ -33,7 +33,7 @@ Installing build dependencies (11-jessie):
 
     # apt-get install libncurses5-dev libjansson-dev libxml2-dev \
         libsqlite3-dev libreadline-dev unixodbc-dev libmysqlclient-dev
-    # apt-get install corosync-dev libcurl4-openssl-dev \
+    # apt-get install corosync-dev dahdi-source libcurl4-openssl-dev \
         libgsm1-dev libtonezone-dev libasound2-dev libpq-dev \
         libbluetooth-dev autoconf libnewt-dev libsqlite0-dev \
         libspeex-dev libspeexdsp-dev libpopt-dev libiksemel-dev \
@@ -75,13 +75,12 @@ moving this directory to the ``debian/`` dir.
     $ git add -fA   # adds all files, even the .gitignored ones
     $ git commit -m "clean ${VERSION}"
 
-    $ mv ~/asterdeb-osso.git debian
+    $ mv ~/asterdeb-osso debian
 
 Test that all patches apply:
 
 .. code-block:: console
 
-    $ cd debian
     $ quilt push -a
 
 Refreshing the quilt patches (optional). By altering the ``'Now at patch'``
@@ -122,11 +121,11 @@ for every change. Set up your build like this:
 
 .. code-block:: console
 
-    $ git clone https://github.com/asterisk/asterisk asterisk.git
+    $ git clone https://github.com/asterisk/asterisk
     $ # or: http://gerrit.asterisk.org/asterisk
-    $ cd asterisk.git
+    $ cd asterisk
     $ git fetch --all   # make sure we also fetch all tags
-    $ mv ~/asterdeb-osso.git debian
+    $ mv ~/asterdeb-osso debian
 
 Select the version. Depending on what you previously did, you'll need only some
 of these. Consult your local source of git knowledge for more information.
@@ -135,21 +134,30 @@ of these. Consult your local source of git knowledge for more information.
 
     $ git reset         # unstages staged changes
     $ git checkout .    # drops all changes
-    $ rm -rf .pc        # drop local quilt bookkeeping
-    $ rm -rf addons/mp3     # drop downloaded mp3 sources
-    $ git clean -xf     # removes all excess files
+    $ git clean -fdxe debian   # drop all untracked files except 'debian/'
 
     $ VERSION=11.20.0
     $ git checkout -b local-${VERSION} ${VERSION}   # branch tag 11.20.0 onto local-11.20.0
 
-First, you have to patch all of the Debian changes.
+First, you have to patch all of the Debian/OSSO changes. Commit the quilted
+stuff so it's not in the way when you start editing.
 
 .. code-block:: console
 
     $ quilt push -a
-    $ git commit -m "asterdeb-osso quilted"
+    $ git commit -m "WIP: asterdeb-osso quilted"
 
 Now you can start changing stuff, compiling, installing. Et cetera.
+
+.. code-block:: console
+
+    $ ./bootstrap.sh
+    $ ./configure --enable-dev-mode
+    $ make menuconfig
+
+    ... change stuff ...
+
+    $ make && sudo make install
 
 When you're happy with the result, you write the changes to a Debian patch file:
 
@@ -166,6 +174,22 @@ and add appropriate header values as described in
 
 Store your updated patches in your own repository, and rebase your changes
 against changes in ``asterdeb-osso``.
+
+
+
+Known problems
+--------------
+
+After quilting, you may run into this::
+
+    make[1]: Entering directory '/home/osso/asterisk/asterisk-11.25.1'
+    if [ ! -r configure.debian_sav ]; then cp -a configure configure.debian_sav; fi
+    cp: cannot stat 'configure': No such file or directory
+    debian/rules:76: recipe for target 'override_dh_autoreconf' failed
+    make[1]: *** [override_dh_autoreconf] Error 1
+
+That is fixed either by forcing the correct timestamps, or by using a pristine
+config directory.
 
 
 
@@ -196,4 +220,4 @@ OSSO DOES NOT GUARANTEE THAT THE FILES ARE SANE.
     $ sudo apt-get install asterisk
 
 
-/Walter Doekes <wjdoekes+asterdeb@osso.nl>  Tue, 27 Oct 2015 15:15:54 +0100
+/Walter Doekes <wjdoekes+asterdeb@osso.nl>  Tue, 11 Oct 2016 14:07:55 +0200

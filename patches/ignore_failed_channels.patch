@@ -7,7 +7,7 @@ added later through 'dahdi create channels' from e.g. a udev hook.
 
 --- a/configs/chan_dahdi.conf.sample
 +++ b/configs/chan_dahdi.conf.sample
-@@ -1159,12 +1159,11 @@
+@@ -1169,12 +1169,11 @@ pickupgroup=1
  ;
  ;
  ; ignore_failed_channels: Continue even if some channels failed to configure.
@@ -27,7 +27,7 @@ added later through 'dahdi create channels' from e.g. a udev hook.
  ; This is set globally, rather than per-channel.
 --- a/channels/chan_dahdi.c
 +++ b/channels/chan_dahdi.c
-@@ -961,6 +961,7 @@
+@@ -1548,6 +1548,7 @@ static struct dahdi_chan_conf dahdi_chan
  			.debouncetime = -1
  		},
  		.is_sig_auto = 1,
