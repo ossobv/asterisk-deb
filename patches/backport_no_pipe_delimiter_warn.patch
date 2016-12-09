@@ -38,7 +38,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  	}
 --- a/channels/chan_sip.c
 +++ b/channels/chan_sip.c
-@@ -10006,7 +10006,7 @@ static int process_sdp(struct sip_pvt *p
+@@ -10005,7 +10005,7 @@ static int process_sdp(struct sip_pvt *p
  				sprintf(offer->decline_m_line, "m=audio 0 %s %s\r\n", protocol, codecs);
  
  				if (x == 0) {
@@ -47,7 +47,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  					continue;
  				}
  
-@@ -10115,7 +10115,7 @@ static int process_sdp(struct sip_pvt *p
+@@ -10114,7 +10114,7 @@ static int process_sdp(struct sip_pvt *p
  				sprintf(offer->decline_m_line, "m=video 0 %s %s\r\n", protocol, codecs);
  
  				if (x == 0) {
@@ -56,7 +56,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  					continue;
  				}
  
-@@ -10193,7 +10193,7 @@ static int process_sdp(struct sip_pvt *p
+@@ -10192,7 +10192,7 @@ static int process_sdp(struct sip_pvt *p
  				sprintf(offer->decline_m_line, "m=text 0 %s %s\r\n", protocol, codecs);
  
  				if (x == 0) {
@@ -65,7 +65,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  					continue;
  				}
  
-@@ -10256,7 +10256,7 @@ static int process_sdp(struct sip_pvt *p
+@@ -10255,7 +10255,7 @@ static int process_sdp(struct sip_pvt *p
  				strcpy(offer->decline_m_line, "m=image 0 udptl t38\r\n");
  
  				if (x == 0) {
@@ -74,7 +74,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  					continue;
  				}
  
-@@ -10642,7 +10642,7 @@ static int process_sdp(struct sip_pvt *p
+@@ -10641,7 +10641,7 @@ static int process_sdp(struct sip_pvt *p
  			ast_sockaddr_set_port(isa, udptlportno);
  			ast_udptl_set_peer(p->udptl, isa);
  			if (debug)
@@ -83,7 +83,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  
  			/* verify the far max ifp can be calculated. this requires far max datagram to be set. */
  			if (!ast_udptl_get_far_max_datagram(p->udptl)) {
-@@ -21710,7 +21710,7 @@ static void handle_request_info(struct s
+@@ -21718,7 +21718,7 @@ static void handle_request_info(struct s
  		}
  		/* Send the feature code to the PBX as DTMF, just like the handset had sent it */
  		f.len = 100;
@@ -92,7 +92,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  			f.subclass.integer = feat->exten[j];
  			ast_queue_frame(p->owner, &f);
  			if (sipdebug) {
-@@ -21801,7 +21801,7 @@ static char *sip_do_debug(struct ast_cli
+@@ -21809,7 +21809,7 @@ static char *sip_do_debug(struct ast_cli
  			ast_cli(a->fd, "SIP Debugging Disabled\n");
  			return CLI_SUCCESS;
  		}
@@ -101,7 +101,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  		if (!strcasecmp(what, "ip"))
  			return sip_do_debug_ip(a->fd, a->argv[e->args]);
  		else if (!strcasecmp(what, "peer"))
-@@ -28134,11 +28134,12 @@ static int handle_request_subscribe(stru
+@@ -28142,11 +28142,12 @@ static int handle_request_subscribe(stru
  		accept = __get_header(req, "Accept", &start);
  		while (!found_supported && !ast_strlen_zero(accept)) {
  			found_supported = strcmp(accept, "application/simple-message-summary") ? 0 : 1;
@@ -116,7 +116,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  		if (start && !found_supported) {
  			/* Format requested that we do not support */
  			transmit_response(p, "406 Not Acceptable", req);
-@@ -33557,7 +33558,7 @@ static void sip_send_all_mwi_subscriptio
+@@ -33566,7 +33567,7 @@ static void sip_send_all_mwi_subscriptio
  static int setup_srtp(struct sip_srtp **srtp)
  {
  	if (!ast_rtp_engine_srtp_is_registered()) {
@@ -127,7 +127,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  
 --- a/main/pbx.c
 +++ b/main/pbx.c
-@@ -1670,12 +1670,6 @@ int pbx_exec(struct ast_channel *c,	/*!<
+@@ -1677,12 +1677,6 @@ int pbx_exec(struct ast_channel *c,	/*!<
  
  	if (app->module)
  		u = __ast_module_user_add(app->module, c);
@@ -142,7 +142,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  		__ast_module_user_remove(app->module, u);
 --- a/res/res_rtp_asterisk.c
 +++ b/res/res_rtp_asterisk.c
-@@ -4256,7 +4256,14 @@ static struct ast_frame *ast_rtp_read(st
+@@ -4299,7 +4299,14 @@ static struct ast_frame *ast_rtp_read(st
  
  	/* Make sure the data that was read in is actually enough to make up an RTP packet */
  	if (res < hdrlen) {

@@ -1,3 +1,14 @@
+asterisk (1:11.25.1-osso0~jessie) jessie; urgency=low
+
+  * Bump version to 11.25.1.
+  * Disabled BUILD_NATIVE explicitly, which was enabled with the fix
+    from ASTERISK-25289 in 11.24.
+  * Removed ASTERISK-26350_safe_asterisk_wo_tty9.patch, upstreamed in
+    11.24.
+  * Refreshed patches.
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri,  9 Dec 2016 15:01:40 +0100
+
 asterisk (1:11.23.1-osso2~jessie) jessie; urgency=low
 
   * Add ASTERISK-26464_add_PickupOld1v4_application.patch that provides

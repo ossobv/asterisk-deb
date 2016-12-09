@@ -121,7 +121,7 @@ See also: https://reviewboard.asterisk.org/r/3548
  		break;
  	default:
  		break;
-@@ -12212,6 +12287,7 @@ static void *do_monitor(void *data)
+@@ -12213,6 +12288,7 @@ static void *do_monitor(void *data)
  				dahdi_destroy_channel_range(doomed->channel, doomed->channel);
  				doomed = NULL;
  			}

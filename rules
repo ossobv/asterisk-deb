@@ -105,6 +105,9 @@ override_dh_auto_build:
 		menuselect/menuselect --enable BETTER_BACKTRACES menuselect.makeopts ; \
 		menuselect/menuselect --enable DEBUG_THREADS menuselect.makeopts ; \
 	fi
+	# No BUILD_NATIVE for packages that are to be used on different hosts.
+	# See ASTERISK-25289.
+	@menuselect/menuselect --disable BUILD_NATIVE
 	$(FETCH_ENV) dh_auto_build -- $(BUILDFLAGS)
 	# Sanity check: don't break the ABI for modules:
 	@abi_hash=`awk -F'"' '/AST_BUILDOPT_SUM/ {print $$2}' include/asterisk/buildopts.h`; \

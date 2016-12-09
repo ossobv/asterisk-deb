@@ -30,7 +30,7 @@ See also: https://reviewboard.asterisk.org/r/3548
  };
  #endif	/* defined(HAVE_PRI) */
  
-@@ -15189,6 +15189,7 @@ static void pri_destroy_span(struct sig_
+@@ -15190,6 +15190,7 @@ static void pri_destroy_span(struct sig_
  	for (i = 0; i < SIG_PRI_NUM_DCHANS; i++) {
  		ast_debug(4, "closing pri_fd %d\n", i);
  		dahdi_close_pri_fd(dahdi_pri, i);

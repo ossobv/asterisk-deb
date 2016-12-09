@@ -15,9 +15,9 @@ https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=775502
 
 --- a/res/res_rtp_asterisk.c
 +++ b/res/res_rtp_asterisk.c
-@@ -1319,6 +1319,8 @@ static int ast_rtp_dtls_set_configuratio
- 	}
- #endif
+@@ -1345,6 +1345,8 @@ static int ast_rtp_dtls_set_configuratio
+ 
+ #endif /* #ifdef HAVE_OPENSSL_EC */
  
 +	SSL_CTX_set_read_ahead(rtp->ssl_ctx, 1);
 +

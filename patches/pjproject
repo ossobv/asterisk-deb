@@ -20,7 +20,7 @@ ICE/STUN/TURN support in res_rtp_asterisk is also now optional.
  PRI=@PBX_PRI@
 --- a/configure.ac
 +++ b/configure.ac
-@@ -429,6 +429,7 @@ AST_EXT_LIB_SETUP([OPENR2], [MFR2], [ope
+@@ -428,6 +428,7 @@ AST_EXT_LIB_SETUP([OPENR2], [MFR2], [ope
  AST_EXT_LIB_SETUP([OSPTK], [OSP Toolkit], [osptk])
  AST_EXT_LIB_SETUP([OSS], [Open Sound System], [oss])
  AST_EXT_LIB_SETUP([PGSQL], [PostgreSQL], [postgres])
@@ -28,7 +28,7 @@ ICE/STUN/TURN support in res_rtp_asterisk is also now optional.
  AST_EXT_LIB_SETUP([POPT], [popt], [popt])
  AST_EXT_LIB_SETUP([PORTAUDIO], [PortAudio], [portaudio])
  AST_EXT_LIB_SETUP([PRI], [ISDN PRI], [pri])
-@@ -2064,6 +2065,8 @@ if test "${PG_CONFIG}" != No; then
+@@ -2058,6 +2059,8 @@ if test "${PG_CONFIG}" != No; then
     fi
  fi
  
@@ -119,7 +119,7 @@ ICE/STUN/TURN support in res_rtp_asterisk is also now optional.
  #endif
  
  #include "asterisk/stun.h"
-@@ -2466,7 +2466,7 @@ static int ice_create(struct ast_rtp_ins
+@@ -2492,7 +2492,7 @@ static int ice_create(struct ast_rtp_ins
  
  	/* Create an ICE session for ICE negotiation */
  	if (pj_ice_sess_create(&stun_config, NULL, PJ_ICE_SESS_ROLE_UNKNOWN, 2,

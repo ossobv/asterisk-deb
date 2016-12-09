@@ -5,11 +5,9 @@ Bug: https://issues.asterisk.org/jira/browse/ASTERISK-26464
 
 Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
 
-diff --git a/apps/app_directed_pickup.c b/apps/app_directed_pickup.c
-index 6fcde07..50d117b 100644
 --- a/apps/app_directed_pickup.c
 +++ b/apps/app_directed_pickup.c
-@@ -92,6 +92,9 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revision$")
+@@ -92,6 +92,9 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revisi
  			<replaceable>context</replaceable> is set on matching channels by the
  			channel driver for the device.</para></note>
  		</description>
@@ -19,7 +17,7 @@ index 6fcde07..50d117b 100644
  	</application>
  	<application name="PickupChan" language="en_US">
  		<synopsis>
-@@ -114,10 +117,58 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revision$")
+@@ -114,10 +117,58 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revisi
  			<para>This will pickup a specified <replaceable>channel</replaceable> if ringing.</para>
  		</description>
  	</application>
@@ -78,7 +76,7 @@ index 6fcde07..50d117b 100644
  
  struct pickup_by_name_args {
  	const char *name;
-@@ -187,13 +238,18 @@ static int pickup_by_channel(struct ast_channel *chan, char *pickup)
+@@ -187,13 +238,18 @@ static int pickup_by_channel(struct ast_
  }
  
  /* Attempt to pick up specified extension with context */
@@ -99,7 +97,7 @@ index 6fcde07..50d117b 100644
  		return -1;
  	}
  
-@@ -269,17 +325,12 @@ static int pickup_by_group(struct ast_channel *chan)
+@@ -269,17 +325,12 @@ static int pickup_by_group(struct ast_ch
  	return res;
  }
  
@@ -118,7 +116,7 @@ index 6fcde07..50d117b 100644
  	/* Parse extension (and context if there) */
  	tmp = ast_strdupa(data);
  	while (!ast_strlen_zero(tmp) && (exten = strsep(&tmp, "&"))) {
-@@ -294,7 +345,7 @@ static int pickup_exec(struct ast_channel *chan, const char *data)
+@@ -294,7 +345,7 @@ static int pickup_exec(struct ast_channe
  			if (ast_strlen_zero(context)) {
  				context = (char *) ast_channel_context(chan);
  			}
@@ -127,7 +125,7 @@ index 6fcde07..50d117b 100644
  				/* Pickup successful.  Stop the dialplan this channel is a zombie. */
  				return -1;
  			}
-@@ -306,6 +357,27 @@ static int pickup_exec(struct ast_channel *chan, const char *data)
+@@ -306,6 +357,27 @@ static int pickup_exec(struct ast_channe
  	return 0;
  }
  
@@ -171,11 +169,9 @@ index 6fcde07..50d117b 100644
  
  	return res;
  }
-diff --git a/include/asterisk/channel.h b/include/asterisk/channel.h
-index 02aee5e..43851ef 100644
 --- a/include/asterisk/channel.h
 +++ b/include/asterisk/channel.h
-@@ -2566,6 +2566,30 @@ struct ast_channel_iterator;
+@@ -2570,6 +2570,30 @@ struct ast_channel_iterator;
  struct ast_channel_iterator *ast_channel_iterator_destroy(struct ast_channel_iterator *i);
  
  /*!
@@ -206,11 +202,9 @@ index 02aee5e..43851ef 100644
   * \brief Create a new channel iterator based on extension
   *
   * \param exten The extension that channels must be in
-diff --git a/main/channel.c b/main/channel.c
-index af7845a..276f158 100644
 --- a/main/channel.c
 +++ b/main/channel.c
-@@ -1483,6 +1483,29 @@ static int ast_channel_by_name_cb(void *obj, void *arg, void *data, int flags)
+@@ -1483,6 +1483,29 @@ static int ast_channel_by_name_cb(void *
  	return ret;
  }
  
@@ -240,7 +234,7 @@ index af7845a..276f158 100644
  static int ast_channel_by_exten_cb(void *obj, void *arg, void *data, int flags)
  {
  	struct ast_channel *chan = obj;
-@@ -1545,6 +1568,30 @@ struct ast_channel_iterator *ast_channel_iterator_destroy(struct ast_channel_ite
+@@ -1545,6 +1568,30 @@ struct ast_channel_iterator *ast_channel
  	return NULL;
  }
  
