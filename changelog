@@ -1,3 +1,13 @@
+asterisk (1:11.25.1-osso1~jessie) jessie; urgency=low
+
+  * Add a few patches:
+    - add_ara_variable_options_column-ASTERISK-16501.patch
+    - add_rtstatic_ara_option_and_fix_queue_inuse-ASTERISK-nofwd.patch
+    - backport13_malformed_pattern_fix-ASTERISK-26668.patch
+  * Rename our other patches and refresh.
+
+ -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri, 17 Mar 2017 12:24:50 +0100
+
 asterisk (1:11.25.1-osso0~jessie) jessie; urgency=low
 
   * Bump version to 11.25.1.

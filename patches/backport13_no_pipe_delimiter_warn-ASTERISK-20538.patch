@@ -142,7 +142,7 @@ Date:   Wed Oct 17 14:24:52 2012 +0000
  		__ast_module_user_remove(app->module, u);
 --- a/res/res_rtp_asterisk.c
 +++ b/res/res_rtp_asterisk.c
-@@ -4299,7 +4299,14 @@ static struct ast_frame *ast_rtp_read(st
+@@ -4297,7 +4297,14 @@ static struct ast_frame *ast_rtp_read(st
  
  	/* Make sure the data that was read in is actually enough to make up an RTP packet */
  	if (res < hdrlen) {

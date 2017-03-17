@@ -25,11 +25,9 @@ Date:   Tue Mar 14 16:16:23 2017 -0500
     
     Change-Id: I555d97411140e47e0522684062d174fbe32aa84a
 
-diff --git a/main/pbx.c b/main/pbx.c
-index d648084..df99940 100644
 --- a/main/pbx.c
 +++ b/main/pbx.c
-@@ -616,7 +616,7 @@ static int ast_add_extension2_lockopt(struct ast_context *con,
+@@ -1266,7 +1266,7 @@ static int ast_add_extension2_lockopt(st
  static struct ast_context *find_context_locked(const char *context);
  static struct ast_context *find_context(const char *context);
  static void get_device_state_causing_channels(struct ao2_container *c);
@@ -38,7 +36,7 @@ index d648084..df99940 100644
  
  /*!
   * \internal
-@@ -6907,32 +6907,51 @@ int ast_async_goto_by_name(const char *channame, const char *context, const char
+@@ -10088,32 +10088,51 @@ int ast_async_goto_by_name(const char *c
  	return res;
  }
  
@@ -103,7 +101,7 @@ index d648084..df99940 100644
  }
  
  /*!
-@@ -7246,10 +7265,10 @@ static int ast_add_extension2_lockopt(struct ast_context *con,
+@@ -10417,10 +10436,10 @@ static int ast_add_extension2_lockopt(st
  		p += strlen(label) + 1;
  	}
  	tmp->name = p;
@@ -116,7 +114,7 @@ index d648084..df99940 100644
  	} else {
  		/* no fluff, we don't need a copy. */
  		tmp->exten = tmp->name;
-@@ -7259,10 +7278,10 @@ static int ast_add_extension2_lockopt(struct ast_context *con,
+@@ -10430,10 +10449,10 @@ static int ast_add_extension2_lockopt(st
  
  	/* Blank callerid and NULL callerid are two SEPARATE things.  Do NOT confuse the two!!! */
  	if (callerid) {

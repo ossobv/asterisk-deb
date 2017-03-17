@@ -21,11 +21,9 @@ This patch does two things:
    See also: https://reviewboard.asterisk.org/r/2996/
    See also: vg_uncached-peers-as-queuemembers.patch
 
-diff --git a/channels/chan_sip.c b/channels/chan_sip.c
-index 89aa86e..b58c23d 100644
 --- a/channels/chan_sip.c
 +++ b/channels/chan_sip.c
-@@ -736,7 +736,7 @@ static unsigned int default_transports;            /*!< Default Transports (enum
+@@ -736,7 +736,7 @@ static unsigned int default_transports;
  static unsigned int default_primary_transport;     /*!< Default primary Transport (enum sip_transport) for outbound connections to devices */
  /*@}*/
  
@@ -34,7 +32,7 @@ index 89aa86e..b58c23d 100644
  					\note in the future we could have multiple of these (per domain, per device group etc) */
  
  /*!< use this macro when ast_uri_decode is dependent on pedantic checking to be on. */
-@@ -5122,6 +5122,9 @@ static void update_peer(struct sip_peer *p, int expire)
+@@ -5122,6 +5122,9 @@ static void update_peer(struct sip_peer
  	int rtcachefriends = ast_test_flag(&p->flags[1], SIP_PAGE2_RTCACHEFRIENDS);
  	if (sip_cfg.peer_rtupdate &&
  	    (p->is_realtime || rtcachefriends)) {
@@ -44,7 +42,7 @@ index 89aa86e..b58c23d 100644
  		realtime_update_peer(p->name, &p->addr, p->username, p->fullcontact, p->useragent, expire, p->deprecated_username, p->lastms);
  	}
  }
-@@ -5242,7 +5245,8 @@ static const char *get_name_from_variable(const struct ast_variable *var)
+@@ -5242,7 +5245,8 @@ static const char *get_name_from_variabl
  static int realtime_peer_by_name(const char *const *name, struct ast_sockaddr *addr, const char *ipaddr, struct ast_variable **var, struct ast_variable **varregs)
  {
  	/* Peer by name and host=dynamic */
@@ -54,7 +52,7 @@ index 89aa86e..b58c23d 100644
  		;
  	/* Peer by name and host=IP */
  	} else if (addr && !(*var = ast_load_realtime("sippeers", "name", *name, "host", ipaddr, SENTINEL))) {
-@@ -5319,6 +5323,12 @@ static int realtime_peer_by_addr(const char **name, struct ast_sockaddr *addr, c
+@@ -5319,6 +5323,12 @@ static int realtime_peer_by_addr(const c
  	/* We're not finding this peer by this name anymore. Reset it. */
  	*name = NULL;
  
@@ -67,7 +65,7 @@ index 89aa86e..b58c23d 100644
  	/* First check for fixed IP hosts with matching callbackextensions, if specified */
  	if (!ast_strlen_zero(callbackexten) && (*var = ast_load_realtime("sippeers", "host", ipaddr, "port", portstring, "callbackextension", callbackexten, SENTINEL))) {
  		;
-@@ -5541,6 +5551,7 @@ static struct sip_peer *sip_find_peer_full(const char *peer, struct ast_sockaddr
+@@ -5541,6 +5551,7 @@ static struct sip_peer *sip_find_peer_fu
  		}
  	}
  
@@ -75,7 +73,7 @@ index 89aa86e..b58c23d 100644
  	if (!p && (realtime || devstate_only)) {
  		/* realtime_peer will return a peer with matching callbackexten if possible, otherwise one matching
  		 * without the callbackexten */
-@@ -15806,6 +15817,9 @@ static void destroy_association(struct sip_peer *peer)
+@@ -15806,6 +15817,9 @@ static void destroy_association(struct s
  
  	if (!sip_cfg.ignore_regexpire) {
  		if (peer->rt_fromcontact && sip_cfg.peer_rtupdate) {
@@ -85,7 +83,7 @@ index 89aa86e..b58c23d 100644
  			ast_update_realtime(tablename, "name", peer->name, "fullcontact", "", "ipaddr", "", "port", "0", "regseconds", "0", "regserver", "", "useragent", "", "lastms", "0", SENTINEL);
  		} else {
  			ast_db_del("SIP/Registry", peer->name);
-@@ -18765,7 +18779,7 @@ static void receive_message(struct sip_pvt *p, struct sip_request *req, struct a
+@@ -18765,7 +18779,7 @@ static void receive_message(struct sip_p
  		 * it to the right context.
  		 */
  
@@ -94,7 +92,7 @@ index 89aa86e..b58c23d 100644
  		if (peer) {
  			/* Only if no auth is required. */
  			if (ast_strlen_zero(peer->secret) && ast_strlen_zero(peer->md5secret)) {
-@@ -20990,6 +21004,7 @@ static char *sip_show_settings(struct ast_cli_entry *e, int cmd, struct ast_cli_
+@@ -20990,6 +21004,7 @@ static char *sip_show_settings(struct as
  		ast_cli(a->fd, "  Realtime Regs:          %s\n", AST_CLI_YESNO(realtimeregs));
  		ast_cli(a->fd, "  Cache Friends:          %s\n", AST_CLI_YESNO(ast_test_flag(&global_flags[1], SIP_PAGE2_RTCACHEFRIENDS)));
  		ast_cli(a->fd, "  Update:                 %s\n", AST_CLI_YESNO(sip_cfg.peer_rtupdate));
@@ -102,7 +100,7 @@ index 89aa86e..b58c23d 100644
  		ast_cli(a->fd, "  Ignore Reg. Expire:     %s\n", AST_CLI_YESNO(sip_cfg.ignore_regexpire));
  		ast_cli(a->fd, "  Save sys. name:         %s\n", AST_CLI_YESNO(sip_cfg.rtsave_sysname));
  		ast_cli(a->fd, "  Auto Clear:             %d (%s)\n", sip_cfg.rtautoclear, ast_test_flag(&global_flags[1], SIP_PAGE2_RTAUTOCLEAR) ? "Enabled" : "Disabled");
-@@ -23798,6 +23813,9 @@ static void handle_response_peerpoke(struct sip_pvt *p, int resp, struct sip_req
+@@ -23798,6 +23813,9 @@ static void handle_response_peerpoke(str
  			peer->name, s, pingtime, peer->maxms);
  		ast_devstate_changed(AST_DEVICE_UNKNOWN, AST_DEVSTATE_CACHABLE, "SIP/%s", peer->name);
  		if (sip_cfg.peer_rtupdate) {
@@ -112,7 +110,7 @@ index 89aa86e..b58c23d 100644
  			ast_update_realtime(ast_check_realtime("sipregs") ? "sipregs" : "sippeers", "name", peer->name, "lastms", str_lastms, SENTINEL);
  		}
  		manager_event(EVENT_FLAG_SYSTEM, "PeerStatus",
-@@ -27275,7 +27293,7 @@ static int sip_msg_send(const struct ast_msg *msg, const char *to, const char *f
+@@ -27275,7 +27293,7 @@ static int sip_msg_send(const struct ast
  	}
  
  	if (!ast_strlen_zero(from)) {
@@ -121,7 +119,7 @@ index 89aa86e..b58c23d 100644
  			ast_string_field_set(pvt, fromname, S_OR(peer_ptr->cid_name, peer_ptr->name));
  			ast_string_field_set(pvt, fromuser, S_OR(peer_ptr->cid_num, peer_ptr->name));
  			sip_unref_peer(peer_ptr, "sip_unref_peer, from sip_msg_send, sip_find_peer");
-@@ -29972,6 +29990,7 @@ static int sip_devicestate(const char *data)
+@@ -29972,6 +29990,7 @@ static int sip_devicestate(const char *d
  	char *host;
  	char *tmp;
  	struct sip_peer *p;
@@ -129,7 +127,7 @@ index 89aa86e..b58c23d 100644
  
  	int res = AST_DEVICE_INVALID;
  
-@@ -29988,8 +30007,19 @@ static int sip_devicestate(const char *data)
+@@ -29988,8 +30007,19 @@ static int sip_devicestate(const char *d
  	 * (presumably to unavailable).  If we ask for a realtime peer here, this would
  	 * load it BACK into memory, thus defeating the point of trying to clear dead
  	 * hosts out of memory.
@@ -150,17 +148,26 @@ index 89aa86e..b58c23d 100644
  		if (!(ast_sockaddr_isnull(&p->addr) && ast_sockaddr_isnull(&p->defaddr))) {
  			/* we have an address for the peer */
  
-@@ -30029,6 +30059,9 @@ static int sip_devicestate(const char *data)
+@@ -30024,11 +30054,18 @@ static int sip_devicestate(const char *d
+ 				res = AST_DEVICE_UNAVAILABLE;
+ 			else	/* Default reply if we're registered and have no other data */
+ 				res = AST_DEVICE_NOT_INUSE;
++		} else if (sip_cfg.peer_rtstatic && p->is_realtime) {
++			/* if this is a (uncached) realtime peer, we don't
++			 * necessarily have an address */
++			res = AST_DEVICE_UNKNOWN;
+ 		} else {
+ 			/* there is no address, it's unavailable */
  			res = AST_DEVICE_UNAVAILABLE;
  		}
  		sip_unref_peer(p, "sip_unref_peer, from sip_devicestate, release ref from sip_find_peer");
 +	} else if (sip_cfg.peer_rtstatic) {
 +		/* Static device and no other data */
-+		res = AST_DEVICE_NOT_INUSE;
++		res = AST_DEVICE_UNKNOWN;
  	}
  
  	return res;
-@@ -31863,6 +31896,7 @@ static int reload_config(enum channelreloadreason reason)
+@@ -31863,6 +31900,7 @@ static int reload_config(enum channelrel
  	ast_set_flag(&global_flags[1], SIP_PAGE2_ALLOWSUBSCRIBE);	/* Default for all devices: TRUE */
  	ast_set_flag(&global_flags[1], SIP_PAGE2_ALLOWOVERLAP_YES);	/* Default for all devices: Yes */
  	sip_cfg.peer_rtupdate = TRUE;
@@ -168,7 +175,7 @@ index 89aa86e..b58c23d 100644
  	global_dynamic_exclude_static = 0;	/* Exclude static peers */
  	sip_cfg.tcp_enabled = FALSE;
  	sip_cfg.websocket_write_timeout = AST_DEFAULT_WEBSOCKET_WRITE_TIMEOUT;
-@@ -31989,6 +32023,8 @@ static int reload_config(enum channelreloadreason reason)
+@@ -31989,6 +32027,8 @@ static int reload_config(enum channelrel
  			sip_cfg.rtsave_sysname = ast_true(v->value);
  		} else if (!strcasecmp(v->name, "rtupdate")) {
  			sip_cfg.peer_rtupdate = ast_true(v->value);
@@ -177,7 +184,7 @@ index 89aa86e..b58c23d 100644
  		} else if (!strcasecmp(v->name, "ignoreregexpire")) {
  			sip_cfg.ignore_regexpire = ast_true(v->value);
  		} else if (!strcasecmp(v->name, "timert1")) {
-@@ -35042,7 +35078,7 @@ static int load_module(void)
+@@ -35042,7 +35082,7 @@ static int load_module(void)
  	/* And start the monitor for the first time */
  	restart_monitor();
  
@@ -186,8 +193,6 @@ index 89aa86e..b58c23d 100644
  		ast_realtime_require_field(ast_check_realtime("sipregs") ? "sipregs" : "sippeers",
  			"name", RQ_CHAR, 10,
  			"ipaddr", RQ_CHAR, INET6_ADDRSTRLEN - 1,
-diff --git a/channels/sip/include/sip.h b/channels/sip/include/sip.h
-index 87a8c68..75ab6ea 100644
 --- a/channels/sip/include/sip.h
 +++ b/channels/sip/include/sip.h
 @@ -740,6 +740,7 @@ struct __show_chan_arg {
@@ -207,11 +212,9 @@ index 87a8c68..75ab6ea 100644
  /*! \brief The SIP socket definition */
  struct sip_socket {
  	enum sip_transport type;  /*!< UDP, TCP or TLS */
-diff --git a/channels/sip/security_events.c b/channels/sip/security_events.c
-index 24ad8db..e22b23f 100644
 --- a/channels/sip/security_events.c
 +++ b/channels/sip/security_events.c
-@@ -286,6 +286,7 @@ void sip_report_inval_transport(const struct sip_pvt *p, const char *transport)
+@@ -286,6 +286,7 @@ void sip_report_inval_transport(const st
  int sip_report_security_event(const char *peer, struct ast_sockaddr *addr, const struct sip_pvt *p,
  			      const struct sip_request *req, const int res) {
  
@@ -219,7 +222,7 @@ index 24ad8db..e22b23f 100644
  	struct sip_peer *peer_report;
  	enum check_auth_result res_report = res;
  	struct ast_str *buf;
-@@ -302,7 +303,8 @@ int sip_report_security_event(const char *peer, struct ast_sockaddr *addr, const
+@@ -302,7 +303,8 @@ int sip_report_security_event(const char
  		[K_LAST]  = { NULL, NULL}
  	};
  
@@ -229,11 +232,9 @@ index 24ad8db..e22b23f 100644
  
  	switch(res_report) {
  	case AUTH_DONT_KNOW:
-diff --git a/configs/sip.conf.sample b/configs/sip.conf.sample
-index c6e6e22..05c8cd3 100644
 --- a/configs/sip.conf.sample
 +++ b/configs/sip.conf.sample
-@@ -1063,6 +1063,9 @@ srvlookup=yes                   ; Enable DNS SRV lookups on outbound calls
+@@ -1063,6 +1063,9 @@ srvlookup=yes                   ; Enable
                                  ; If not present, defaults to 'yes'. Note: realtime peers will
                                  ; probably not function across reloads in the way that you expect, if
                                  ; you turn this option off.
@@ -243,27 +244,3 @@ index c6e6e22..05c8cd3 100644
  ;rtautoclear=yes                ; Auto-Expire friends created on the fly on the same schedule
                                  ; as if it had just registered? (yes|no|<seconds>)
                                  ; If set to yes, when the registration expires, the friend will
-diff --git a/channels/chan_sip.c b/channels/chan_sip.c
-index b58c23d..8b6d508 100644
---- a/channels/chan_sip.c
-+++ b/channels/chan_sip.c
-@@ -30054,6 +30054,10 @@ static int sip_devicestate(const char *data)
-                                res = AST_DEVICE_UNAVAILABLE;
-                        else    /* Default reply if we're registered and have no other data */
-                                res = AST_DEVICE_NOT_INUSE;
-+               } else if (sip_cfg.peer_rtstatic && p->is_realtime) {
-+                       /* if this is a (uncached) realtime peer, we don't
-+                        * necessarily have an address */
-+                       res = AST_DEVICE_UNKNOWN;
-                } else {
-                        /* there is no address, it's unavailable */
-                        res = AST_DEVICE_UNAVAILABLE;
-@@ -30061,7 +30065,7 @@ static int sip_devicestate(const char *data)
-                sip_unref_peer(p, "sip_unref_peer, from sip_devicestate, release ref from sip_find_peer");
-        } else if (sip_cfg.peer_rtstatic) {
-                /* Static device and no other data */
--               res = AST_DEVICE_NOT_INUSE;
-+               res = AST_DEVICE_UNKNOWN;
-        }
- 
-        return res;
