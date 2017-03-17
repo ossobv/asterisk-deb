@@ -1,0 +1,56 @@
+Subject: Add __options__ magic variable that may hold more options
+From: Walter Doekes <wjdoekes@osso.nl>
+Origin: issueA16501_add_realtime_options_column-10.2.0.patch
+Forwarded: https://issues.asterisk.org/jira/browse/ASTERISK-16501 (REJECTED)
+Last-Update:  2015-02-09
+Bug: https://issues.asterisk.org/jira/browse/ASTERISK-16501
+
+--- a/main/config.c
++++ b/main/config.c
+@@ -2767,6 +2767,33 @@ static struct ast_variable *ast_load_rea
+ 	for (i = 1; ; i++) {
+ 		if ((eng = find_engine(family, i, db, sizeof(db), table, sizeof(table)))) {
+ 			if (eng->realtime_func && (res = eng->realtime_func(db, table, ap))) {
++				/* https://issues.asterisk.org/jira/browse/ASTERISK-16501 */
++				/* Check the magic variable __options__ and expand it from a
++				 * varname=varvalue combination. Observe that realtime_func
++				 * has already split the single __options__ column value into
++				 * several variables if it contains semicolons. */
++				struct ast_variable *v = res, *prev = NULL;
++				for (; v; prev = v, v = v->next) {
++					if (!strcmp(v->name, "__options__") && !ast_strlen_zero(v->value)) {
++						struct ast_variable *v2;
++						char *p = strchr(v->value, '=');
++						if (!p) {
++							v2 = ast_variable_new(v->value, "", v->file);
++						} else {
++							*p = '\0'; /* we're allowed to clobber this */
++							v2 = ast_variable_new(v->value, p + 1, v->file);
++						}
++						v2->next = v->next;
++						v->next = NULL;
++						ast_variables_destroy(v);
++						v = v2;
++						if (prev) {
++							prev->next = v;
++						} else {
++							res = v;
++						}
++					}
++				}
+ 				return res;
+ 			}
+ 		} else {
+@@ -2904,6 +2931,12 @@ struct ast_config *ast_load_realtime_mul
+ 	for (i = 1; ; i++) {
+ 		if ((eng = find_engine(family, i, db, sizeof(db), table, sizeof(table)))) {
+ 			if (eng->realtime_multi_func && (res = eng->realtime_multi_func(db, table, ap))) {
++				/* https://issues.asterisk.org/jira/browse/ASTERISK-16501 */
++				/* Check the magic variable __options__ and expand it from a
++				 * varname=varvalue combination. Observe that realtime_func
++				 * has already split the single __options__ column value into
++				 * several variables if it contains semicolons. */
++				/* XXX FIXME TODO not implemented for multientry */
+ 				/* If we were returned an empty cfg, destroy it and return NULL */
+ 				if (!res->root) {
+ 					ast_config_destroy(res);

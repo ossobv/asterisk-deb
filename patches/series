@@ -1,6 +1,9 @@
-# upstream fixes
-ASTERISK-26464_add_PickupOld1v4_application.patch
+# upstream fixes / backports
+backport13_malformed_pattern_fix-ASTERISK-26668.patch
+backport13_no_pipe_delimiter_warn-ASTERISK-20538.patch
+backport13_wideband_moh-r3112.patch
 
+# debian patches
 hack-multiple-app-voicemail
 # Not used ATM. See comment in patch:
 #make-clean-fixes
@@ -33,6 +36,7 @@ enable_dtls_read_ahead.patch
 
 enable_old_modules.patch
 
-# backports
-backport_no_pipe_delimiter_warn.patch
-backport_wideband_moh.patch
+# features that did not make it into upstream
+add_PickupOld1v4_app-ASTERISK-26464.patch
+add_ara_variable_options_column-ASTERISK-16501.patch
+add_rtstatic_ara_option_and_fix_queue_inuse-ASTERISK-nofwd.patch
