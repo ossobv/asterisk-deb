@@ -36,6 +36,9 @@ enable_dtls_read_ahead.patch
 
 enable_old_modules.patch
 
+# Needed for proper queue functionality:
+queue-realtime-fixes_AST-116.patch
+
 # features that did not make it into upstream
 add_PickupOld1v4_app-ASTERISK-26464.patch
 add_ara_variable_options_column-ASTERISK-16501.patch
