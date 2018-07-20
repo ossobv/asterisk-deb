@@ -109,6 +109,19 @@ Don't forget to update the ``changelog`` if you change anything.
     $ #vim debian/changelog
     $ DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc
 
+If you want to build locally to test, instead of building a package, you'll do
+this:
+
+.. code-block:: console
+
+    quilt push -a
+    ./bootstrap.sh
+    ./configure --prefix=/usr/ --mandir=\${prefix}/share/man \
+        --infodir=\${prefix}/share/info --disable-asteriskssl --with-gsm \
+        --with-imap=system --without-pwlib --enable-dev-mode
+    make menuconfig
+    make
+    sudo make install
 
 
 Quilting and patching
