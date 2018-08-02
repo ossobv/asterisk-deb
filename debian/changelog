@@ -1,3 +1,19 @@
+asterisk (1:11.25.3-0osso1+deb9) stretch; urgency=medium
+
+  * Build for debian/stretch.
+  * Disabled MySQL support, because libmysqlclient-dev is not available on
+    Stretch. Normally, you'll use unixodbc anyway, so you won't miss this.
+  * Forced dependency on libssl1.0-dev instead of libssl-dev (1.1). When
+    we also use cURL which is compiled/linked against libssl1.0, we have
+    experienced trouble with libssl1.1.
+  * Disabled IMAP support, because libc-client2007e-dev depends on libssl1.1
+    and libcurl depends on libssl1.0: don't trust the label, libcurl is
+    compiled against libssl1.0 on stretch; it won't play nice with
+    libssl1.1.
+  * Dropped useless readline dependency.
+
+ -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Thu, 02 Aug 2018 20:38:14 +0200
+
 asterisk (1:11.25.3-0osso1+deb8) jessie; urgency=medium
 
   * Bump version to 11.25.3.

@@ -6,14 +6,12 @@ Uploaders: Mark Purcell <msp@debian.org>, Tzafrir Cohen <tzafrir@debian.org>, Je
 Build-Depends: debhelper (>= 8),
  dpkg-dev (>= 1.16.1.1),
  lsb-base (>= 3.2-14),
- libreadline-dev | libreadline5-dev,
  libgsm1-dev,
- libssl-dev,
+ libssl1.0-dev,
  libtonezone-dev (>= 1:2.0.0) [linux-any],
  libasound2-dev,
  libpq-dev,
  unixodbc-dev,
- libmysqlclient-dev | libmysqlclient15-dev,
  libbluetooth-dev [linux-any],
  libpri-dev (>= 1.4.12),
  libss7-dev,
@@ -32,11 +30,9 @@ Build-Depends: debhelper (>= 8),
  libxml2-dev,
  libpopt-dev,
  libiksemel-dev,
- libfreeradius-client-dev | libradiusclient-ng-dev,
  freetds-dev,
  libvorbis-dev,
  libsnmp-dev,
- libc-client2007e-dev | libc-client2007b-dev,
  libgmime-2.6-dev,
  libjack-dev,
  liblua5.1-0-dev,
@@ -148,22 +144,22 @@ Description: simple voicemail support for the Asterisk PBX
  For more information about the Asterisk PBX, have a look at the Asterisk
  package.
 
-Package: asterisk-voicemail-imapstorage
-Architecture: any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Provides: asterisk-voicemail-storage
-Conflicts: asterisk-voicemail-storage
-Breaks: asterisk (<< 1:1.8.3.3)
-Replaces: asterisk (<< 1:1.8.3.3)
-Description: IMAP voicemail storage support for the Asterisk PBX
- Asterisk is an Open Source PBX and telephony toolkit.
- .
- This package includes an IMAP-based voicemail storage: storing the
- voicemail in a remote IMAP mail boxes. While more complex to set up,
- it may be useful in some settings.
- .
- For more information about the Asterisk PBX, have a look at the Asterisk
- package.
+# Package: asterisk-voicemail-imapstorage
+# Architecture: any
+# Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+# Provides: asterisk-voicemail-storage
+# Conflicts: asterisk-voicemail-storage
+# Breaks: asterisk (<< 1:1.8.3.3)
+# Replaces: asterisk (<< 1:1.8.3.3)
+# Description: IMAP voicemail storage support for the Asterisk PBX
+#  Asterisk is an Open Source PBX and telephony toolkit.
+#  .
+#  This package includes an IMAP-based voicemail storage: storing the
+#  voicemail in a remote IMAP mail boxes. While more complex to set up,
+#  it may be useful in some settings.
+#  .
+#  For more information about the Asterisk PBX, have a look at the Asterisk
+#  package.
 
 Package: asterisk-voicemail-odbcstorage
 Architecture: any
@@ -207,18 +203,18 @@ Description: MP3 playback support for the Asterisk PBX
  For more information about the Asterisk PBX, have a look at the Asterisk
  package.
 
-Package: asterisk-mysql
-Architecture: any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Description: MySQL database protocol support for the Asterisk PBX
- Asterisk is an Open Source PBX and telephony toolkit.
- .
- This package provides support for using a MySQL database to store
- configuration, call detail records, and also provides generic access to
- it from the dialplan.
- .
- For more information about the Asterisk PBX, have a look at the Asterisk
- package.
+# Package: asterisk-mysql
+# Architecture: any
+# Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+# Description: MySQL database protocol support for the Asterisk PBX
+#  Asterisk is an Open Source PBX and telephony toolkit.
+#  .
+#  This package provides support for using a MySQL database to store
+#  configuration, call detail records, and also provides generic access to
+#  it from the dialplan.
+#  .
+#  For more information about the Asterisk PBX, have a look at the Asterisk
+#  package.
 
 Package: asterisk-mobile
 Architecture: linux-any

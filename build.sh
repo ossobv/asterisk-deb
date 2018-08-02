@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"  # jump to curdir
 
 # Pass these on the command line.
-oscodename=jessie
+oscodename=stretch
 upname=asterisk
 upversion=${1:-11.25.3}     # asterisk version, e.g. 13.22.0
 debversion=${2:-0osso1}     # deb build version, e.g. 0osso1

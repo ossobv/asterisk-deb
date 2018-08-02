@@ -93,11 +93,14 @@ override_dh_auto_configure:
 		--infodir=\$${prefix}/share/info	\
 		--disable-asteriskssl			\
 		--with-gsm				\
-		--with-imap=system			\
 		--without-pwlib				\
 		${ENABLE_DEBUG}
 
-#		--with-cap \
+# Without imap, because libc-client2007e-dev depends on libssl1.1,
+# while libcurl4-openssl-dev is linked against libssh1.0. Let's hope no
+# one needs imap. Otherwise you'll need to fix/remove curl.
+#		--with-imap=system
+#		--with-cap
 
 override_dh_auto_build:
 	$(MAKE) menuselect.makeopts BUILD_CFLAGS="$(CFLAGS) $(CPPFLAGS)" BUILD_LDFLAGS="$(LDFLAGS)"
@@ -166,8 +169,8 @@ override_dh_install:
 		$(CURDIR)/debian/asterisk-config/etc/asterisk/startup.d/mail-backtrace.sh
 
 	# Rename dh_install file for -imapstorage and -odbcstorage.
-	mv $(CURDIR)/debian/asterisk-voicemail-imapstorage/usr/lib/asterisk/modules/app_voicemail_imapstorage.so \
-		$(CURDIR)/debian/asterisk-voicemail-imapstorage/usr/lib/asterisk/modules/app_voicemail.so
+	# mv $(CURDIR)/debian/asterisk-voicemail-imapstorage/usr/lib/asterisk/modules/app_voicemail_imapstorage.so \
+	# 	$(CURDIR)/debian/asterisk-voicemail-imapstorage/usr/lib/asterisk/modules/app_voicemail.so
 	mv $(CURDIR)/debian/asterisk-voicemail-odbcstorage/usr/lib/asterisk/modules/app_voicemail_odbcstorage.so \
 		$(CURDIR)/debian/asterisk-voicemail-odbcstorage/usr/lib/asterisk/modules/app_voicemail.so
 

@@ -1,9 +1,9 @@
-FROM debian:jessie
+FROM debian:stretch
 # FROM $(os):$(oscodename)
 MAINTAINER Walter Doekes <wjdoekes+asterisk-deb@osso.nl>
 
 ARG osdistshort=deb
-ARG oscodename=jessie
+ARG oscodename=stretch
 ARG upname=asterisk
 ARG upversion=11.25.3
 ARG debepoch=1:
@@ -72,8 +72,12 @@ RUN echo "Install checks:" && cd .. && . /etc/os-release && \
        asterisk-dbg_${fullversion}_*.deb \
        asterisk-modules_${fullversion}_*.deb
 RUN asterisk -V | grep -F "${upversion}" && asterisk -V | grep -F "${debversion}"
-#RUN echo "Linker checks:" && \
-#    ldd /usr/lib/asterisk/modules/chan_pjsip.so | grep libpj
+RUN echo "Linker checks:" && \
+    ldd /usr/lib/asterisk/modules/res_rtp_asterisk.so | grep libpj
+# Check that we're not using both openssl 1.0 and 1.1
+RUN find /build/asterisk-${astversion}/debian/tmp -name '*.so' -o -name asterisk -type f | \
+    sort | while read f; do if ldd "$f" | grep -qF libssl.so.1.1; then \
+    echo "$f: linked against wrong openssl" >&2 && exit 1; fi; done
 
 # Write output files (store build args in ENV first).
 ENV oscodename=$oscodename osdistshort=$osdistshort \
