@@ -1,11 +1,12 @@
 OSSO build of Asterisk packages for Debian
 ==========================================
 
-This is the ``debian/`` dir you need to create Debian (or Ubuntu)
-packages of the latest `Asterisk PBX <http://www.asterisk.org/>`_.
+This contains the ``debian/`` dir you need to create Debian (or Ubuntu)
+packages of specific versions of the `Asterisk PBX
+<http://www.asterisk.org/>`_.
 
-Place it inside the extracted Asterisk tarball and to create the
-necessary ``*.deb`` files. See detailed instructions below.
+Place the debian dir inside the extracted Asterisk tarball and to create
+the necessary ``*.deb`` files. See detailed instructions below.
 
 Much thanks to the Debian team for creating the initial files and
 sharing them! The starting point for for this ``debian/`` dir is
@@ -15,6 +16,25 @@ taken from the `Debian AnonSCM repository
 If you're happy with these files without any additional changes,
 you can get precompiled binary packages from the *OSSO ppa*
 directly. See `Using the OSSO ppa <#user-content-using-the-osso-ppa>`_.
+
+
+
+Building with Docker
+--------------------
+
+.. code-block:: console
+
+    $ ./build.sh
+    ...
+
+    $ find ./dist
+    ...
+    ./dist/jessie/asterisk_11.25.3-0osso1+deb8/asterisk_11.25.3-0osso1+deb8_amd64.changes
+    ./dist/jessie/asterisk_11.25.3-0osso1+deb8/asterisk_11.25.3-0osso1+deb8_amd64.deb
+    ...
+
+That should be enough to get the debian packages. For verbose building,
+see below:
 
 
 
@@ -61,7 +81,7 @@ Preparing an Asterisk build
 ---------------------------
 
 Fetching the latest Asterisk, creating a local scratchpad repository and
-moving this directory to the ``debian/`` dir.
+moving the ``debian/`` dir to the untarred Asterisk source.
 
 .. code-block:: console
 
@@ -75,7 +95,7 @@ moving this directory to the ``debian/`` dir.
     $ git add -fA   # adds all files, even the .gitignored ones
     $ git commit -m "clean ${VERSION}"
 
-    $ mv ~/asterdeb-osso debian
+    $ cp -a ~/asterisk-deb/debian debian  # or use a bind-mount
 
 Test that all patches apply:
 
@@ -124,6 +144,7 @@ this:
     sudo make install
 
 
+
 Quilting and patching
 ---------------------
 
@@ -138,7 +159,7 @@ for every change. Set up your build like this:
     $ # or: http://gerrit.asterisk.org/asterisk
     $ cd asterisk
     $ git fetch --all   # make sure we also fetch all tags
-    $ mv ~/asterdeb-osso debian
+    $ cp -a ~/asterisk-deb/debian debian  # or use a bind-mount
 
 Select the version. Depending on what you previously did, you'll need only some
 of these. Consult your local source of git knowledge for more information.
@@ -158,7 +179,7 @@ stuff so it's not in the way when you start editing.
 .. code-block:: console
 
     $ quilt push -a
-    $ git commit -m "WIP: asterdeb-osso quilted"
+    $ git commit -m "WIP: asterisk-deb quilted"
 
 Now you can start changing stuff, compiling, installing. Et cetera.
 
@@ -186,7 +207,7 @@ and add appropriate header values as described in
 `DEP3, Patch Tagging Guidelines <http://dep.debian.net/deps/dep3/>`_.
 
 Store your updated patches in your own repository, and rebase your changes
-against changes in ``asterdeb-osso``.
+against changes in ``asterisk-deb``.
 
 
 
@@ -233,4 +254,4 @@ OSSO DOES NOT GUARANTEE THAT THE FILES ARE SANE.
     $ sudo apt-get install asterisk
 
 
-/Walter Doekes <wjdoekes+asterdeb@osso.nl>  Tue, 11 Oct 2016 14:07:55 +0200
+/Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Tue, 11 Oct 2016 14:07:55 +0200

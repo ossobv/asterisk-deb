@@ -1,4 +1,4 @@
-asterisk (1:11.25.3-0osso1+deb8) jessie; urgency=low
+asterisk (1:11.25.3-0osso1+deb8) jessie; urgency=medium
 
   * Bump version to 11.25.3.
   * Add queue realtime patch:
@@ -7,7 +7,7 @@ asterisk (1:11.25.3-0osso1+deb8) jessie; urgency=low
     possible. Also avoiding that wheezy sorts after jessie. And add '0'
     before osso1 official debian versions may override.
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri, 20 Jul 2018 08:23:16 +0000
+ -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Fri, 20 Jul 2018 08:23:16 +0000
 
 asterisk (1:11.25.1-osso1~jessie) jessie; urgency=low
 

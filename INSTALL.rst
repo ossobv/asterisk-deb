@@ -175,7 +175,7 @@ and add it to startup.d:
 .. code-block:: console
 
     $ cd /etc/asterisk/startup.d
-    $ sudo wget https://github.com/ossobv/asterdeb-osso/blob/11-jessie/examples/safe_asterisk/startup.d--mail-backtrace.sh \
+    $ sudo wget https://raw.githubusercontent.com/ossobv/asterisk-deb/11-jessie/examples/safe_asterisk/startup.d--mail-backtrace.sh \
         -O mail-backtrace.sh
 
 Note that new files in ``/etc/asterisk/startup.d`` require a full daemon restart
@@ -197,4 +197,4 @@ pjsip version, if you're using Asterisk 13 or newer) and ``extensions.conf``.
 Good luck!
 
 
-/Walter Doekes <wjdoekes+asterdeb@osso.nl>  Tue, 27 Oct 2015 15:15:54 +0100
+/Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Tue, 27 Oct 2015 15:15:54 +0100
