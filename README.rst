@@ -250,6 +250,11 @@ OSSO DOES NOT GUARANTEE THAT THE FILES ARE SANE.
     deb-src http://ppa.osso.nl/debian jessie osso
     EOF
     $ wget -qO- https://ppa.osso.nl/support+ppa@osso.nl.gpg | sudo apt-key add -
+    $ sudo tee /etc/apt/preferences.d/asterisk >/dev/null << EOF
+    Package: asterisk asterisk-*
+    Pin: release o=OSSO ppa
+    Pin-Priority: 600
+    EOF
     $ sudo apt-get update
     $ sudo apt-get install asterisk
 
