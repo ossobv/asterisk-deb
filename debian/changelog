@@ -1,3 +1,9 @@
+asterisk (1:11.25.3-0osso2+deb9) stretch; urgency=medium
+
+  * Add fix for libedit 3.1+ which is shipped with stretch.
+
+ -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Mon, 10 Sep 2018 18:42:36 +0200
+
 asterisk (1:11.25.3-0osso1+deb9) stretch; urgency=medium
 
   * Build for debian/stretch.

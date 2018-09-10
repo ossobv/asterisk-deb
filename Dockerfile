@@ -75,9 +75,9 @@ RUN asterisk -V | grep -F "${upversion}" && asterisk -V | grep -F "${debversion}
 RUN echo "Linker checks:" && \
     ldd /usr/lib/asterisk/modules/res_rtp_asterisk.so | grep libpj
 # Check that we're not using both openssl 1.0 and 1.1
-RUN find /build/asterisk-${astversion}/debian/tmp -name '*.so' -o -name asterisk -type f | \
+RUN find /build/asterisk-${upversion}/debian/tmp -name '*.so' -o -name asterisk -type f | \
     sort | while read f; do if ldd "$f" | grep -qF libssl.so.1.1; then \
-    echo "$f: linked against wrong openssl" >&2 && exit 1; fi; done
+    echo "$f: linked against openssl 1.1, may cause trouble" >&2; fi; done
 
 # Write output files (store build args in ENV first).
 ENV oscodename=$oscodename osdistshort=$osdistshort \

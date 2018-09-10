@@ -1,4 +1,5 @@
 # upstream fixes / backports
+backport13_libedit_3_1_and_newer-ASTERISK-26592.patch
 backport13_malformed_pattern_fix-ASTERISK-26668.patch
 backport13_no_pipe_delimiter_warn-ASTERISK-20538.patch
 backport13_wideband_moh-r3112.patch
