@@ -101,20 +101,19 @@ case "$1" in
     ;;
 esac
 
-# Since we use a dh_installinit --noscripts in rules, the following is
-# added here manually. Starting asterisk while it's running is a no-op.
-# That's intended behaviour.
-# (The <hash>DEBHELPER<hash> comment below will get replaced by void.)
-if [ -x "/etc/init.d/asterisk" ]; then
-    update-rc.d asterisk defaults >/dev/null
-    # Regular DEBHELPER code would do this:
-    #invoke-rc.d asterisk start || exit $?
-    # We do this:
-    if ! invoke-rc.d asterisk status >/dev/null 2>&1; then
-        invoke-rc.d asterisk start || exit $?
-    else
-        invoke-rc.d asterisk restart-convenient
-    fi
+# dh_installinit will add code akin to if $1 = configure and $2 (i.e.
+# update); then invoke-rc.d asterisk restart. We don't want a "hard"
+# restart, but want a restart-convenient instead. So, we must exit here.
+# (By doing this, we don't need the `--noscripts` option to
+# dh_installinit in rules.)
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+	if [ -x "/etc/init.d/asterisk" ] && [ -n "$2" ]; then
+		# Note that we _do_ skip systemd setup here in the
+		# upgrade case. Hope/assume it was configured when
+		# the previous version was installed.
+		invoke-rc.d asterisk restart-convenient || exit 1
+		exit 0
+	fi
 fi
 
 # dh_installdeb will replace this with shell code automatically

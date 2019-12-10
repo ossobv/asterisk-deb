@@ -1,13 +1,8 @@
-FROM debian:stretch
+ARG osdistro=debian
+ARG oscodename=buster
+FROM $osdistro:$oscodename
 # FROM $(os):$(oscodename)
 MAINTAINER Walter Doekes <wjdoekes+asterisk-deb@osso.nl>
-
-ARG osdistshort=deb
-ARG oscodename=stretch
-ARG upname=asterisk
-ARG upversion=11.25.3
-ARG debepoch=1:
-ARG debversion=0osso1
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -26,10 +21,19 @@ RUN apt-get install -y \
     bzip2 ca-certificates curl git \
     build-essential dh-autoreconf devscripts dpkg-dev equivs quilt
 
+# Import ARGs
+ARG osdistro=debian
+ARG oscodename=buster
+ARG upname=asterisk
+ARG upversion=11.25.3
+ARG debepoch=1:
+ARG debversion=0osso1
+
 # Copy debian dir, check version
 RUN mkdir -p /build/debian
 COPY debian/changelog /build/debian/changelog
 RUN . /etc/os-release && \
+    osdistshort=$(echo "$osdistro" | sed -e 's/\(.\).*/\1/') && \
     fullversion="${upversion}-${debversion}+${osdistshort}${VERSION_ID}" && \
     expected="${upname} (${debepoch}${fullversion}) ${oscodename}; urgency=medium" && \
     head -n1 /build/debian/changelog && \
@@ -64,25 +68,37 @@ RUN DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc -sa
 
 # Sanity checks.
 RUN echo "Install checks:" && cd .. && . /etc/os-release && \
-     fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
-     apt-get install -y asterisk-core-sounds-en && \
-     dpkg -i \
-       asterisk_${fullversion}_*.deb \
-       asterisk-config_${fullversion}_*.deb  \
-       asterisk-dbg_${fullversion}_*.deb \
-       asterisk-modules_${fullversion}_*.deb
+    osdistshort=$(echo "$osdistro" | sed -e 's/\(.\).*/\1/') && \
+    fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
+    apt-get install -y asterisk-core-sounds-en && \
+    dpkg -i \
+      asterisk_${fullversion}_*.deb \
+      # asterisk-config OR asterisk-config-empty
+      asterisk-config_${fullversion}_*.deb  \
+      asterisk-dbgsym_${fullversion}_*.deb \
+      asterisk-modules_${fullversion}_*.deb \
+      asterisk-modules-dbgsym_${fullversion}_*.deb
 RUN asterisk -V | grep -F "${upversion}" && asterisk -V | grep -F "${debversion}"
-RUN echo "Linker checks:" && \
-    ldd /usr/lib/asterisk/modules/res_rtp_asterisk.so | grep libpj
+# Check pjsip version and library location.
+RUN objdump -T /usr/lib/libasteriskpj.so.2 | \
+    grep '[[:blank:]][.]text[[:blank:]].*[[:blank:]]pj_init$' && \
+    # Only if we have asterisk-config (not asterisk-config-empty) can we
+    # start asterisk and get info from it.
+    if test -f /etc/asterisk/asterisk.conf; then \
+    asterisk -cn >/dev/null 2>&1 & p=$!; sleep 2; \
+    asterisk -nrx 'pjsip show version'; asterisk -nrx 'core stop now'; wait; \
+    fi
 # Check that we're not using both openssl 1.0 and 1.1
 RUN find /build/asterisk-${upversion}/debian/tmp -name '*.so' -o -name asterisk -type f | \
-    sort | while read f; do if ldd "$f" | grep -qF libssl.so.1.1; then \
-    echo "$f: linked against openssl 1.1, may cause trouble" >&2; fi; done
+    sort | while read f; do if ldd "$f" | grep -qF libssl.so.1.0; then \
+    echo "$f: linked against openssl 1.0, may cause trouble" >&2; fi; done
 
 # Write output files (store build args in ENV first).
-ENV oscodename=$oscodename osdistshort=$osdistshort \
+ENV oscodename=$oscodename osdistro=$osdistro \
     upname=$upname upversion=$upversion debversion=$debversion
-CMD . /etc/os-release && fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
+CMD . /etc/os-release && \
+    osdistshort=$(echo "$osdistro" | sed -e 's/\(.\).*/\1/') && \
+    fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
     if ! test -d /dist; then echo "Please mount ./dist for output" >&2; false; fi && \
     echo && . /etc/os-release && mkdir /dist/${oscodename}/${upname}_${fullversion} && \
     mv /build/*${fullversion}* /dist/${oscodename}/${upname}_${fullversion}/ && \

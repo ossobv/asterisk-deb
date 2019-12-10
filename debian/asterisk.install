@@ -1,5 +1,10 @@
 usr/sbin
+usr/bin/asterisk-config-custom
+usr/lib/libasterisk*
 usr/share/asterisk/firmware
 usr/share/asterisk/keys
 usr/share/asterisk/conf
 usr/share/asterisk/documentation
+usr/share/asterisk/rest-api
+usr/share/dahdi/span_config.d/50-asterisk
+lib/systemd/system/asterisk.service

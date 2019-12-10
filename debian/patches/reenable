@@ -1,12 +1,25 @@
-Description: reenable some drivers, currently chan_vpb
+Description: reenable some drivers
 Author: Tzafrir Cohen <tzafrir.cohen@xorcom.com>
+Last-Update: 2016-03-19
+
 --- a/channels/chan_vpb.cc
 +++ b/channels/chan_vpb.cc
-@@ -31,7 +31,6 @@
+@@ -49,7 +49,7 @@
  
  /*** MODULEINFO
  	<depend>vpb</depend>
 -	<defaultenabled>no</defaultenabled>
++	<defaultenabled>yes</defaultenabled>
+ 	<support_level>deprecated</support_level>
+  ***/
+ 
+--- a/channels/chan_mgcp.c
++++ b/channels/chan_mgcp.c
+@@ -34,7 +34,6 @@
+  */
+ 
+ /*** MODULEINFO
+-        <use type="module">res_pktccops</use>
  	<support_level>extended</support_level>
   ***/
  

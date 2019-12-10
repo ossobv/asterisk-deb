@@ -1,18 +1,18 @@
 Description: enable modules formly from asterisk-addons
+ The modules under addons/ are originally from the separate
+ asterisk-addons package. As of asterisk 1.8 they are included in the
+ main Asterisk distribution but not enabled by default. this patch
+ enables them, as it seems valid in Debian.
+ .
+ format_mp3.c is not enabled, yet, though: the complete source is not
+ included. See contrib/scripts/get_mp3_source.sh in the source tree.
 Author: Tzafrir Cohen <tzafrir@debian.org>
 Applied-Upsteam: no
-
-The modules under addons/ are originally from the separate asterisk-addons
-package. As of asterisk 1.8 they are included in the main Asterisk
-distribution but not enabled by default. this patch enables them, as it
-seems valid in Debian.
-
-format_mp3.c is not enabled, yet, though: the complete source is not
-included. See contrib/scripts/get_mp3_source.sh in the source tree.
+Last-Update: 2016-03-19
 
 --- a/addons/app_mysql.c
 +++ b/addons/app_mysql.c
-@@ -25,7 +25,6 @@
+@@ -34,7 +34,6 @@
  
  /*** MODULEINFO
  	<depend>mysqlclient</depend>
@@ -20,19 +20,9 @@ included. See contrib/scripts/get_mp3_source.sh in the source tree.
  	<support_level>deprecated</support_level>
  	<replacement>func_odbc</replacement>
   ***/
---- a/addons/app_saycountpl.c
-+++ b/addons/app_saycountpl.c
-@@ -21,7 +21,6 @@
-  */
- 
- /*** MODULEINFO
--	<defaultenabled>no</defaultenabled>
- 	<support_level>deprecated</support_level>
- 	<replacement>say.conf</replacement>
-  ***/
 --- a/addons/chan_mobile.c
 +++ b/addons/chan_mobile.c
-@@ -27,7 +27,6 @@
+@@ -36,7 +36,6 @@
  
  /*** MODULEINFO
  	<depend>bluetooth</depend>

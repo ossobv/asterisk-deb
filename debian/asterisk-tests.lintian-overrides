@@ -1,0 +1,2 @@
+# Plugins
+asterisk-tests binary: shared-lib-without-dependency-information usr/lib/asterisk/modules/*

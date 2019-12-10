@@ -8,10 +8,4 @@ if [ "$1" = purge ]; then
 
 fi
 
-# The following bit is placed here manually instead of through the
-# <hash>DEBHELPER<hash> replacement.
-if [ "$1" = "purge" ] ; then
-    update-rc.d asterisk remove >/dev/null
-fi
-
 #DEBHELPER#

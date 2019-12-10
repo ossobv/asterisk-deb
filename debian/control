@@ -2,65 +2,102 @@ Source: asterisk
 Priority: optional
 Section: comm
 Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
-Uploaders: Mark Purcell <msp@debian.org>, Tzafrir Cohen <tzafrir@debian.org>, Jeremy Lainé <jeremy.laine@m4x.org>, Daniel Pocock <daniel@pocock.com.au>
-Build-Depends: debhelper (>= 8),
- dpkg-dev (>= 1.16.1.1),
- lsb-base (>= 3.2-14),
- libgsm1-dev,
- libssl1.0-dev,
- libtonezone-dev (>= 1:2.0.0) [linux-any],
- libasound2-dev,
- libpq-dev,
- unixodbc-dev,
- libbluetooth-dev [linux-any],
- libpri-dev (>= 1.4.12),
- libss7-dev,
- libvpb-dev [linux-any],
- dahdi-source,
- autotools-dev,
- dh-autoreconf,
+Uploaders:
+ Bernhard Schmidt <berni@debian.org>,
+ Daniel Pocock <daniel@pocock.com.au>,
+ Jeremy Lainé <jeremy.laine@m4x.org>,
+ Jonas Smedegaard <dr@jones.dk>,
+ Mark Purcell <msp@debian.org>,
+ Tzafrir Cohen <tzafrir@debian.org>
+Build-Depends:
  autoconf,
  automake,
- libnewt-dev,
- libsqlite0-dev | libsqlite-dev,
- libsqlite3-dev,
- libspeex-dev,
- libspeexdsp-dev,
- libcurl4-openssl-dev | libcurl-dev,
- libxml2-dev,
- libpopt-dev,
- libiksemel-dev,
+ binutils-dev,
+ dahdi-source,
+ debhelper (>= 10),
+ default-libmysqlclient-dev,
  freetds-dev,
- libvorbis-dev,
- libsnmp-dev,
- libgmime-2.6-dev,
+ libasound2-dev,
+ libavcodec-dev,
+ libavdevice-dev,
+ libbluetooth-dev [linux-any],
+ libc-client2007e-dev,
+ libcap-dev [linux-any],
+ libcurl4-openssl-dev | libcurl-dev,
+ libedit-dev,
+ libradcli-dev | libfreeradius-client-dev | libradiusclient-ng-dev,
+ libgmime-3.0-dev,
+ libgsm1-dev,
+ libical-dev,
+ libiksemel-dev,
  libjack-dev,
+ libjansson-dev (>= 2.11),
+ libldap-dev,
  liblua5.1-0-dev,
- libcap-dev (>= 1:2.16-4) [linux-any] | libcap2-dev [linux-any],
- libspandsp-dev,
- libopenr2-dev [linux-any],
- libresample1-dev,
- corosync-dev,
- uuid-dev,
- libpjproject-dev,
  libncurses-dev,
  libneon27-gnutls-dev | libneon27-dev,
- libical-dev,
- libsrtp0-dev,
- zlib1g-dev,
- libedit-dev,
- binutils-dev
-Standards-Version: 3.9.5
+ libnewt-dev,
+ libogg-dev,
+ libopencore-amrnb-dev,
+ libopencore-amrwb-dev,
+ libopenr2-dev [linux-any],
+ libopus-dev,
+ libopusfile-dev,
+ libpopt-dev,
+ libpq-dev,
+ libpri-dev,
+ libreadline-dev,
+ libresample1-dev,
+ libsdl-image1.2-dev,
+ libsnmp-dev,
+ libspandsp-dev,
+ libspeex-dev,
+ libspeexdsp-dev,
+ libsqlite3-dev,
+ libsrtp2-dev,
+ libss7-dev,
+ libssl-dev,
+ libsystemd-dev [linux-any],
+ libswscale-dev,
+ libtonezone-dev [linux-any],
+ libunbound-dev,
+ liburiparser-dev,
+ libvorbis-dev,
+ libvpb-dev [linux-any],
+ libxml2-dev,
+ libxslt1-dev,
+ portaudio19-dev,
+ unixodbc-dev,
+ uuid-dev,
+ zlib1g-dev
+Standards-Version: 4.1.1
 Homepage: http://www.asterisk.org/
-Vcs-Git: git://anonscm.debian.org/pkg-voip/asterisk.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-voip/asterisk.git
+Vcs-Git: https://salsa.debian.org/pkg-voip-team/asterisk.git
+Vcs-Browser: https://salsa.debian.org/pkg-voip-team/asterisk
 
 Package: asterisk
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, asterisk-config (= ${source:Version}) | asterisk-config-custom, asterisk-modules (= ${binary:Version}), adduser, asterisk-core-sounds-en-gsm | asterisk-prompt-en
-Provides: asterisk-${asterisk:ABI}
-Recommends: sox, asterisk-voicemail | asterisk-voicemail-storage, asterisk-moh-opsound-gsm
-Suggests: asterisk-doc, asterisk-dev, asterisk-ooh323, asterisk-dahdi, asterisk-vpb
+Depends:
+ adduser,
+ asterisk-config (= ${source:Version}) | asterisk-config-custom,
+ asterisk-core-sounds-en,
+ asterisk-modules (= ${binary:Version}),
+ lsb-base (>= 3.0-6),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Provides:
+ asterisk-${asterisk:ABI}
+Recommends:
+ asterisk-moh-opsound-gsm,
+ asterisk-voicemail | asterisk-voicemail-storage,
+ sox
+Suggests:
+ asterisk-dahdi,
+ asterisk-dev,
+ asterisk-doc,
+ asterisk-ooh323,
+ asterisk-opus,
+ asterisk-vpb
 Description: Open Source Private Branch Exchange (PBX)
  Asterisk is an Open Source PBX and telephony toolkit.  It is, in a
  sense, middleware between Internet and telephony channels on the bottom,
@@ -87,10 +124,10 @@ Description: Open Source Private Branch Exchange (PBX)
 
 Package: asterisk-modules
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends}
 Section: libs
-Breaks: asterisk (<< 1:1.8.3.3), asterisk-h323 (<< 1:1.8.4.4~dfsg-2)
-Replaces: asterisk (<< 1:1.8.3.3)
 Description: loadable modules for the Asterisk PBX
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -99,9 +136,15 @@ Description: loadable modules for the Asterisk PBX
 
 Package: asterisk-dahdi
 Architecture: linux-any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}, dahdi
-Breaks: asterisk-modules (<< 1:11.6.0~dfsg-2)
-Replaces: asterisk-modules (<< 1:11.6.0~dfsg-2)
+Depends:
+ asterisk (= ${binary:Version}),
+ dahdi,
+ ${misc:Depends},
+ ${shlibs:Depends}
+Breaks:
+ asterisk-modules (<< 1:11.6.0~dfsg-2)
+Replaces:
+ asterisk-modules (<< 1:11.6.0~dfsg-2)
 Description: DAHDI devices support for the Asterisk PBX
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -114,9 +157,14 @@ Description: DAHDI devices support for the Asterisk PBX
 
 Package: asterisk-vpb
 Architecture: linux-any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Breaks: asterisk-modules (<< 1:11.6.0~dfsg-1)
-Replaces: asterisk-modules (<< 1:11.6.0~dfsg-1)
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Breaks:
+ asterisk-modules (<< 1:11.6.0~dfsg-1)
+Replaces:
+ asterisk-modules (<< 1:11.6.0~dfsg-1)
 Description: VoiceTronix devices support for the Asterisk PBX
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -128,11 +176,14 @@ Description: VoiceTronix devices support for the Asterisk PBX
 
 Package: asterisk-voicemail
 Architecture: any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Provides: asterisk-voicemail-storage
-Conflicts: asterisk-voicemail-storage
-Breaks: asterisk (<< 1:1.8.3.3)
-Replaces: asterisk (<< 1:1.8.3.3)
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Provides:
+ asterisk-voicemail-storage
+Conflicts:
+ asterisk-voicemail-storage
 Description: simple voicemail support for the Asterisk PBX
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -144,30 +195,36 @@ Description: simple voicemail support for the Asterisk PBX
  For more information about the Asterisk PBX, have a look at the Asterisk
  package.
 
-# Package: asterisk-voicemail-imapstorage
-# Architecture: any
-# Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-# Provides: asterisk-voicemail-storage
-# Conflicts: asterisk-voicemail-storage
-# Breaks: asterisk (<< 1:1.8.3.3)
-# Replaces: asterisk (<< 1:1.8.3.3)
-# Description: IMAP voicemail storage support for the Asterisk PBX
-#  Asterisk is an Open Source PBX and telephony toolkit.
-#  .
-#  This package includes an IMAP-based voicemail storage: storing the
-#  voicemail in a remote IMAP mail boxes. While more complex to set up,
-#  it may be useful in some settings.
-#  .
-#  For more information about the Asterisk PBX, have a look at the Asterisk
-#  package.
+Package: asterisk-voicemail-imapstorage
+Architecture: any
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Provides:
+ asterisk-voicemail-storage
+Conflicts:
+ asterisk-voicemail-storage
+Description: IMAP voicemail storage support for the Asterisk PBX
+ Asterisk is an Open Source PBX and telephony toolkit.
+ .
+ This package includes an IMAP-based voicemail storage: storing the
+ voicemail in a remote IMAP mail boxes. While more complex to set up,
+ it may be useful in some settings.
+ .
+ For more information about the Asterisk PBX, have a look at the Asterisk
+ package.
 
 Package: asterisk-voicemail-odbcstorage
 Architecture: any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Provides: asterisk-voicemail-storage
-Conflicts: asterisk-voicemail-storage
-Breaks: asterisk (<< 1:1.8.3.3)
-Replaces: asterisk (<< 1:1.8.3.3)
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Provides:
+ asterisk-voicemail-storage
+Conflicts:
+ asterisk-voicemail-storage
 Description: ODBC voicemail storage support for the Asterisk PBX
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -180,7 +237,10 @@ Description: ODBC voicemail storage support for the Asterisk PBX
 
 Package: asterisk-ooh323
 Architecture: any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: H.323 protocol support for the Asterisk PBX - ooH323c
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -193,7 +253,10 @@ Description: H.323 protocol support for the Asterisk PBX - ooH323c
 
 Package: asterisk-mp3
 Architecture: any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: MP3 playback support for the Asterisk PBX
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -203,22 +266,28 @@ Description: MP3 playback support for the Asterisk PBX
  For more information about the Asterisk PBX, have a look at the Asterisk
  package.
 
-# Package: asterisk-mysql
-# Architecture: any
-# Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-# Description: MySQL database protocol support for the Asterisk PBX
-#  Asterisk is an Open Source PBX and telephony toolkit.
-#  .
-#  This package provides support for using a MySQL database to store
-#  configuration, call detail records, and also provides generic access to
-#  it from the dialplan.
-#  .
-#  For more information about the Asterisk PBX, have a look at the Asterisk
-#  package.
+Package: asterisk-mysql
+Architecture: any
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Description: MySQL database protocol support for the Asterisk PBX
+ Asterisk is an Open Source PBX and telephony toolkit.
+ .
+ This package provides support for using a MySQL database to store
+ configuration, call detail records, and also provides generic access to
+ it from the dialplan.
+ .
+ For more information about the Asterisk PBX, have a look at the Asterisk
+ package.
 
 Package: asterisk-mobile
 Architecture: linux-any
-Depends: asterisk (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: Bluetooth phone support for the Asterisk PBX
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -230,12 +299,30 @@ Description: Bluetooth phone support for the Asterisk PBX
  For more information about the Asterisk PBX, have a look at the Asterisk
  package.
 
+Package: asterisk-tests
+Architecture: linux-any
+Depends:
+ asterisk (= ${binary:Version}),
+ ${misc:Depends},
+ ${shlibs:Depends}
+Description: internal test modules of the Asterisk PBX
+ Asterisk is an Open Source PBX and telephony toolkit.
+ .
+ This package provides modules that run various functionality tests.
+ You would normally not install this package unless you test a build
+ of Asterisk.
+ .
+ For more information about the Asterisk PBX, have a look at the Asterisk
+ package.
+
 Package: asterisk-doc
-Depends: ${misc:Depends}
-Recommends: asterisk
-Section: doc
-Priority: extra
 Architecture: all
+Multi-Arch: foreign
+Depends:
+ ${misc:Depends}
+Recommends:
+ asterisk
+Section: doc
 Description: Source code documentation for Asterisk
  Asterisk is an Open Source PBX and telephony toolkit.
  .
@@ -243,34 +330,50 @@ Description: Source code documentation for Asterisk
 
 Package: asterisk-dev
 Architecture: all
-Depends: ${misc:Depends}
-Recommends: asterisk
+Multi-Arch: foreign
+Depends:
+ ${misc:Depends}
+Recommends:
+ asterisk
 Section: devel
-Priority: extra
 Description: Development files for Asterisk
  Asterisk is an Open Source PBX and telephony toolkit.
  .
  This package contains the include files used if you wish to compile a
  package which requires Asterisk's source file headers.
 
-Package: asterisk-dbg
-Architecture: any
-Depends: asterisk (= ${binary:Version}), ${misc:Depends}
-Section: debug
-Priority: extra
-Description: Debugging symbols for Asterisk
- Asterisk is an Open Source PBX and telephony toolkit.
- .
- This package includes the debugging symbols useful for debugging
- Asterisk. The debugging symbols are used for execution tracing and core 
- dump analysis. 
-
 Package: asterisk-config
-Depends: ${misc:Depends}
-Recommends: asterisk
-Conflicts: asterisk-config-custom
+Depends:
+ ${misc:Depends}
+Recommends:
+ asterisk
+Conflicts:
+ asterisk-config-custom
+Replaces:
+ asterisk-config-custom
 Architecture: all
 Description: Configuration files for Asterisk
  Asterisk is an Open Source PBX and telephony toolkit.
  .
  This package contains the default configuration files of Asterisk.
+ .
+ With program asterisk-config-custom in the asterisk package,
+ you can create an asterisk-config replacement package.
+
+Package: asterisk-config-empty
+Provides: asterisk-config-custom
+Depends:
+ ${misc:Depends}
+Recommends:
+ asterisk
+Conflicts:
+ asterisk-config
+Replaces:
+ asterisk-config
+Architecture: all
+Description: No configuration files for Asterisk
+ Asterisk is an Open Source PBX and telephony toolkit.
+ .
+ This package is a stub that provides empty config for Asterisk.
+ .
+ It assumes you'll be managing your own config.

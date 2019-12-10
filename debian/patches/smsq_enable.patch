@@ -1,9 +1,13 @@
-Enable the smsq application.
+Description: Enable the smsq application.
+Author: Frederic Van Espen <frederic.ve@gmail.com>
+Forwarded: no
+Bug-Debian: https://bugs.debian.org/738588
+Last-Update: 2016-03-19
 
 --- a/utils/utils.xml
 +++ b/utils/utils.xml
-@@ -41,7 +41,7 @@
- 	<support_level>extended</support_level>
+@@ -37,7 +37,7 @@
+ 	<support_level>deprecated</support_level>
    </member>
    <member name="smsq">
 -	<defaultenabled>no</defaultenabled>

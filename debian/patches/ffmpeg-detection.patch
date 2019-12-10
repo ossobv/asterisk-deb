@@ -1,0 +1,42 @@
+Description: Modernize autotools FFmpeg linking
+ FFmpeg is a _family_ of libraries sharing an optional base subdir. That
+ is not properly reflected in the autoconf detection logic, and makes it
+ impossible to handle alternate location - e.g. when using Libav.
+ .
+ This patch queries pkg-config, used with recent FFmpeg, for files
+ "libavcodec" and "libswscale", the family members currently used.
+Author: Jonas Smedegaard <dr@jones.dk>
+Bug-Debian: http://bugs.debian.org/531728
+Last-Update: 2016-04-02
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -485,7 +485,7 @@ AST_EXT_LIB_SETUP([CRYPTO], [OpenSSL Cry
+ AST_EXT_LIB_SETUP_OPTIONAL([OPENSSL_SRTP], [OpenSSL SRTP Extension Support], [CRYPTO], [crypto])
+ AST_EXT_LIB_SETUP_OPTIONAL([OPENSSL_BIO_METHOD], [OpenSSL BIO Method Support], [CRYPTO], [crypto])
+ AST_EXT_LIB_SETUP([DAHDI], [DAHDI], [dahdi])
+-AST_EXT_LIB_SETUP([FFMPEG], [Ffmpeg and avcodec], [avcodec])
++AST_EXT_LIB_SETUP([FFMPEG], [FFmpeg (avcodec and swscale)], [ffmpeg])
+ AST_EXT_LIB_SETUP([GSM], [External GSM], [gsm], [, use 'internal' GSM otherwise])
+ AST_EXT_LIB_SETUP([ILBC], [System iLBC], [ilbc], [, use 'internal' iLBC otherwise])
+ AST_EXT_LIB_SETUP([GTK2], [gtk2], [gtk2])
+@@ -2762,7 +2762,18 @@ AST_C_DEFINE_CHECK([SO_NOSIGPIPE], [SO_N
+ 
+ AST_EXT_TOOL_CHECK([SDL], [sdl-config])
+ AST_EXT_LIB_CHECK([SDL_IMAGE], [SDL_image], [IMG_Load], [SDL_image.h], [${SDL_LIB}], [${SDL_INCLUDE}])
+-AST_EXT_LIB_CHECK([FFMPEG], [avcodec], [sws_getContext], [ffmpeg/avcodec.h], [${PTHREAD_LIBS} -lz -lm], [${PTHREAD_CFLAGS}])
++
++PBX_FFMPEG=0
++AC_CHECK_TOOL(PKGCONFIG, pkg-config, No)
++if test ! "x${PKGCONFIG}" = xNo; then
++   FFMPEG_INCLUDE=$(${PKGCONFIG} libavcodec libswscale --cflags 2>/dev/null)
++   FFMPEG_LIB=$(${PKGCONFIG} libavcodec libswscale --libs)
++   PBX_FFMPEG=1
++   AC_DEFINE([HAVE_FFMPEG], 1, [Define if your system has the FFmpeg libraries.])
++fi
++AC_SUBST(PBX_FFMPEG)
++AC_SUBST(FFMPEG_INCLUDE)
++AC_SUBST(FFMPEG_LIB)
+ 
+ # possible places for video4linux version 1
+ AC_CHECK_HEADER([linux/videodev.h],

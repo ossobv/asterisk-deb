@@ -14,8 +14,8 @@
 # Provides:          asterisk
 # Required-Start:    $remote_fs
 # Required-Stop:     $remote_fs
-# Should-Start:      $syslog $network $named mysql mysql-proxy postgresql dahdi
-# Should-Stop:       $syslog $network $named mysql mysql-proxy postgresql
+# Should-Start:      $syslog $network $named mysql postgresql dahdi
+# Should-Stop:       $syslog $network $named mysql postgresql
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Asterisk PBX
@@ -82,7 +82,7 @@ then
 fi
 PARAMS="$PARAMS -U $USER"
 
-if [ "x$AST_DEBUG_PARAMS" = x ]
+if [ "x$AST_DEBUG_PARAMS" = x ] 
 then
   AST_DEBUG_PARAMS=-cvvvvvddddd
 fi
@@ -96,8 +96,7 @@ fi
 
 test -x $DAEMON || exit 0
 
-for dir in /var/run/asterisk /var/log/asterisk /var/log/asterisk/cdr-csv \
-		/var/log/asterisk/cdr-custom; do
+for dir in /var/run/asterisk /var/log/asterisk /var/log/asterisk/cdr-csv /var/log/asterisk/cdr-custom; do
 	[ -d $dir ] || install -d -o $USER -g $GROUP $dir
 	[ -x /sbin/restorecon ] && /sbin/restorecon $dir
 done
@@ -171,7 +170,7 @@ case "$1" in
 	echo -n "Stopping $DESC: $NAME"
 	# Try gracefully.
 	# This may hang in some cases. Specifically, when the asterisk
-	# process is stopped. Don't worry about cleanup:
+	# processes is stopped. No bother to worry about cleanup: 
 	# it will either fail or die when asterisk dies.
 	( asterisk_rx 'core stop now' > /dev/null 2>&1 & ) &
 	if [ "$RUNASTSAFE" = "yes" ];then
@@ -188,11 +187,9 @@ case "$1" in
 	# In any case, we must be certain that it is stopped before we
 	# exit the "stop" case; otherwise a "restart" might complete
 	# with no asterisk running at all (because of the status checks
-	# in "start"). Also kill any/all stray asterisk -r processes.
-	start-stop-daemon --stop --quiet --oknodo --retry=0/2/TERM/2/KILL/5 \
-		--exec $DAEMON
-	start-stop-daemon --stop --quiet --oknodo --retry=0/2/TERM/2/KILL/5 \
-		--exec $CANARY
+	# in "start").
+	start-stop-daemon --stop --quiet --oknodo --retry=8/TERM/30/KILL/5 \
+		--exec $DAEMON --pidfile=$PIDFILE
 	echo "."
 	;;
   reload)

@@ -1,0 +1,334 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: PJPROJECT
+Source: https://github.com/asterisk/pjproject
+Comment: Currently packaging the Asterisk fork of PJProject, as it supports
+ shared libraries.
+ .
+ Upstream source repackaged to address DFSG concerns and other issues:
+  * Copyright-protected code without DFSG-free license
+    (g7221 ilbc milenage s60_g729_bitstream.h BaseClasses ApiLock.*)
+  * Copyright-protected graphics ICC profiles without DFSG-free license
+    (*.png)
+  * Binary Java files potentially with non-free parts
+    (*.jar)
+  * Convenience code copies
+    (gsm resample speex srtp)
+Files-Excluded:
+ third_party/g7221
+ third_party/gsm
+ third_party/ilbc
+ third_party/milenage
+ third_party/resample
+ third_party/speex
+ third_party/srtp
+ third_party/yuv
+ third_party/webrtc
+ third_party/BaseClasses
+ pjmedia/src/pjmedia-audiodev/s60_g729_bitstream.h
+ pjsip-apps/src/pjsua/bb10/assets/images/teluu-logo.png
+ pjsip-apps/src/pjsua/android/gradle/wrapper/gradle-wrapper.jar
+ pjsip-apps/src/pjsua/ios/ipjsua/Default@2x.png
+ pjsip-apps/src/pjsua/ios/ipjsua/Default-568h@2x.png
+ pjsip-apps/src/pjsua/ios/ipjsua/Default.png
+ pjsip-apps/src/pjsua/winrt/cli/uwp/Assets/teluu-logo.png
+ pjsip-apps/src/pjsua/winrt/cli/wp8/Assets/teluu-logo.png
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipBackEnd/ApiLock.cpp
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipBackEnd/ApiLock.h
+ pjsip-apps/src/swig/java/android/gradle/wrapper/gradle-wrapper.jar
+
+Files: *
+Copyright:
+  1993-2006, Douglas C. Schmidt <d.schmidt@vanderbilt.edu>
+  2003-2008, Benny Prijono <benny@prijono.org>
+  2007-2009, Keystream AB
+  2007-2009, Konftel AB
+  2008-2016, Teluu Inc. <http://www.teluu.com/>
+  2010-2012, Regis Montoya (r3gis) <http://www.r3gis.fr/>
+  2011 Dan Arrhenius <dan@keystream.se>
+License-Grant:
+ This program is free software; you can redistribute it and/or modify it
+ under the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 2 of the License, or (at your
+ option) any later version.
+License: GPL-2+
+Comment:
+ Some files has additional alternative licensing ignored as irrelevant
+ for our redistribution.
+
+Files: pjsip-apps/src/pjsua/winrt/gui/uwp/Voip/Helpers/AppServiceHelper.cs
+ pjsip-apps/src/pjsua/winrt/gui/uwp/Voip/Helpers/VoipCallHelper.cs
+ pjsip-apps/src/pjsua/winrt/gui/uwp/Voip/MainPage.xaml.cs
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipBackEnd/pch.cpp
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipBackEnd/pch.h
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipHost/VoipHost.cpp
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipTasks/AppService.cs
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipTasks/BackgroundOperations/BackgroundOperations.cs
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipTasks/CallRtcTask.cs
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipTasks/Helpers/Current.cs
+ pjsip-apps/src/pjsua/winrt/gui/uwp/VoipTasks/Helpers/VccCallHelper.cs
+Copyright: Microsoft
+License-Grant:
+ This code is licensed under the MIT License (MIT).
+License: Expat
+Comment:
+ Assuming the Expat flavor of the MIT family of licenses.
+
+Files: pjlib/src/pj/compat/longjmp_i386.S
+ pjlib-util/src/pjlib-util/getopt.c
+Copyright: Mike Borella <mike_borella@mw.3com.com>
+  1987-1998, Free Software Foundation, Inc.
+License-Grant:
+ The GNU C Library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public License as
+ published by the Free Software Foundation; either version 2 of the
+ License, or (at your option) any later version.
+License: LGPL-2+
+Comment:
+ pjlib-util/include/pjlib-util/getopt.h has the same license boilerplate,
+ only it has a comment "this file has now become GPL" on top (comment
+ removed by Upstream).
+
+Files: third_party/threademulation/include/ThreadEmulation.h
+ third_party/threademulation/src/ThreadEmulation.cpp
+Copyright: Microsoft Corporation
+License: Ms-PL
+Comment:
+ Code lack licensing (contains only a standard disclaimer). File
+ "third_party/threademulation/Microsoft Permissive License.txt" is
+ assumed to apply.
+
+Files: pjsip-apps/src/pjsua/bb10/bar-descriptor.xml
+Copyright: 2011-2013, Research In Motion Limited
+License-Grant:
+ Licensed under the Apache License, Version 2.0 (the "License"); you may
+ not use this file except in compliance with the License. You may obtain
+ a copy of the License at <http://www.apache.org/licenses/LICENSE-2.0>
+License: Apache-2
+
+Files: pjlib/src/pj/sock_linux_kernel.c
+Copyright: 1983, 1993, The Regents of the University of California.
+  2003-2008, Benny Prijono <benny@prijono.org>
+  2008-2011, Teluu Inc. <http://www.teluu.com/>
+License-Grant:
+ This program is free software; you can redistribute it and/or modify it
+ under the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 2 of the License, or (at your
+ option) any later version.
+License: BSD-4-clause and GPL-2+
+
+Files: aconfigure
+Copyright: 1992-1996, 1998-2012, Free Software Foundation, Inc.
+License: FSFUL
+
+Files: pjlib/src/pj/compat/setjmp_i386.S
+Copyright: 1995-1997, 2000-2001, Free Software Foundation, Inc.
+License-Grant:
+ The GNU C Library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public License as
+ published by the Free Software Foundation; either version 2.1 of the
+ License, or (at your option) any later version.
+License: LGPL-2.1+
+
+Files: third_party/mp3/BladeMP3EncDLL.h
+Copyright: 1999-2002 A.L. Faber
+License-Grant:
+ This library is free software; you can redistribute it and/or modify it
+ under the terms of the GNU Lesser General Public License as published
+ by the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+License: LGPL-2.1+
+
+Files: install-sh
+Copyright: 1991, the Massachusetts Institute of Technology
+License: NTP
+
+Files: pjmedia/src/pjmedia/alaw_ulaw.c
+Copyright: Sun Microsystems, Inc.
+License: Rdisc~code
+
+Files: pjlib-util/src/pjlib-util/crc32.c
+Copyright: None
+License: public-domain
+ This file is partly taken from Crypto++ library
+ (<http://www.cryptopp.com/>) and
+ <http://www.di-mgt.com.au/crypto.html#CRC>.
+ .
+ Since the original version of the code is put in public domain, this
+ file is put on public domain as well.
+
+Files: pjlib-util/src/pjlib-util/md5.c
+Copyright: None
+License: public-domain
+ This code is in the public domain; do with it what you wish.
+
+Files: pjlib-util/src/pjlib-util/sha1.c
+Copyright: None
+License: public-domain
+ Still 100% public domain
+
+Files: debian/*
+Copyright: 2013, Tzafrir Cohen <tzafrir.cohen@xorcom.com>
+License: GPL-2+
+
+Files: debian/copyright-check
+Copyright: 2016-2017, Jonas Smedegaard <dr@jones.dk>
+License: GPL-3+
+
+License: Apache-2
+License-Reference: /usr/share/common-licenses/Apache-2.0
+
+License: Expat
+ Permission is hereby granted, free of charge, to any person obtaining a
+ copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included
+ in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+License: FSFUL
+ This configure script is free software; the Free Software Foundation
+ gives unlimited permission to copy, distribute and modify it.
+
+License: GPL-2+
+License-Reference: /usr/share/common-licenses/GPL-2
+
+License: GPL-3+
+License-Reference: /usr/share/common-licenses/GPL-3
+
+License: LGPL-2+
+License-Reference: /usr/share/common-licenses/LGPL-2
+
+License: LGPL-2.1+
+License-Reference: /usr/share/common-licenses/LGPL-2.1
+
+License: Ms-PL
+ Microsoft Permissive License (Ms-PL)
+ .
+ This license governs use of the accompanying software. If you use the
+ software, you accept this license. If you do not accept the license, do
+ not use the software.
+ .
+  1. Definitions
+     The terms 'reproduce,' 'reproduction,' 'derivative works,' and
+     'distribution' have the same meaning here as under U.S. copyright
+     law.
+     A 'contribution' is the original software, or any additions or
+     changes to the software.
+     A 'contributor' is any person that distributes its contribution
+     under this license.
+     'Licensed patents' are a contributor's patent claims that read
+     directly on its contribution.
+ .
+ 2. Grant of Rights
+    (A) Copyright Grant- Subject to the terms of this license, including
+        the license conditions and limitations in section 3, each
+        contributor grants you a non-exclusive, worldwide, royalty-free
+        copyright license to reproduce its contribution, prepare
+        derivative works of its contribution, and distribute its
+        contribution or any derivative works that you create.
+    (B) Patent Grant- Subject to the terms of this license, including
+        the license conditions and limitations in section 3, each
+        contributor grants you a non-exclusive, worldwide, royalty-free
+        license under its licensed patents to make, have made, use,
+        sell, offer for sale, import, and/or otherwise dispose of its
+        contribution in the software or derivative works of the
+        contribution in the software.
+ .
+ 3. Conditions and Limitations
+    (A) No Trademark License- This license does not grant you rights to
+        use any contributors' name, logo, or trademarks.
+    (B) If you bring a patent claim against any contributor over patents
+        that you claim are infringed by the software, your patent
+        license from such contributor to the software ends
+        automatically.
+    (C) If you distribute any portion of the software, you must retain
+        all copyright, patent, trademark, and attribution notices that
+        are present in the software.
+    (D) If you distribute any portion of the software in source code
+        form, you may do so only under this license by including a
+        complete copy of this license with your distribution. If you
+        distribute any portion of the software in compiled or object
+        code form, you may only do so under a license that complies with
+        this license.
+    (E) The software is licensed "as-is." You bear the risk of using it.
+        The contributors give no express warranties, guarantees or
+        conditions. You may have additional consumer rights under your
+        local laws which this license cannot change. To the extent
+        permitted under your local laws, the contributors exclude the
+        implied warranties of merchantability, fitness for a particular
+        purpose and non-infringement.
+
+License: NTP
+ Permission to use, copy, modify, distribute, and sell this software and
+ its documentation for any purpose is hereby granted without fee,
+ provided that the above copyright notice appear in all copies and that
+ both that copyright notice and this permission notice appear in
+ supporting documentation, and that the name of M.I.T. not be used in
+ advertising or publicity pertaining to distribution of the software
+ without specific, written prior permission.  M.I.T. makes no
+ representations about the suitability of this software for any purpose.
+ It is provided "as is" without express or implied warranty.
+
+License: BSD-4-clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the
+     distribution.
+  3. All advertising materials mentioning features or use of this
+     software must display the following acknowledgement: This product
+     includes software developed by the University of California,
+     Berkeley and its contributors.
+  4. Neither the name of the University nor the names of its
+     contributors may be used to endorse or promote products derived
+     from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS
+ BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: Rdisc~code
+ This source code is a product of Sun Microsystems, Inc. and is provided
+ for unrestricted use.  Users may copy or modify this source code
+ without charge.
+ .
+ SUN SOURCE CODE IS PROVIDED AS IS WITH NO WARRANTIES OF ANY KIND
+ INCLUDING THE WARRANTIES OF DESIGN, MERCHANTIBILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE, OR ARISING FROM A COURSE OF DEALING, USAGE OR TRADE
+ PRACTICE.
+ .
+ Sun source code is provided with no support and without any obligation
+ on the part of Sun Microsystems, Inc. to assist in its use, correction,
+ modification or enhancement.
+ .
+ SUN MICROSYSTEMS, INC. SHALL HAVE NO LIABILITY WITH RESPECT TO THE
+ INFRINGEMENT OF COPYRIGHTS, TRADE SECRETS OR ANY PATENTS BY THIS
+ SOFTWARE OR ANY PART THEREOF.
+ .
+ In no event will Sun Microsystems, Inc. be liable for any lost revenue
+ or profits or other special, indirect and consequential damages, even
+ if Sun has been advised of the possibility of such damages.

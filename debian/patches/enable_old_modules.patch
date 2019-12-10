@@ -1,5 +1,5 @@
 From: Walter Doekes <wjdoekes+asterdeb@osso.nl>
-Subject: enable app_meetme.so, app_setcallerid.so
+Subject: enable app_meetme.so
 Applied-Upsteam: no
 
 This easer customer upgrade paths.
@@ -13,14 +13,4 @@ This easer customer upgrade paths.
 -	<defaultenabled>no</defaultenabled>
  	<support_level>extended</support_level>
  	<replacement>app_confbridge</replacement>
-  ***/
---- a/apps/app_setcallerid.c
-+++ b/apps/app_setcallerid.c
-@@ -26,7 +26,6 @@
-  */
- 
- /*** MODULEINFO
--	<defaultenabled>no</defaultenabled>
- 	<support_level>deprecated</support_level>
- 	<replacement>func_callerid</replacement>
   ***/

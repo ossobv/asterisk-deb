@@ -1,0 +1,4 @@
+#!/usr/bin/make -f
+include /usr/share/cdbs/1/rules/utils.mk
+DEB_COPYRIGHT_EXTRACT_EXTS = gif icc jpeg jpg pfa pfb pdf png psd svg odp ods odt
+#DEB_COPYRIGHT_CHECK_MERGE_SAME_LICENSE = yes

@@ -1,0 +1,82 @@
+#!/usr/bin/perl -w
+
+=head1 NAME
+
+dh_asterisk - Add dependency on the ABI version of Asterisk
+
+When writing a package that builds an Asterisk module and is not built
+with Astersk itself (and hence depends on the exact binary version),
+add ${Asterisk:ABI} to the package's Depends: field in debian control
+and run dh_asterisk.
+
+If you use dh, you can run dh_asterisk using:
+
+  dh --with asterisk
+
+Otherwise run it in debian/rules after installing the modules.
+
+=cut
+
+use strict;
+use Debian::Debhelper::Dh_Lib;
+
+=head1 SYNOPSIS
+
+B<dh_asterisk> [S<I<debhelper options>>] [S<B<-V>[I<version>]>] [S<B<--> I<file>>]
+
+=head1 DESCRIPTION
+
+dh_asterisk is a debhelper program that is responsible for correctly
+setting the dependency on asterisk-I<asterisk-ABI-version> for a package.
+
+=head1 OPTIONS
+
+No special options of its own. Use standard debhelper options.
+
+=head1 NOTES
+
+Note that this command is not idempotent. L<dh_prep(1)> should be called
+between invocations of this command. Otherwise, it may cause multiple
+instances of the same text to be added to maintainer scripts.
+
+=cut
+
+init();
+
+my $BUILD_OPTS_FILE = '/usr/include/asterisk/buildopts.h'
+
+sub get_abi_name() {
+	# FIXME: replace the "die" with a nicer handling once this is tested
+	open(OPTS, $BUILD_OPTS_FILE) || 
+		die ("failed to open opts file $BUILD_OPTS_FILE. asterisk-dev not installed?");
+	while(<OPTS>) {
+		if (/AST_BUILDOPT_SUM/) {
+			my ($ig, $nored, $checksum) = split
+			$checksum =~ s/"//g;
+			return $checksum;
+		}
+	}
+	return "";
+}
+
+foreach my $package (@{$dh{DOPACKAGES}}) {
+	#next if is_udeb($package);
+	my $ast_dir = tmpdir()."/usr/lib/asterisk/modules";
+	return unless glob("$ast_dir/*");
+	my $ast_ver = get_abi_name();
+	addsubstvar($package, "asterisk:ABI", $abi);
+}
+
+=head1 SEE ALSO
+
+L<debhelper(1)>
+
+This program is part of the Debian Asterisk package.
+
+L<asterisk(8)>
+
+=head1 AUTHOR
+
+Tzafrir Cohen <tzafrir@debian.org>
+
+=cut

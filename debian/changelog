@@ -1,168 +1,600 @@
-asterisk (1:11.25.3-0osso2+deb9) stretch; urgency=medium
+asterisk (1:16.6.2-0osso0+d10) buster; urgency=medium
 
-  * Add fix for libedit 3.1+ which is shipped with stretch.
+  * Initial 16.6.2 version.
+  * FIXME: add docs about what we add/remove here....
 
- -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Mon, 10 Sep 2018 18:42:36 +0200
+ -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Tue, 10 Dec 2019 15:28:56 +0100
 
-asterisk (1:11.25.3-0osso1+deb9) stretch; urgency=medium
+asterisk (1:16.2.1~dfsg-1+deb10u1) buster; urgency=medium
 
-  * Build for debian/stretch.
-  * Disabled MySQL support, because libmysqlclient-dev is not available on
-    Stretch. Normally, you'll use unixodbc anyway, so you won't miss this.
-  * Forced dependency on libssl1.0-dev instead of libssl-dev (1.1). When
-    we also use cURL which is compiled/linked against libssl1.0, we have
-    experienced trouble with libssl1.1.
-  * Disabled IMAP support, because libc-client2007e-dev depends on libssl1.1
-    and libcurl depends on libssl1.0: don't trust the label, libcurl is
-    compiled against libssl1.0 on stretch; it won't play nice with
-    libssl1.1.
-  * Dropped useless readline dependency.
+  * AST-2019-002 / CVE-2019-12827
+    Buffer overflow in res_pjsip_messaging (Closes: #931980)
+  * AST-2019-003 / CVE-2019-13161
+    Remote Crash Vulnerability in chan_sip (Closes: #931981)
+  * d/gbp.conf: Update for Buster branch
 
- -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Thu, 02 Aug 2018 20:38:14 +0200
+ -- Bernhard Schmidt <berni@debian.org>  Tue, 20 Aug 2019 22:31:36 +0200
 
-asterisk (1:11.25.3-0osso1+deb8) jessie; urgency=medium
+asterisk (1:16.2.1~dfsg-1) unstable; urgency=medium
 
-  * Bump version to 11.25.3.
-  * Add queue realtime patch:
-    - patches/queue-realtime-fixes_AST-116.patch
-  * Use +deb8 notation instead of ~jessie. Avoid the ~rc notation if
-    possible. Also avoiding that wheezy sorts after jessie. And add '0'
-    before osso1 official debian versions may override.
+  * New upstream version 16.2.1~dfsg
+    - CVE-2019-7251 / AST-2019-001 (Closes: #923690)
+      Remote crash vulnerability with SDP protocol violation
+  * Bump dependency on libjansson-dev to >= 2.11 (required by upstream)
 
- -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Fri, 20 Jul 2018 08:23:16 +0000
+ -- Bernhard Schmidt <berni@debian.org>  Thu, 07 Mar 2019 23:13:24 +0100
 
-asterisk (1:11.25.1-osso1~jessie) jessie; urgency=low
+asterisk (1:16.2.0~dfsg-1) unstable; urgency=medium
 
-  * Add a few patches:
-    - add_ara_variable_options_column-ASTERISK-16501.patch
-    - add_rtstatic_ara_option_and_fix_queue_inuse-ASTERISK-nofwd.patch
-    - backport13_malformed_pattern_fix-ASTERISK-26668.patch
-  * Rename our other patches and refresh.
+  * New upstream version 16.2.0~dfsg
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri, 17 Mar 2017 12:24:50 +0100
+ -- Bernhard Schmidt <berni@debian.org>  Wed, 20 Feb 2019 23:49:31 +0100
 
-asterisk (1:11.25.1-osso0~jessie) jessie; urgency=low
+asterisk (1:16.1.1~dfsg-1) unstable; urgency=medium
 
-  * Bump version to 11.25.1.
-  * Disabled BUILD_NATIVE explicitly, which was enabled with the fix
-    from ASTERISK-25289 in 11.24.
-  * Removed ASTERISK-26350_safe_asterisk_wo_tty9.patch, upstreamed in
-    11.24.
-  * Refreshed patches.
+  Upload new major version to unstable
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri,  9 Dec 2016 15:01:40 +0100
+  [ Bernhard Schmidt ]
+  * New upstream version 16.1.1 (Closes: #886984, #917481)
+    - build with embedded pjproject 2.8 (dfsg-repacked)
+    - Add lintian overrides for bundled library
+    - Reenable app_macro, many dialplans need it
+  * Update d/watch for Asterisk 16.x
+  * Add signing key for Chris Savinovich <csavinovich@digium.com>
+  * New upstream version 16.1.0~dfsg
+  * README.Debian: Fix a typo found by lintian
+  * Drop libsqlite0-dev, deprecated
+  * Do not load any local channel drivers by default (Closes: #821392)
+  * asterisk.service: Attempt to run with realtime priority by default
+    (Closes: #801629)
+  * Improve/fix some raceconditions in sysv-initscript.
+    Thanks to Walter Doekes (Closes: #778746)
 
-asterisk (1:11.23.1-osso2~jessie) jessie; urgency=low
+  [ Rob Thomas ]
+  * Build-Depend on libunbound-dev for async DNS
 
-  * Add ASTERISK-26464_add_PickupOld1v4_application.patch that provides
-    PickupOld1v4() with Asterisk 1.4 Pickup() semantics.
-  * Refreshed quilt patches and fixed compile warning in one of the dahdi
-    patches.
+ -- Bernhard Schmidt <berni@debian.org>  Fri, 11 Jan 2019 18:51:43 +0100
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Thu, 13 Oct 2016 14:12:54 +0200
+asterisk (1:13.23.1~dfsg-2) unstable; urgency=medium
 
-asterisk (1:11.23.1-osso1~jessie) jessie; urgency=low
+  * Fix autopkgtest by parsing XML results (Closes: #909689)
 
-  * Add ASTERISK-26350_safe_asterisk_wo_tty9.patch so safe_asterisk works
-    without tty9.
-  * Auto-add mail-backtrace.sh to /etc/asterisk/startup.d.
-  * Do the restart-convenient in asterisk.postinst, not prerm (closes #3).
+ -- Bernhard Schmidt <berni@debian.org>  Thu, 03 Jan 2019 16:20:10 +0100
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri,  9 Sep 2016 15:21:00 +0200
+asterisk (1:13.23.1~dfsg-1) unstable; urgency=medium
 
-asterisk (1:11.23.1-osso0~jessie) jessie; urgency=low
+  * New upstream version 13.23.1~dfsg
+    - CVE-2018-17281 / AST-2018-009 (Closes: #909554)
+      Remote crash vulnerability in HTTP websocket upgrade
+  * Add lintian overrides for modules
 
-  * Bump version to 11.23.1.
+ -- Bernhard Schmidt <berni@debian.org>  Tue, 25 Sep 2018 09:59:08 +0200
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri,  9 Sep 2016 10:19:14 +0200
+asterisk (1:13.22.0~dfsg-2) unstable; urgency=medium
 
-asterisk (1:11.21.2-osso1~jessie) jessie; urgency=low
+  * Fix/enable autopkgtest
+    - Do not log disabled tests to stderr
+    - Look at the correct line in the summary for failed tests
 
-  * Fix logrotate.
+ -- Bernhard Schmidt <berni@debian.org>  Wed, 05 Sep 2018 11:30:36 +0200
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Fri, 11 Mar 2016 15:45:25 +0100
+asterisk (1:13.22.0~dfsg-1) unstable; urgency=medium
 
-asterisk (1:11.21.2-osso0~jessie) jessie; urgency=low
+  * New upstream version 13.22.0~dfsg
+    - CVE-2018-12227 / AST-2018-008 (Closes: #902954)
+      PJSIP endpoint presence disclosure when using ACL
+    - pjsip: Increase maximum number of usable ciphers (Closes: #897412)
+  * Drop d/p/no_uname, not necessary anymore
+  * Drop d/p/radcli-detection.patch, applied upstream
+  * Fix d/p/hack-multiple-app-voicemail for upstream libtdl drop
+  * Unfuzz d/p/amr.patch and d/p/ffmpeg-detection.patch
+  * Fix FTBFS due to wrong filename for dh_installdocs (Closes: #903412)
 
-  * Bump version to 11.21.2.
-  * Added backport of warnings/verbose message change; including the
-    the removal of the warning about the dialplan using a comma (,)
-    instead of a pipe (|) as delimited.
-  * Added backport of fix to get wideband musiconhold audio.
+ -- Bernhard Schmidt <berni@debian.org>  Sun, 22 Jul 2018 23:31:23 +0200
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Thu, 03 Mar 2016 10:06:21 +0100
+asterisk (1:13.20.0~dfsg-1) unstable; urgency=medium
 
-asterisk (1:11.20.0-osso1~jessie) jessie; urgency=low
+  * New upstream version 13.20.0 (Closes: #891227, #891228)
+  * Reorganize upstream GPG keys
+    - Split individual signing keys in separate files
+    - Add new key for Ben Ford <bford@digium.com>: 0x073B0C1FC9B2E352
+    - Add new key for Joshua Colp <jcolp@digium.com>:
+      0xCDBEE4CC699E200EB4D46BB79E76E3A42341CE04
+  * Fix missing/broken Closes: in previous changelog
+  * Install realtime database schema into asterisk-doc
+  * Point Vcs-* to salsa
 
-  * Refreshed patches:
-    - enable_dtls_read_ahead.patch
-    - pjproject
-  * Removed unused and/or obsoleted patches:
-    - AST-2014-012.patch
-    - AST-2014-014.patch
-    - AST-2014-017.patch
-    - AST-2014-018.patch
-    - AST-2014-019.patch
-    - AST-2015-002.patch
-    - allow-tilde-destdir
-    - dahdi_event_removed_dchan
-    - escape_manpage_hyphen.patch
-    - menuselect_weakref
-    - neon_version_check.patch
-    - res_fax_bounds.patch
-    - undeprecate
-  * Updated SAVED_ABI_HASH after buildopts.h change from ASTERISK-25028.
-  * Added parallel building using DEB_BUILD_OPTIONS=parallel=6, see:
-    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778751
-  * asterisk.init: Fixed safe_asterisk quick restart cycle that did
-    ended up with a stopped Asterisk, see:
-    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778746
-  * asterisk.init: Added mysql-proxy to the list of optional start
-    dependencies.
-  * Altered post-installation setup: no automatic restart is performed;
-    instead a restart-convenient is scheduled. The implication of this
-    is that security updates won't get pushed until your server reaches
-    0 open calls. (And updates to the safe_asterisk wrapper will not
-    get updated automatically at all.)
-  * Altered post-installation setup: the config package does not write
-    samples into /etc/asterisk anymore. If you want the samples, you
-    should take them from
-    /usr/share/doc/asterisk-config/examples/configs.
-  * Enabled codec_ilbc support at customer request. We can safely go
-    against the Debian policy of not including libraries. (A better
-    fix would be to package libilbc. In the future.)
-  * Enabled app_meetme and app_setcallerid for easier migration from
-    older Asterisken.
+ -- Bernhard Schmidt <berni@debian.org>  Tue, 03 Apr 2018 10:59:20 +0200
 
- -- Walter Doekes <wjdoekes+asterdeb@osso.nl>  Thu, 29 Oct 2015 16:33:47 +0100
+asterisk (1:13.18.5~dfsg-1) unstable; urgency=medium
 
-asterisk (1:11.13.1~dfsg-3) UNRELEASED; urgency=high
+  * New upstream release:
+    - CVE-2017-17850 / AST-2017-014 (Closes: #885072)
+    - AST-2017-012: Remote Crash Vulnerability in RTCP Stack (Closes: #884345)
+  * Re-add support for snmp (Closes: #851738)
+  * Don't load dundi, mgcp, skinny and unistim by default
+  * Avoid parallel build in 'make install'
+  * tests: realpath is now in coreutils
+  * asttestmods: enable res_pjsip_pubsub tests
+  * asttestmods: run asterisk as user asterisk
+  * asttestmods: disable module test_cel for now
 
-  * Add a placeholder conf in manager.d (Closes: #776080).
-  * Fix DTLS which was broken by OpenSSL security patches.
-  * Fix security issue AST-2015-002: Mitigation for libcURL HTTP request
-    injection vulnerability.
+ -- Tzafrir Cohen <tzafrir@debian.org>  Thu, 28 Dec 2017 00:20:16 +0200
 
- -- Jeremy Lainé <jeremy.laine@m4x.org>  Wed, 04 Feb 2015 18:39:53 +0100
+asterisk (1:13.18.3~dfsg-1) unstable; urgency=medium
 
-asterisk (1:11.13.1~dfsg-2) testing-proposed-updates; urgency=high
+  * New upstream version 13.18.3~dfsg
+    - CVE-2017-17090 / AST-2017-013
+      DOS Vulnerability in Asterisk chan_skinny (Closes: #883342)
+  * Drop duplicate filter line from d/gbp.conf
 
-  * New upstream release: fixes AST-2014-011 (CVE-2014-3566, POODLE).
-  * Add a local gbp.conf for branch jessie
-  * New patches for recent security issues (Closes: #771463):
+ -- Bernhard Schmidt <berni@debian.org>  Thu, 07 Dec 2017 15:20:29 +0100
+
+asterisk (1:13.18.1~dfsg-1) unstable; urgency=medium
+
+  * New upstream version 13.18.1~dfsg
+    - CVE-2017-16671 / AST-2017-010
+      Buffer overflow in CDR's set user (Closes: #881257)
+    - CVE-2017-16672 / AST-2017-011
+      Memory/File Descriptor/RTP leak in pjsip session resource
+      (Closes: #881256)
+    - Drop gmime-3.x and srtp 2.1 support patches applied upstream
+    - Drop pjsip_unresolved_symbol.patch applied upstream
+  * reproducibility: Sort order of input files for core-en_US.xml generation
+  * Drop dh --with autotools_dev, default in compat 10
+  * Add Multi-Arch: foreign to -dev and -doc
+  * Remove deprecated priority extra
+
+ -- Bernhard Schmidt <berni@debian.org>  Thu, 09 Nov 2017 23:35:12 +0100
+
+asterisk (1:13.17.2~dfsg-2) unstable; urgency=medium
+
+  * Build against libsrtp2
+    - Add versioned b-d to pjproject 2.7 built with libsrtp2
+    - d/p/libsrtp-2.1.x.patch: Upstream patch to support libsrtp 2.1.x
+  * Transition to gmime 3.0 (Closes: #867346)
+    - d/p/gmime-3.0.patch: Upstream patch to support gmime 3.0
+  * Bump Standards-Version to 4.1.1, drop obsolete build-deps
+  * Fix reproducible builds by overwriting kernel version and
+    machine architecture
+
+ -- Bernhard Schmidt <berni@debian.org>  Fri, 06 Oct 2017 23:27:22 +0200
+
+asterisk (1:13.17.2~dfsg-1) unstable; urgency=high
+
+  * New upstream version 13.17.2~dfsg
+    - CVE-2017-14603 / AST-2017-008
+      This is a follow-up for AST-2017-005: RTP/RTCP information leak
+      improving robustness of the security fix and fixing a regression
+      with re-INVITEs (Closes: #876328)
+
+ -- Bernhard Schmidt <berni@debian.org>  Sat, 23 Sep 2017 20:41:06 +0200
+
+asterisk (1:13.17.1~dfsg-1) unstable; urgency=high
+
+  * New upstream version 13.17.1, fixing three CVEs
+    - CVE-2017-14099 / AST-2017-005
+      Media takeover in RTP stack ("RTP bleed") (Closes: #873907)
+    - CVE-2017-14100 / AST-2017-006
+      Shell access command injection in app_minivm (Closes: #873908)
+    - CVE-2017-14098 / AST-2017-007
+      Remote Crash Vulerability in res_pjsip (Closes: #873909)
+
+ -- Bernhard Schmidt <berni@debian.org>  Sat, 02 Sep 2017 22:34:09 +0200
+
+asterisk (1:13.17.0~dfsg-2) unstable; urgency=medium
+
+  * Build with -Wl,--as-needed
+  * Add patch to (hopefully) build reproducibly
+  * Temporarily add libavdevice-dev to b-d to work around
+    pjproject issue
+
+ -- Bernhard Schmidt <berni@debian.org>  Thu, 17 Aug 2017 21:10:03 +0200
+
+asterisk (1:13.17.0~dfsg-1) unstable; urgency=medium
+
+  * New upstream version 13.17.0
+    - Dropped OpenSSL 1.0 patches: merged upstream.
+    - Dropped 859911-pjsip-set-rtp-source-address patches: merged upstream.
+    - Dropped pjsip_unresolved_symbol.patch: merged upstream.
+    - Dropped AST-2017-004.patch: merged upstream.
+    - Closes: #856332 (specifically: just the example in pjsip.conf).
+  * Added asterisk-tests package: internal tests. Not otherwise useful.
+    - New ABI hash: 1fb7f5c06d7a2052e38d021b3d8ca151.
+  * Added autopkgtest test based on them.
+
+ -- Tzafrir Cohen <tzafrir@debian.org>  Thu, 03 Aug 2017 23:20:22 -0400
+
+asterisk (1:13.14.1~dfsg-2) unstable; urgency=high
+
+  [ Tzafrir Cohen ]
+  * CVE-2017-9358 / AST-2017-004: Memory exhaustion on short SCCP packets
+    (Closes: #863906)
+  * Documentation updates in debian/:
+    - d/p/test_framework.patch: no longer an upstream issue
+    - d/asterisk-config-custom:
+      - fix typo: buildbuildpackage (Closes: #860902)
+      - add comment that dpkg-buildpackage comes from dpkg-dev
+
+ -- Bernhard Schmidt <berni@debian.org>  Fri, 02 Jun 2017 14:40:15 +0200
+
+asterisk (1:13.14.1~dfsg-1) unstable; urgency=medium
+
+  * New upstream version 13.14.1
+    - Fixes AST-2017-001 (Buffer overflow in CDR's set user) (Closes: #859910)
+  * Import upstream fix to set the RTP source address to the address bound by
+    the PJSIP transport (Closes: #859911)
+
+ -- Bernhard Schmidt <berni@debian.org>  Mon, 10 Apr 2017 12:53:03 +0200
+
+asterisk (1:13.14.0~dfsg-1) unstable; urgency=medium
+
+  [ Bernhard Schmidt ]
+  * New upstream version 13.14.0~dfsg
+    - Fixes RTP error on systems with disabled IPv6 (Closes: #853792)
+    - Fixes asymetric RTP codec selection (Closes: #855014)
+  * drop pjsip_improve_logging.patch, applied upstream
+  * drop configure-osarch, applied upstream
+
+ -- Bernhard Schmidt <berni@debian.org>  Tue, 14 Feb 2017 21:54:29 +0100
+
+asterisk (1:13.13.1~dfsg-4) unstable; urgency=medium
+
+  * Depend on asterisk-core-sounds-en instead of -gsm
+
+ -- Bernhard Schmidt <berni@debian.org>  Tue, 24 Jan 2017 14:14:03 +0100
+
+asterisk (1:13.13.1~dfsg-3) unstable; urgency=medium
+
+  [ Bernhard Schmidt ]
+  * Patch from upstream: pjsip_improve_logging.patch to improve logging
+    levels in pjproject/chan_pjsip (Closes: #849804).
+    Thanks to Joerg Dorchain for testing.
+  * Disable SNMP support for now
+    libsnmp-dev pulls in libssl1.0-dev, which is not coinstallable with
+    libssl-dev needed by Asterisk and all other dependencies
+
+ -- Bernhard Schmidt <berni@debian.org>  Tue, 17 Jan 2017 22:26:14 +0100
+
+asterisk (1:13.13.1~dfsg-2) unstable; urgency=medium
+
+  [ Tzafrir Cohen ]
+  * test_framework.patch: fix ABI
+  * Add a DAHDI hook script for Asterisk (Closes: #848584)
+
+  [ Bernhard Schmidt ]
+  * disable the open-source Opus and VP8 codec
+    - these are built out-of-tree in asterisk-opus now, add Suggests
+
+ -- Bernhard Schmidt <berni@debian.org>  Sun, 25 Dec 2016 19:54:12 +0100
+
+asterisk (1:13.13.1~dfsg-1) unstable; urgency=medium
+
+  [ Bernhard Schmidt ]
+  * New upstream version 13.13.1~dfsg
+    - Fix AST-2016-008 (Closes: #847666, but the Debian package was most
+      likely not vulnerable due to a patched Opus implementation)
+    - Fix AST-2016-009 / CVE-2016-9938 (Closes: #847668)
+  * Drop fix_libedit_unicode.patch, applied upstream
+  * Drop HURD patches, applied upstream
+  * Drop changes to res/res_format_attr_opus.c from opus.patch
+  * Add pjsip_unresolved_symbol.patch to fix unresolved symbol in chan_pjsip
+
+ -- Bernhard Schmidt <berni@debian.org>  Sun, 18 Dec 2016 14:48:07 +0100
+
+asterisk (1:13.12.2~dfsg-2) unstable; urgency=medium
+
+  [ Bernhard Schmidt ]
+  * Import upstream fix for libedit unicode garbage (Closes: #845144)
+
+ -- Bernhard Schmidt <berni@debian.org>  Thu, 01 Dec 2016 20:13:27 +0100
+
+asterisk (1:13.12.2~dfsg-1) unstable; urgency=medium
+
+  [ Tzafrir Cohen ]
+  * libsystemd is needed for sd_notify support
+  * upstreaming radcli-detection.patch
+
+  [ Bernhard Schmidt ]
+  * Additional upstream signing key for Rusty Newton <rnewton@digium.com>
+  * New upstream version 13.12.2~dfsg
+
+ -- Bernhard Schmidt <berni@debian.org>  Sun, 13 Nov 2016 20:58:36 +0100
+
+asterisk (1:13.12.1~dfsg-1) unstable; urgency=medium
+
+  * New upstream release. 
+  * Update opus patch, add libopusfile-dev build-dep
+  * Use startup notification in systemd unit
+  * no_native_arch.patch: avoid -march=native (Closes: #842917)
+  * Preliminary OpenSSL 1.1.0 support (Closes: #828240)
+    - d/p/OpenSSL-1.1.0-support.patch from Tzafrir Cohen
+    - d/p/OpenSSL-1.1.0-support-2.patch suggested by Stepan Golosunov
+  * Install files for REST API (Closes: #836924)
+  * Bump to debhelper 10, enabling parallel build (Closes: #778751)
+  * Migrate to Automatic Debug Packages (-dbgsym)
+  * Add Bernhard Schmidt to uploaders
+
+ -- Bernhard Schmidt <berni@debian.org>  Wed, 09 Nov 2016 09:22:35 +0100
+
+asterisk (1:13.11.2~dfsg-1) unstable; urgency=medium
+
+  * Update d/u/signing-keys.asc for 13.11.2
+    - Add Matthew Fredrickson (0x8438CBA18D0CAA72)
+    - Drop Joshua Colp (0xDAB29B236B940F89)
+  * New upstream version 13.11.2~dfsg
+    - Update d/p/systemd.patch for new release
+    - Refresh/unfuzz patches
+    - fixes CVE-2016-7550 (Closes: #838833)
+    - fixes CVE-2016-7551 (Closes: #838832)
+  * Build-depend on libradcli-dev again, libfreeradius-client-dev is dropped
+    from sid (Closes: #836953)
+  * fix obsolete build-dep libmysqlclient-dev -> default-libmysqlclient-dev
+  * add lsb-base dependency to asterisk
+
+ -- Bernhard Schmidt <berni@debian.org>  Thu, 27 Oct 2016 13:06:22 +0200
+
+asterisk (1:13.10.0~dfsg-1) unstable; urgency=medium
+
+  [ upstream ]
+  * New release(s).
+
+  [ Jonas Smedegaard ]
+  * Update upstream signing-key:
+    + Add Richard Mudgett (0x6CB44E557BD982D8).
+    + Drop Rusty Newton (0x123FD04E861FFB7D).
+    + Drop Matthew Fredrickson (0x8438CBA18D0CAA72).
+  * Update AMR patch.
+  * Unfuzz patches.
+  * Update copyright info.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Mon, 29 Aug 2016 17:07:40 +0200
+
+asterisk (1:13.9.1~dfsg-2) unstable; urgency=medium
+
+  [ Tzafrir Cohen ]
+  * provide a usable sounds/priv-callerintros
+
+  [ Jonas Smedegaard ]
+  * Fix override dh_install only for architecture-dependent targets.
+    Closes: Bug#821018. Thanks to Santiago Vila.
+  * Build-depend on libfreeradius-client-dev, with libradcli-dev only as
+    fallback (see bug#825121).
+
+ -- Jonas Smedegaard <dr@jones.dk>  Fri, 15 Jul 2016 04:40:40 +0200
+
+asterisk (1:13.9.1~dfsg-1) unstable; urgency=medium
+
+  [ upstream ]
+  * New release(s).
+
+  [ Jonas Smedegaard ]
+  * Update copyright info:
+    + Fix cover BSD-4-Clause, BSD-3-Clause, GSM, and ISC licensed files.
+    + Fix extend coverage for main upstream author.
+    + Fix extend Files section for ooh323.
+    + Fix add more copyright holders to initial catch-all Files section,
+      and merge with more specific same-licensed Files sections.
+    + Fix update and merge unrestricted licensed files.
+    + Fix distinguish plain GPL licensed files from those referencing
+      Asterisk exceptions.
+    + Fix drop Files sections for files with no copyright or licensing
+      statements.
+    + Fix interpret "GPL is fine" grant as plain GPL-2 (without Asterisk
+      exceptions).
+    + Fix copyright holder and mention of additional WOL license.
+    + Mention alternative LGPL license.
+    + Use license grant and tidy comments for GPL licensed files.
+    + Fix add files in the public domain.
+    + Fix file path (track patch not patch content).
+    + Fix strip trailing / from excluded files.
+      Thanks to Vasuded Kamath.
+  * Add copyright-check scripts to source package.
+  * Declare compliance with Debian Policy 3.9.8.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Wed, 15 Jun 2016 09:08:54 +0200
+
+asterisk (1:13.8.2~dfsg-1) unstable; urgency=medium
+
+  [ Tzafrir Cohen ]
+  * New upstream release (Fixes AST-2016-005).
+  * systemd: only restart on failure
+
+  [ Jonas Smedegaard ]
+  * Link against radcli favored over freeradius-client/radiusclient-ng:
+    + Add patch to autodetect radcli.
+    + Build-depend on libradcli-dev, with libfreeradius-client-dev or
+      libradiusclient-ng-dev only as fallbacks.
+    Closes: Bug#822339. Thanks to Daniel Pocock.
+  * Enable PJProject and FFMpeg: Both projects has re-entered testing.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Wed, 18 May 2016 14:44:34 +0200
+
+asterisk (1:13.8.0~dfsg-1) experimental; urgency=medium
+
+  [ upstream ]
+  * New release.
+
+  [ Tzafrir Cohen ]
+  * hurd_osarch.patch: set osarch to support HURD
+  * hurd_path_max.patch (Closes: #784551)
+
+  [ Jonas Smedegaard ]
+  * Build-depend on libpjproject-dev.
+  * Unfuzz patches.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Sat, 02 Apr 2016 13:49:38 +0200
+
+asterisk (1:13.7.2~dfsg-1) unstable; urgency=medium
+
+  [ upstream ]
+  * New minor releases.
+    + Fixes AST-2015-001.
+      CVE-2015-1558. Closes: Bug#780601.
+    + Fixes AST-2015-002.
+      Related to CVE-2014-8150.
+
+  [ Jonas Smedegaard ]
+  * Update patches:
+    + Unfuzz patches enable_addons smsq_enable.
+    + Refresh and tighten all patches.
+    + Add/update DEP3 patch headers, with long descriptions embedded in
+      Description field.
+  * Modernize Vcs-* field URLs:
+    + Use https protocol.
+    + Use cgit viewer.
+  * Declare compliance with Debian Policy 3.9.7.
+  * Wrap and sort control file.
+  * Add myself as uploader.
+  * Tidy copyright info: Strip trailing whitespace.
+  * Drop/simplify obsolete versioning or fallbacks in build-dependencies
+    or breaks/replaces.
+  * Avoid X11-related on not-in-testing linkage (until in testing and
+    X11-related binaries are in separate binary package).
+    + Only enable PJProject, SDL or FFMpeg when targeted experimental.
+    + Disable in non-experimental releases.
+    + Ignore ABI drift on experimental builds.
+    + Temporarily stop build-depend on libpjproject-dev.
+    Closes: Bug#804460, #792303.
+  * Fix build-depend only on libsrtp-dev (not also libsrtp0-dev).
+  * Build-depend on liburiparser-dev, for (presumably) a more uniform
+    URI parsing.
+    Closes: Bug#786926.
+  * Update watch file:
+    + Bump to file format 4.
+    + Always repackage, using xz.
+    + Mangle debian version: strip ~dfsg suffix.
+  * Update upstream PGP keyring: Add Joshua Colp (0xDAB29B236B940F89).
+  * Git-ignore quilt .pc dir.
+  * Have git-buildpackage filter upstream .gitignore files, enable
+    signed tags, and enable use of pristine-tar.
+  * Drop custom get-orig-source target: Use "gbp import-orig --uscan"
+    instead.
+  * Update copyright info:
+    + Fix include reasons for repackaging in Source field (not separate
+      Comment field) as mandated by file format 1.0.
+    + Consider formats/msgsm.h as non-copyright-protected, with comment
+      on reasoning.
+    + Consider formats/msgsm.h as non-copyright-protected, with comment
+      on reasoning.
+    + Fix use License shortnames BSD-3-clause~IETF BSD-4-clause~Clapper
+      (not BSD-3-clause).
+    + Fix include full verbatim BSD-3-clause~IETF license.
+    + Wrap at 72 chars.
+    + Use "None" (not "-") as copyright holder for files in the public
+      domain.
+    + Strip non-license text.
+    + Assume unversioned GPL is same as generally for the project.
+    + Drop comment on audio data encoded as C header file lacking
+      source: Upstream is free to choose that format as preferred form
+      (similar to pnm for graphics).
+    + Assume GTK+ dialogue code without explicit licensing has same
+      license as project generally.
+    + Use License-Grant and License-Reference fields.
+      Thanks to Ben Finney.
+  * Improve media support:
+    + Add patch to add Opus codec module supporting transcoding.
+    + Add patch to add VP8 format module supporting read/write to file.
+    + Add patch to add AMR and AMR-WB modules supporting transcoding.
+    + Add patches to support video in console.
+    + Build-depend on libopus-dev libopencore-amrnb-dev
+      libopencore-amrwb-dev libavcodec-dev libswscale-dev
+      libsdl-image1.2-dev.
+    Closes: bug#786972, #531728.
+  * Bump ABI hash.
+  * Add lintian override regarding license in License-Reference field.
+    See bug#786450.
+  * Tidy README.Debian: Fix typo.
+  * Emit config.log if configure fails.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Tue, 29 Mar 2016 16:31:49 +0200
+
+asterisk (1:13.1.0~dfsg-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+
+  [ Matthias Klose ]
+  * Build with -fgnu89-inline. Closes: #777782.
+  * CVE-2015-1558: File descriptor leak when incompatible codecs are offered.
+    Closes: #780601.
+
+  [ James Cowgill ]
+  * Fix OSARCH detection on all linux architectures. Closes: #780287.
+
+ -- Matthias Klose <doko@debian.org>  Fri, 10 Jul 2015 12:56:51 +0200
+
+asterisk (1:13.1.0~dfsg-1) unstable; urgency=high
+
+  [ Tzafrir Cohen ]
+  * New upstream release, fixes various security holes (Closes: #771463):
     - AST-2014-012 (CVE-2014-8412): Mixed IP address families in ACLs
       may permit unwanted traffic
+    - AST-2014-013 (CVE-2014-8413): PJSIP ACLs not loaded at startup
     - AST-2014-014 (CVE-2014-8414): High call load may result in hung
       channels in ConfBridge
+    - AST-2014-015 (CVE-2014-8415): Remote Crash Vulnerability in PJSIP
+      channel driver
+    - AST-2014-016 (CVE-2014-8416): Remote Crash Vulnerability in PJSIP
+      channel driver
     - AST-2014-017 (CVE-2014-8417): Mark CONFBRIDGE as a sensitive
       function for external APIs
     - AST-2014-018 (CVE-2014-8418): Mark DB as a sensitive function for
       external APIs
-  * AST-2014-019.patch (CVE-2014-9374): Remote Crash Vulnerability in
-    WebSocket Server (Closes: #773230).
-  * sanity check to avoid changing the ABI hash.
+    - AST-2014-019.patch (CVE-2014-9374): Remote Crash Vulnerability in
+    WebSocket Server (Closes: #773230). 
+  * The key file better be ascii-armoured, indeed
+  * init script: kill with PID (Closes: #742783)
+  * Describe patch astdatadir
 
- -- Tzafrir Cohen <tzafrir@debian.org>  Thu, 01 Jan 2015 01:25:11 +0200
+  [ Stappers Geert ]
+  * new file: debian/README.source (Closes: #772469).
+  * asterisk-config-custom (Closes: #760032)
+
+ -- Tzafrir Cohen <tzafrir@debian.org>  Wed, 31 Dec 2014 14:58:53 +0200
+
+asterisk (1:13.0.0~dfsg-3) unstable; urgency=medium
+
+  * sanity check to avoid changing the ABI hash
+  * A disabled patch for the test framework
+  * Remove corosync support: doesn't work
+
+ -- Tzafrir Cohen <tzafrir@debian.org>  Sat, 01 Nov 2014 19:21:54 +0200
+
+asterisk (1:13.0.0~dfsg-2) unstable; urgency=medium
+
+  * Patch bigendian: fix building chan_phone on big endian platforms.
+  * Makefile_kfreebsd: Have Makefile's 'config' target install the same
+    files as kFreeBSD as it does on Linux.
+ -- Tzafrir Cohen <tzafrir@debian.org>  Mon, 27 Oct 2014 23:13:36 +0200
+
+asterisk (1:13.0.0~dfsg-1) unstable; urgency=medium
+
+  * New upstream release (Closes: #716931, #504741)
+    - Patches merged upstream:
+      - allow-tilde-destdir
+      - dahdi_create_channels
+      - enable_addons
+      - escape_manpage_hyphen.patch
+      - ignore_failed_channels.patch
+      - neon_version_check.patch
+      - pjproject
+      - pri_destroy_span_prilist.patch
+      - res_fax_bounds.patch
+      - series
+      - sigpri_handle_enodev_1.patch
+  * A systemd service.
+  * Compat level 9.
+  * Extra build dependencies for Asterisk 13.
+  * Re-enable chan_mgcp: work around a bug in menuselect? (Closes: #745718).
+  * Some fixes to the copyright file.
+
+ -- Tzafrir Cohen <tzafrir@debian.org>  Sun, 26 Oct 2014 22:52:12 +0200
+
+asterisk (1:11.13.1~dfsg-1) unstable; urgency=high
+
+  * New upstream release: fixes AST-2014-011 (CVE-2014-3566, POODLE).
+
+ -- Tzafrir Cohen <tzafrir@debian.org>  Sun, 26 Oct 2014 05:47:00 +0200
 
 asterisk (1:11.13.0~dfsg-1) unstable; urgency=medium
 

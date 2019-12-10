@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# fail if check fails
+export DEB_MAINTAINER_MODE=1
+
+# bootstrap if this is first ever copyright-check
+test -f debian/copyright_hints | touch debian/copyright_hints
+
+# these may both fail - we want its fallout for further analysis
+debian/rules.copyright-check pre-build || true
+debian/rules.copyright-check clean || true

@@ -1,4 +1,8 @@
-Enable the aelparse application.
+Description: Enable the aelparse application.
+Author: Jeremy Lainé <jeremy.laine@m4x.org>
+Forwarded: no
+Bug-Debian: https://bugs.debian.org/747866
+Last-Update: 2018-11-17
 
 --- a/utils/utils.xml
 +++ b/utils/utils.xml
@@ -7,6 +11,6 @@ Enable the aelparse application.
    <member name="aelparse">
 -	<defaultenabled>no</defaultenabled>
 +	<defaultenabled>yes</defaultenabled>
- 	<support_level>extended</support_level>
+ 	<support_level>deprecated</support_level>
    </member>
    <member name="astcanary">

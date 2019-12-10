@@ -7,7 +7,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
 
 --- a/apps/app_directed_pickup.c
 +++ b/apps/app_directed_pickup.c
-@@ -92,6 +92,9 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revisi
+@@ -89,6 +89,9 @@
  			<replaceable>context</replaceable> is set on matching channels by the
  			channel driver for the device.</para></note>
  		</description>
@@ -17,8 +17,8 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  	</application>
  	<application name="PickupChan" language="en_US">
  		<synopsis>
-@@ -114,10 +117,58 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revisi
- 			<para>This will pickup a specified <replaceable>channel</replaceable> if ringing.</para>
+@@ -120,10 +123,58 @@
+ 			<para>Pickup a specified <replaceable>channel</replaceable> if ringing.</para>
  		</description>
  	</application>
 +	<application name="PickupOld1v4" language="en_US">
@@ -75,8 +75,8 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
 +static const char app3[] = "PickupOld1v4";
  
  struct pickup_by_name_args {
- 	const char *name;
-@@ -187,13 +238,18 @@ static int pickup_by_channel(struct ast_
+ 	/*! Channel attempting to pickup a call. */
+@@ -234,13 +285,18 @@ static int pickup_by_channel(struct ast_
  }
  
  /* Attempt to pick up specified extension with context */
@@ -97,7 +97,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  		return -1;
  	}
  
-@@ -269,17 +325,12 @@ static int pickup_by_group(struct ast_ch
+@@ -322,17 +378,12 @@ static int pickup_by_group(struct ast_ch
  	return res;
  }
  
@@ -105,7 +105,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
 -static int pickup_exec(struct ast_channel *chan, const char *data)
 +static int pickup_exec_by_mode(struct ast_channel *chan, const char *data, int old1v4)
  {
- 	char *tmp;
+ 	char *parse;
  	char *exten;
  	char *context;
  
@@ -114,9 +114,9 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
 -	}
 -
  	/* Parse extension (and context if there) */
- 	tmp = ast_strdupa(data);
- 	while (!ast_strlen_zero(tmp) && (exten = strsep(&tmp, "&"))) {
-@@ -294,7 +345,7 @@ static int pickup_exec(struct ast_channe
+ 	parse = ast_strdupa(data);
+ 	for (;;) {
+@@ -357,7 +408,7 @@ static int pickup_exec(struct ast_channe
  			if (ast_strlen_zero(context)) {
  				context = (char *) ast_channel_context(chan);
  			}
@@ -125,7 +125,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  				/* Pickup successful.  Stop the dialplan this channel is a zombie. */
  				return -1;
  			}
-@@ -306,6 +357,27 @@ static int pickup_exec(struct ast_channe
+@@ -369,6 +420,27 @@ static int pickup_exec(struct ast_channe
  	return 0;
  }
  
@@ -150,10 +150,10 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
 +	return pickup_exec_by_mode(chan, data, PICKUP_MODE_OLD1V4);
 +}
 +
- /* Find channel for pick up specified by partial channel name */ 
- static int find_by_part(void *obj, void *arg, void *data, int flags)
+ /* Find channel for pick up specified by partial channel name */
+ static struct ast_channel *find_by_part(struct ast_channel *chan, const char *part)
  {
-@@ -391,6 +463,7 @@ static int unload_module(void)
+@@ -475,6 +547,7 @@ static int unload_module(void)
  
  	res = ast_unregister_application(app);
  	res |= ast_unregister_application(app2);
@@ -161,7 +161,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  
  	return res;
  }
-@@ -401,6 +474,7 @@ static int load_module(void)
+@@ -485,6 +558,7 @@ static int load_module(void)
  
  	res = ast_register_application_xml(app, pickup_exec);
  	res |= ast_register_application_xml(app2, pickupchan_exec);
@@ -171,7 +171,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  }
 --- a/include/asterisk/channel.h
 +++ b/include/asterisk/channel.h
-@@ -2570,6 +2570,30 @@ struct ast_channel_iterator;
+@@ -2883,6 +2883,30 @@ struct ast_channel_iterator;
  struct ast_channel_iterator *ast_channel_iterator_destroy(struct ast_channel_iterator *i);
  
  /*!
@@ -204,7 +204,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
   * \param exten The extension that channels must be in
 --- a/main/channel.c
 +++ b/main/channel.c
-@@ -1483,6 +1483,29 @@ static int ast_channel_by_name_cb(void *
+@@ -1322,6 +1322,29 @@ static int ast_channel_by_name_cb(void *
  	return ret;
  }
  
@@ -234,7 +234,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  static int ast_channel_by_exten_cb(void *obj, void *arg, void *data, int flags)
  {
  	struct ast_channel *chan = obj;
-@@ -1545,6 +1568,30 @@ struct ast_channel_iterator *ast_channel
+@@ -1384,6 +1407,30 @@ struct ast_channel_iterator *ast_channel
  	return NULL;
  }
  

@@ -7,10 +7,10 @@ Bug: https://issues.asterisk.org/jira/browse/ASTERISK-16501
 
 --- a/main/config.c
 +++ b/main/config.c
-@@ -2767,6 +2767,33 @@ static struct ast_variable *ast_load_rea
+@@ -3246,6 +3246,33 @@ struct ast_variable *ast_load_realtime_a
  	for (i = 1; ; i++) {
  		if ((eng = find_engine(family, i, db, sizeof(db), table, sizeof(table)))) {
- 			if (eng->realtime_func && (res = eng->realtime_func(db, table, ap))) {
+ 			if (eng->realtime_func && (res = eng->realtime_func(db, table, fields))) {
 +				/* https://issues.asterisk.org/jira/browse/ASTERISK-16501 */
 +				/* Check the magic variable __options__ and expand it from a
 +				 * varname=varvalue combination. Observe that realtime_func
@@ -41,10 +41,10 @@ Bug: https://issues.asterisk.org/jira/browse/ASTERISK-16501
  				return res;
  			}
  		} else {
-@@ -2904,6 +2931,12 @@ struct ast_config *ast_load_realtime_mul
+@@ -3406,6 +3433,12 @@ struct ast_config *ast_load_realtime_mul
  	for (i = 1; ; i++) {
  		if ((eng = find_engine(family, i, db, sizeof(db), table, sizeof(table)))) {
- 			if (eng->realtime_multi_func && (res = eng->realtime_multi_func(db, table, ap))) {
+ 			if (eng->realtime_multi_func && (res = eng->realtime_multi_func(db, table, fields))) {
 +				/* https://issues.asterisk.org/jira/browse/ASTERISK-16501 */
 +				/* Check the magic variable __options__ and expand it from a
 +				 * varname=varvalue combination. Observe that realtime_func

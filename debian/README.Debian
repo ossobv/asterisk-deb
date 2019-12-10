@@ -18,19 +18,19 @@ User, Groups, Permissions
 =========================
 By default the package will create user and group 'asterisk' and will run as
 them. It will run with real-time priority (-p) by default. It will also add
-itself to the group audio to enable the daemon to access sound cards and to 
-the group dialout to access Zaptel devices. Running as root is disabled in 
-/etc/init.d/asterisk for security reasons. 
+itself to the group audio to enable the daemon to access sound cards and to
+the group dialout to access Zaptel devices. Running as root is disabled in
+/etc/init.d/asterisk for security reasons.
 
-To change those values you can edit /etc/default/asterisk. 
+To change those values you can edit /etc/default/asterisk.
 
 Alternatively, edit /etc/asterisk/asterisk.conf .
 
 init.d Script Commands
 ======================
 In addition to reload, that runs the asterisk CLI command 'reload' there
-are also extensions-reload ('extensions reload') and logger-reload 
-('logger-reload') to load only parts of the configuration file. 
+are also extensions-reload ('extensions reload') and logger-reload
+('logger-reload') to load only parts of the configuration file.
 
 Asterisk supports a number of non-default parameters at startup.  For debugging
 it is often useful to run 'asterisk -U asterisk -vvvgc' from the console.  Add
@@ -42,7 +42,7 @@ files first.
 
 Alternatively use '/etc/init.d/asterisk debug'.
 
-Asterisk is run with a umask of 007 by default, to allow writing 
+Asterisk is run with a umask of 007 by default, to allow writing
 group-owned voicemail files. To change this value, set the value if 'UMASK'
 in /etc/default/asterisk .
 
@@ -63,8 +63,8 @@ or
 
 Open Files Limit
 ================
-Asterisk uses one file-handle (and sometimes more) per call. Hence if you 
-have many simultaneous calls, you often bump into the per-process limit 
+Asterisk uses one file-handle (and sometimes more) per call. Hence if you
+have many simultaneous calls, you often bump into the per-process limit
 of 1024 file handles, and get the error: "Too man open files".
 
 To enlarge that limit, set: MAXFILES in /etc/default/asterisk .
@@ -80,8 +80,8 @@ rather than the default English ones recorded by Allison Smith. If you
 use those, and never needed to set LANGUAGE/language and such - all
 should work just fine.
 
-When Asterisk is asked to play 'some/file' it will search in the the
-following places on a Debian system (in whish the datadir is set to
+When Asterisk is asked to play 'some/file' it will search in the
+following places on a Debian system (in wish the datadir is set to
 /usr/share/asterisk)
 
   /usr/share/sounds/${LANG_FULL}/some/file.TYPE
@@ -220,7 +220,7 @@ its limitations.
 
 Missing Modules
 ===============
-The following modules are included in the source tree of Asterisk but 
+The following modules are included in the source tree of Asterisk but
 were not built:
 
 * apps/app_fax.c: Disabled by default. Obsolete. res_fax does this now.
@@ -231,9 +231,9 @@ were not built:
 * apps/app_skel.c: Disabled by default. Demo code.
 * channels/chan_misdn.c: mISDN (1.x) only included in Experimental. See
   package misdn-user.
-* channels/chan_nbs: NBS not included. Never packaged. Looks quite Asterisk 
+* channels/chan_nbs: NBS not included. Never packaged. Looks quite Asterisk
   specific and not really useful.
-* channels/chan_usbradio: Disabled by default. Not popular. Potential 
+* channels/chan_usbradio: Disabled by default. Not popular. Potential
   quality issues.
 * codecs/codec_ilbc.c: Disabled by default. Patent issues.
 * res/res_pktccops.c: Disabled by default.
@@ -242,6 +242,25 @@ were not built:
 You can compare that to the list of modules disabled by the Asterisk build
 system at build time, that is copied to
 /usr/share/doc/asterisk/menuselect.makeopts .
+
+
+Extra Channels
+==============
+This package includes and enables by default a number of rather not so
+popular protocols. Having them enabled by default means that any
+security volnurability in them (such as CVE-2017-17090 / AST-2017-013 in
+chan_skinny) may open your system to attacks for no good reason.
+
+Thus the following configuration files have been removed from the default
+set of configuration files installed to /etc/asterisk:
+* dundi.conf (DUNDi call routing, UDP port 4520)
+* mgcp.conf (chan_mgcp: MGCP voip protocol, UDP port 2727)
+* skinny.conf (chan_skinny: SCCP voip protocol, TCP port 2000)
+* unistim.conf (chan_unistim: UNISTIM voip protocol, UDP port 5000)
+
+If you do need any of those protocols, copy the sample file from
+/usr/share/asterisk/conf/samples/FILE.conf.sample to
+/etc/asterisk/FILE.conf and restart asterisk (or the specific module).
 
 
 Missing Documentation
@@ -256,7 +275,7 @@ DAHDI PtMP NT
 =============
 Short version: it doesn't work.
 
-This package includes an experimental patch to test the support for PtMP 
+This package includes an experimental patch to test the support for PtMP
 NT in chan_dahdi. This is needed to e.g. connect ISDN phones. Originally
 the code merely printed out "How cool would it be if someone implemented
 this mode!" and bailed out. This patch merely overrides it.
@@ -304,5 +323,3 @@ live/asterisk is a wrapper to that private copy of Asterisk.
 
 
 Enjoy your PBX!
-
- -- Lionel Elie Mamane <lmamane@debian.org>, Fri, 29 Jul 2011 19:21:06 +0200

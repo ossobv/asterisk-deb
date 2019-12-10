@@ -1,12 +1,12 @@
 Description: mpglib code originally in asterisk-addons
+ The package asterisk-addons originally included mpglib. After the merge
+ with asterisk, that code is no longer included and needs to be fetched
+ (contrib/scripts/get_mpg_source.sh). This patch includes that fetched
+ source (rev. 202).
+ .
+ TODO: get rid of this code and use libmpg123 or whatever.
 Origin:  http://svn.digium.com/svn/thirdparty/mp3/trunk
-
-The package asterisk-addons originally included mpglib. After the merge
-with asterisk, that code is no longer included and needs to be fetched
-(contrib/scripts/get_mpg_source.sh). This patch includes that fetched
-source (rev. 180).
-
-TODO: get rid of this code and use libmpg123 or whatever.
+Last-Update: 2018-11-17
 
 --- /dev/null
 +++ b/addons/mp3/common.c
@@ -1331,7 +1331,9 @@ TODO: get rid of this code and use libmpg123 or whatever.
 +
 --- /dev/null
 +++ b/addons/mp3/interface.c
-@@ -0,0 +1,323 @@
+@@ -0,0 +1,325 @@
++#define WRAP_LIBC_MALLOC
++#define ASTMM_LIBC ASTMM_REDIRECT
 +#include "asterisk.h"
 +#include "asterisk/logger.h"
 +

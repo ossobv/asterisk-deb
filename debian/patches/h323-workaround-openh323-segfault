@@ -1,22 +1,23 @@
-Subject: Hack dynamic loader to workaround libopenh323 bug
+Description: Hack dynamic loader to workaround libopenh323 bug
+ libopenh323 is buggy and crashes on dlclose() when the library was
+ opened with RTLD_LAZY (#438815). Hack around this by opening it with
+ RTLD_NOW by matching the module names (chan_h323.so and the external
+ chan_oh323.so)
+ .
+ This is a very crude hack needed because we are removing libopenh323
+ dependencies from the asterisk binary. (h323-no-deps-on-asterisk)
+ Namely, it will have unexpected results if e.g. the user renames the
+ module for any reason.
+ .
+ Should be removed when #438815 closes.
 Author: Faidon Liambotis <paravoid@debian.org>
+Bug-Debian: https://bugs.debian.org/435146
 Forwarded: no
-Last-Update: 2009-12-19
-
-libopenh323 is buggy and crashes on dlclose() when the library was opened with
-RTLD_LAZY (#438815). Hack around this by opening it with RTLD_NOW by matching
-the module names (chan_h323.so and the external chan_oh323.so)
-
-This is a very crude hack needed because we are removing libopenh323
-dependencies from the asterisk binary. (h323-no-deps-on-asterisk)
-Namely, it will have unexpected results if e.g. the user renames the module
-for any reason.
-
-Should be removed when #438815 closes.
+Last-Update: 2016-03-19
 
 --- a/main/loader.c
 +++ b/main/loader.c
-@@ -382,6 +382,12 @@ static struct ast_module *load_dynamic_m
+@@ -382,6 +382,12 @@
  	if (missing_so)
  		strcat(resource_being_loaded->resource, ".so");
  
