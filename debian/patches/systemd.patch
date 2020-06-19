@@ -6,7 +6,7 @@ Last-Update: 2016-04-02
 
 --- a/contrib/scripts/live_ast
 +++ b/contrib/scripts/live_ast
-@@ -175,6 +175,43 @@ gen_live_conf() {
+@@ -175,6 +175,43 @@
    | sed  -e '/^#* \(Begin\|End\) Samples/d' >"$LIVE_CONF"
  }
  
@@ -50,7 +50,7 @@ Last-Update: 2016-04-02
  # (re?)generate the ./live/asterisk wrapper script
  gen_live_asterisk() {
    cat <<EOF >"$BASE_DIR/asterisk"
-@@ -244,6 +281,7 @@ EOF
+@@ -244,6 +281,7 @@
    chmod +x "$BASE_DIR/asterisk"
    # Generate a sample config file for live_ast itself:
    gen_live_conf
@@ -133,7 +133,7 @@ Last-Update: 2016-04-02
 +WantedBy=multi-user.target
 --- a/Makefile
 +++ b/Makefile
-@@ -912,6 +912,8 @@ install-logrotate:
+@@ -825,6 +825,8 @@
  	rm -f contrib/scripts/asterisk.logrotate.tmp
  
  config:

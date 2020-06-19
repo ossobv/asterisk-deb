@@ -33,13 +33,9 @@ ffmpeg-includes.patch
 build-reproducibly
 autoreconf-pjproject
 
-# "temp" fix
-enable_old_modules.patch
+# AST-2019-002 / CVE-2019-12827
+AST-2019-002.patch
+# AST-2019-003 / CVE-2019-13161
+AST-2019-003.patch
 
-# Needed for proper queue functionality:
-queue-realtime-fixes_AST-116.patch
-
-# features that did not make it into upstream
-add_PickupOld1v4_app-ASTERISK-26464.patch
-add_ara_variable_options_column-ASTERISK-16501.patch
-add_rtstatic_ara_option_and_fix_queue_inuse-ASTERISK-nofwd.patch
+mysql8_my_bool.patch

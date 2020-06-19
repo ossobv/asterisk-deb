@@ -523,7 +523,7 @@ Last-Update: 2016-08-29
 +}
 --- a/configure.ac
 +++ b/configure.ac
-@@ -467,6 +467,9 @@ THIRD_PARTY_CONFIGURE()
+@@ -456,6 +456,9 @@
  # to make things easier for the users.
  
  AST_EXT_LIB_SETUP([ALSA], [Advanced Linux Sound Architecture], [asound])
@@ -533,7 +533,7 @@ Last-Update: 2016-08-29
  AST_EXT_LIB_SETUP([BFD], [Debug symbol decoding], [bfd])
  
  # BKTR is used for backtrace support on platforms that do not
-@@ -1550,6 +1553,10 @@ fi
+@@ -1500,6 +1503,10 @@
  
  AST_EXT_LIB_CHECK([ALSA], [asound], [snd_pcm_open], [alsa/asoundlib.h])
  
@@ -568,7 +568,7 @@ Last-Update: 2016-08-29
 +#endif /* _AST_FORMAT_AMR_H */
 --- a/include/asterisk/format_cache.h
 +++ b/include/asterisk/format_cache.h
-@@ -247,6 +247,16 @@ extern struct ast_format *ast_format_sil
+@@ -247,6 +247,16 @@
  extern struct ast_format *ast_format_silk24;
  
  /*!
@@ -587,7 +587,7 @@ Last-Update: 2016-08-29
   * \retval 0 success
 --- a/main/codec_builtin.c
 +++ b/main/codec_builtin.c
-@@ -904,6 +904,54 @@ static struct ast_codec silk24 = {
+@@ -904,6 +904,54 @@
  	.samples_count = silk_samples
  };
  
@@ -642,7 +642,7 @@ Last-Update: 2016-08-29
  #define CODEC_REGISTER_AND_CACHE(codec) \
  	({ \
  		int __res_ ## __LINE__ = 0; \
-@@ -936,6 +984,8 @@ int ast_codec_builtin_init(void)
+@@ -936,6 +984,8 @@
  {
  	int res = 0;
  
@@ -653,7 +653,7 @@ Last-Update: 2016-08-29
  	res |= CODEC_REGISTER_AND_CACHE(ulaw);
 --- a/main/format_cache.c
 +++ b/main/format_cache.c
-@@ -226,6 +226,16 @@ struct ast_format *ast_format_opus;
+@@ -226,6 +226,16 @@
  struct ast_format *ast_format_codec2;
  
  /*!
@@ -670,7 +670,7 @@ Last-Update: 2016-08-29
   * \brief Built-in cached t140 format.
   */
  struct ast_format *ast_format_t140;
-@@ -313,6 +323,8 @@ static void format_cache_shutdown(void)
+@@ -313,6 +323,8 @@
  	ao2_cleanup(formats);
  	formats = NULL;
  
@@ -679,7 +679,7 @@ Last-Update: 2016-08-29
  	ao2_replace(ast_format_g723, NULL);
  	ao2_replace(ast_format_ulaw, NULL);
  	ao2_replace(ast_format_alaw, NULL);
-@@ -434,6 +446,10 @@ static void set_cached_format(const char
+@@ -434,6 +446,10 @@
  		ao2_replace(ast_format_g719, format);
  	} else if (!strcmp(name, "opus")) {
  		ao2_replace(ast_format_opus, format);
@@ -692,7 +692,7 @@ Last-Update: 2016-08-29
  	} else if (!strcmp(name, "png")) {
 --- a/main/rtp_engine.c
 +++ b/main/rtp_engine.c
-@@ -3615,6 +3615,9 @@ int ast_rtp_engine_init(void)
+@@ -3597,6 +3597,9 @@
  	set_next_mime_type(ast_format_vp8, 0,  "video", "VP8", 90000);
  	set_next_mime_type(ast_format_vp9, 0, "video", "VP9", 90000);
  
@@ -702,7 +702,7 @@ Last-Update: 2016-08-29
  	/* Define the static rtp payload mappings */
  	add_static_payload(0, ast_format_ulaw, 0);
  	#ifdef USE_DEPRECATED_G726
-@@ -3675,6 +3678,9 @@ int ast_rtp_engine_init(void)
+@@ -3657,6 +3660,9 @@
  	add_static_payload(127, ast_format_slin96, 0);
  	/* payload types above 127 are not valid */
  
@@ -714,7 +714,7 @@ Last-Update: 2016-08-29
  
 --- a/makeopts.in
 +++ b/makeopts.in
-@@ -131,6 +131,13 @@ AST_FORTIFY_SOURCE=@AST_FORTIFY_SOURCE@
+@@ -131,6 +131,13 @@
  ALSA_INCLUDE=@ALSA_INCLUDE@
  ALSA_LIB=@ALSA_LIB@
  

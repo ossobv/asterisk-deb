@@ -1,7 +1,8 @@
 Source: asterisk
 Priority: optional
 Section: comm
-Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
 Uploaders:
  Bernhard Schmidt <berni@debian.org>,
  Daniel Pocock <daniel@pocock.com.au>,
@@ -359,21 +360,3 @@ Description: Configuration files for Asterisk
  .
  With program asterisk-config-custom in the asterisk package,
  you can create an asterisk-config replacement package.
-
-Package: asterisk-config-empty
-Provides: asterisk-config-custom
-Depends:
- ${misc:Depends}
-Recommends:
- asterisk
-Conflicts:
- asterisk-config
-Replaces:
- asterisk-config
-Architecture: all
-Description: No configuration files for Asterisk
- Asterisk is an Open Source PBX and telephony toolkit.
- .
- This package is a stub that provides empty config for Asterisk.
- .
- It assumes you'll be managing your own config.

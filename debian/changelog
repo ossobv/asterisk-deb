@@ -1,19 +1,36 @@
-asterisk (1:16.6.2-0osso0+d10) buster; urgency=medium
+asterisk (1:16.2.1~dfsg-2ubuntu1) focal; urgency=medium
 
-  * Initial 16.6.2 version.
-  * FIXME: add docs about what we add/remove here....
+  * d/p/mysql8_my_bool.patch: Reintroduce my_bool to fix build with MySQL 8.
+    (LP: #1863026)
 
- -- Walter Doekes <wjdoekes+asterisk-deb@osso.nl>  Tue, 10 Dec 2019 15:28:56 +0100
+ -- Andreas Hasenack <andreas@canonical.com>  Wed, 12 Feb 2020 19:54:27 -0300
 
-asterisk (1:16.2.1~dfsg-1+deb10u1) buster; urgency=medium
+asterisk (1:16.2.1~dfsg-2build3) focal; urgency=medium
+
+  * Rebuild for libsnmp35.
+
+ -- Rafael David Tinoco <rafaeldtinoco@ubuntu.com>  Tue, 14 Jan 2020 17:44:40 +0000
+
+asterisk (1:16.2.1~dfsg-2build2) eoan; urgency=medium
+
+  * No change rebuild to pick up libc-client2007e-dev. (LP: #1834340)
+
+ -- Mauricio Faria de Oliveira <mfo@canonical.com>  Thu, 29 Aug 2019 09:52:20 -0300
+
+asterisk (1:16.2.1~dfsg-2build1) eoan; urgency=medium
+
+  * No change rebuild for libmysqlclient21.
+
+ -- Christian Ehrhardt <christian.ehrhardt@canonical.com>  Thu, 15 Aug 2019 09:32:33 +0200
+
+asterisk (1:16.2.1~dfsg-2) unstable; urgency=high
 
   * AST-2019-002 / CVE-2019-12827
     Buffer overflow in res_pjsip_messaging (Closes: #931980)
   * AST-2019-003 / CVE-2019-13161
     Remote Crash Vulnerability in chan_sip (Closes: #931981)
-  * d/gbp.conf: Update for Buster branch
 
- -- Bernhard Schmidt <berni@debian.org>  Tue, 20 Aug 2019 22:31:36 +0200
+ -- Bernhard Schmidt <berni@debian.org>  Sat, 13 Jul 2019 23:47:36 +0200
 
 asterisk (1:16.2.1~dfsg-1) unstable; urgency=medium
 
