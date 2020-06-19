@@ -33,9 +33,4 @@ ffmpeg-includes.patch
 build-reproducibly
 autoreconf-pjproject
 
-# AST-2019-002 / CVE-2019-12827
-AST-2019-002.patch
-# AST-2019-003 / CVE-2019-13161
-AST-2019-003.patch
-
 mysql8_my_bool.patch

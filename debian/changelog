@@ -1,3 +1,10 @@
+asterisk (1:16.11.1-0osso0+u20.04) focal; urgency=medium
+
+  * OSSO build of 16.11.1
+  * Don't use the dfsg version of pjproject or asterisk
+
+ -- Walter Doekes (work) <wjdoekes@osso.nl>  Fri, 19 Jun 2020 15:55:27 +0200
+
 asterisk (1:16.2.1~dfsg-2ubuntu1) focal; urgency=medium
 
   * d/p/mysql8_my_bool.patch: Reintroduce my_bool to fix build with MySQL 8.

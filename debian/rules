@@ -74,12 +74,6 @@ override_dh_autoreconf:
 # ignore them.
 override_dh_auto_configure:
 	chmod 755 $(CURDIR)/debian/dummyprogs/fetch
-	# Copy DSFG-free version of pjproject source into /tmp where the
-	# upstream build will find it, update checksums because we repacked
-	# it
-	cp -a debian/pjproject_2.8~dfsg.orig.tar.bz2 /tmp/pjproject-2.8.tar.bz2
-	cp third-party/pjproject/pjproject-2.8.tar.bz2.md5 third-party/pjproject/pjproject-2.8.tar.bz2.md5.debian_sav
-	md5sum /tmp/pjproject-2.8.tar.bz2 | sed 's:/tmp/::' > third-party/pjproject/pjproject-2.8.tar.bz2.md5
 	$(FETCH_ENV) ./configure			\
 		CFLAGS="-fgnu89-inline $(CFLAGS) $(CPPFLAGS)" LDFLAGS="$(LDFLAGS) -Wl,--as-needed" \
 		--host=$(DEB_HOST_GNU_TYPE)		\
@@ -123,9 +117,6 @@ override_dh_clean:
 
 	[ ! -f .version.debian_sav ] || mv .version.debian_sav .version
 	if [ -f configure.debian_sav ]; then mv configure.debian_sav configure; fi
-	if [ -f third-party/pjproject/pjproject-2.8.tar.bz2.md5.debian_sav ]; then \
-	  mv third-party/pjproject/pjproject-2.8.tar.bz2.md5.debian_sav third-party/pjproject/pjproject-2.8.tar.bz2.md5; \
-	fi
 
 	dh_clean
 

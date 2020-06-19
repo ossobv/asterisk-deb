@@ -10,7 +10,9 @@ ENV DEBIAN_FRONTEND noninteractive
 # building/testing and not for running, so we can keep files like apt
 # cache.
 RUN echo 'APT::Install-Recommends "0";' >/etc/apt/apt.conf.d/01norecommends
-#RUN sed -i -e 's:security.ubuntu.com:APTCACHE:;s:archive.ubuntu.com:APTCACHE:' /etc/apt/sources.list
+RUN sed -i \
+    -e 's://[a-z0-9-]*.ubuntu.com/ubuntu://apt.osso.nl/ubuntu:' \
+    /etc/apt/sources.list
 #RUN printf 'deb http://PPA/ubuntu xenial COMPONENT\n\
 #deb-src http://PPA/ubuntu xenial COMPONENT\r\n' >/etc/apt/sources.list.d/osso-ppa.list
 #RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 0xBEAD51B6B36530F5
@@ -75,9 +77,9 @@ RUN echo "Install checks:" && cd .. && . /etc/os-release && \
       asterisk_${fullversion}_*.deb \
       # asterisk-config OR asterisk-config-empty
       asterisk-config_${fullversion}_*.deb  \
-      asterisk-dbgsym_${fullversion}_*.deb \
+      asterisk-dbgsym_${fullversion}_*.d*eb \
       asterisk-modules_${fullversion}_*.deb \
-      asterisk-modules-dbgsym_${fullversion}_*.deb
+      asterisk-modules-dbgsym_${fullversion}_*.d*eb
 RUN asterisk -V | grep -F "${upversion}" && asterisk -V | grep -F "${debversion}"
 # Check pjsip version and library location.
 RUN objdump -T /usr/lib/libasteriskpj.so.2 | \
