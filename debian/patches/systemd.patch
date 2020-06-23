@@ -81,7 +81,7 @@ Last-Update: 2016-04-02
 +fi
 --- /dev/null
 +++ b/contrib/asterisk.service
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,55 @@
 +[Unit]
 +Description=Asterisk PBX
 +Documentation=man:asterisk(8)
@@ -95,6 +95,12 @@ Last-Update: 2016-04-02
 +Restart=on-failure
 +RestartSec=1
 +WorkingDirectory=__ASTERISK_VARLIB_DIR__
++
++# Asterisk handles its own log files. Don't clutter journal/ryslog with
++# additional (ansi-colored) data. (-q is not quiet, -n silences color even for
++# attached rasterisk.)
++StandardOutput=null
++StandardError=journal
 +
 +# Extra settings:
 +# If you want to set them, you can add them to a file in the directory
