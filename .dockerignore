@@ -1,0 +1,5 @@
+# Exclude everything, except explicitly included (saves build context push)
+*
+!/README.rst
+!/.cache/*
+!/debian/*

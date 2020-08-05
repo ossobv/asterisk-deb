@@ -16,10 +16,8 @@ RUN sed -i \
 #RUN printf 'deb http://PPA/ubuntu xenial COMPONENT\n\
 #deb-src http://PPA/ubuntu xenial COMPONENT\r\n' >/etc/apt/sources.list.d/osso-ppa.list
 #RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 0xBEAD51B6B36530F5
-RUN apt-get update -q
-RUN apt-get install -y apt-utils
-RUN apt-get dist-upgrade -y
-RUN apt-get install -y \
+RUN apt-get update -q && apt-get install -y apt-utils && apt-get dist-upgrade -y
+RUN apt-get update -q && apt-get install -y \
     bzip2 ca-certificates curl git \
     build-essential dh-autoreconf devscripts dpkg-dev equivs quilt
 
@@ -58,7 +56,8 @@ WORKDIR "/build/${upname}-${upversion}"
 
 # Apt-get prerequisites according to control file.
 COPY debian/compat debian/control debian/
-RUN mk-build-deps --install --remove --tool "apt-get -y" debian/control
+RUN apt-get update -q && \
+    mk-build-deps --install --remove --tool "apt-get -y" debian/control
 
 # Hacks to fix d-shlibs problems, which are fixed in stretch/bionic.
 #COPY d-shlibs.patch /build/
@@ -72,7 +71,7 @@ RUN DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc -sa
 RUN echo "Install checks:" && cd .. && . /etc/os-release && \
     osdistshort=$(echo "$osdistro" | sed -e 's/\(.\).*/\1/') && \
     fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
-    apt-get install -y asterisk-core-sounds-en && \
+    apt-get update -q && apt-get install -y asterisk-core-sounds-en && \
     dpkg -i \
       asterisk_${fullversion}_*.deb \
       # asterisk-config OR asterisk-config-empty

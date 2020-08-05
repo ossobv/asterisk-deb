@@ -1,3 +1,9 @@
+asterisk (1:16.12.0-0osso0+u20.04) focal; urgency=medium
+
+  * OSSO build of 16.12.0
+
+ -- Walter Doekes (work) <wjdoekes@osso.nl>  Wed, 05 Aug 2020 11:14:49 +0200
+
 asterisk (1:16.11.1-0osso0+u20.04) focal; urgency=medium
 
   * OSSO build of 16.11.1
