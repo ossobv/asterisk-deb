@@ -1,0 +1,27 @@
+Description: Reintroduce my_bool to fix build with MySQL 8
+Author: Andreas Hasenack <andreas@canonical.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1863026
+Forwarded: no
+Last-Update: 2020-02-12
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/addons/cdr_mysql.c
++++ b/addons/cdr_mysql.c
+@@ -42,6 +42,7 @@
+ #include "asterisk.h"
+ 
+ #include <mysql/mysql.h>
++typedef bool my_bool;
+ #include <mysql/errmsg.h>
+ 
+ #include "asterisk/config.h"
+--- a/addons/res_config_mysql.c
++++ b/addons/res_config_mysql.c
+@@ -32,6 +32,7 @@
+ #include <sys/stat.h>
+ 
+ #include <mysql/mysql.h>
++typedef bool my_bool;
+ #include <mysql/errmsg.h>
+ 
+ #include "asterisk/channel.h"
