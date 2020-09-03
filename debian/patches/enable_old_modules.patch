@@ -1,0 +1,16 @@
+From: Walter Doekes <wjdoekes+asterdeb@osso.nl>
+Subject: enable app_meetme.so
+Applied-Upsteam: no
+
+This easer customer upgrade paths.
+
+--- a/apps/app_meetme.c
++++ b/apps/app_meetme.c
+@@ -31,7 +31,6 @@
+ 
+ /*** MODULEINFO
+ 	<depend>dahdi</depend>
+-	<defaultenabled>no</defaultenabled>
+ 	<support_level>extended</support_level>
+ 	<replacement>app_confbridge</replacement>
+  ***/

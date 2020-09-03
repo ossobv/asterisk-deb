@@ -2,8 +2,8 @@
 cd "$(dirname "$0")"  # jump to curdir
 
 # Pass these on the command line.
-osdistro=ubuntu
-oscodename=focal
+osdistro=debian
+oscodename=buster
 upname=asterisk
 upversion=${1:-16.11.1}  # asterisk version, e.g. 13.22.0
 debversion=${2:-0osso0}  # deb build version, e.g. 0osso1

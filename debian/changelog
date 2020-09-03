@@ -1,3 +1,17 @@
+asterisk (1:16.13.0-0osso1+deb10) buster; urgency=medium
+
+  * OSSO build of 16.13.0 for Buster (with gn patches)
+  * Use "deb10" instead of "d10" for sanity
+  * Has these extra patches:
+    - enable_old_modules.patch
+    - queue-realtime-fixes_AST-116.patch
+    - add_PickupOld1v4_app-ASTERISK-26464.patch
+    - add_ara_variable_options_column-ASTERISK-16501.patch
+    - add_rtstatic_ara_option_and_fix_queue_inuse-ASTERISK-nofwd.patch
+    - vp8.patch
+
+ -- Walter Doekes (work) <wjdoekes@osso.nl>  Thu, 03 Sep 2020 16:28:35 +0200
+
 asterisk (1:16.12.0-0osso0+u20.04) focal; urgency=medium
 
   * OSSO build of 16.12.0

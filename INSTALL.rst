@@ -72,16 +72,16 @@ run.)
     $ sudo sh -c 'cat > /etc/asterisk/modules.conf' << EOF
     [modules]
     autoload=yes
-    
+
     preload => res_fax.so
     preload => res_odbc.so
-    
+
     noload => app_amd.so
     noload => app_festival.so
     noload => app_followme.so
     noload => app_minivm.so
     noload => app_speech_utils.so
-    
+
     noload => chan_agent.so
     noload => chan_alsa.so
     noload => chan_console.so
@@ -92,7 +92,7 @@ run.)
     noload => chan_phone.so
     noload => chan_skinny.so
     noload => chan_unistim.so
-    
+
     noload => cdr_adaptive_odbc.so
     noload => cdr_csv.so
     noload => cdr_custom.so
@@ -103,12 +103,12 @@ run.)
     noload => cdr_sqlite3_custom.so
     noload => cdr_syslog.so
     noload => cdr_tds.so
-    
+
     noload => pbx_ael.so
     noload => pbx_dundi.so
     noload => pbx_lua.so
     noload => pbx_realtime.so
-    
+
     noload => res_adsi.so
     noload => res_ael_share.so
     noload => res_agi.so
@@ -154,7 +154,7 @@ dump support and crash mailings, like this:
     $ sudo sh -c 'cat > /etc/sysctl.d/core_pattern.conf' << EOF
     kernel.core_pattern = core.%p
     EOF
-    $ sudo sysctl -p /etc/sysctl.d/core_pattern.conf 
+    $ sudo sysctl -p /etc/sysctl.d/core_pattern.conf
 
 Now restart Asterisk and confirm that it's up and running:
 
@@ -168,7 +168,7 @@ Now restart Asterisk and confirm that it's up and running:
     25979 ?        S      0:00 /bin/sh /usr/sbin/safe_asterisk -p -g -U asterisk
     25993 ?        Sl     0:01  \_ /usr/sbin/asterisk -f -p -g -U asterisk -vvvg -c
     25994 ?        S      0:00      \_ astcanary /var/run/alt.asterisk.canary.tweet.tweet.tweet 25993
-    
+
 For bonus points, take ``examples/safe_asterisk/startup.d--mail-backtrace.sh``
 and add it to startup.d:
 

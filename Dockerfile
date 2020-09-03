@@ -10,8 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # building/testing and not for running, so we can keep files like apt
 # cache.
 RUN echo 'APT::Install-Recommends "0";' >/etc/apt/apt.conf.d/01norecommends
-RUN sed -i \
-    -e 's://[a-z0-9-]*.ubuntu.com/ubuntu://apt.osso.nl/ubuntu:' \
+RUN sed -i -e 's://[^/]*/\(debian\|ubuntu\)://apt.osso.nl/\1:' \
     /etc/apt/sources.list
 #RUN printf 'deb http://PPA/ubuntu xenial COMPONENT\n\
 #deb-src http://PPA/ubuntu xenial COMPONENT\r\n' >/etc/apt/sources.list.d/osso-ppa.list
@@ -33,7 +32,7 @@ ARG debversion=0osso1
 RUN mkdir -p /build/debian
 COPY debian/changelog /build/debian/changelog
 RUN . /etc/os-release && \
-    osdistshort=$(echo "$osdistro" | sed -e 's/\(.\).*/\1/') && \
+    osdistshort=$(echo "$osdistro" | sed -e 's/\(...\).*/\1/') && \
     fullversion="${upversion}-${debversion}+${osdistshort}${VERSION_ID}" && \
     expected="${upname} (${debepoch}${fullversion}) ${oscodename}; urgency=medium" && \
     head -n1 /build/debian/changelog && \
@@ -67,9 +66,30 @@ RUN apt-get update -q && \
 COPY debian debian
 RUN DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc -sa
 
-# Sanity checks.
+# Do linker checks:
+# (debian/tmp holds everything, debian/asterisk-modules only the modules
+# selected for that package)
+# - check that we're not using both openssl 1.0 and 1.1:
+RUN echo "Check that all required openssl versions are equal:" && \
+    vals=$(\
+      find /build/asterisk-${upversion}/debian/tmp -name '*.so' -o -name asterisk -type f | \
+      sort | while read f; do ldd "$f" | \
+      sed -ne "s/^[[:blank:]]*\\(libssl[^ ]*\\) =>.*/  \\1 - $(basename $f)/p"; done); \
+    echo "$vals"; \
+    if test $(echo "$vals" | awk '{print $1}' | sort -u | wc -l) -ne 1; then \
+      echo "Has differing openssl versions.." >&2; exit 1; fi
+RUN echo "Check that chan_pjsip is linked against a dynamic lib:" && \
+    if find /build/asterisk-${upversion}/debian/tmp -name 'chan_pjsip.so' -type f | \
+        xargs ldd | grep -C10 libpj; then \
+      dpkg -l libpjproject2 && echo "(dynamic lib)" >&2; \
+    else \
+      find /build/asterisk-${upversion}/debian/tmp -name 'libasteriskpj.so' | \
+        xargs nm -D | grep ' T pj_get_version$' && echo "(is embedded)" >&2; \
+    fi
+
+# Install checks:
 RUN echo "Install checks:" && cd .. && . /etc/os-release && \
-    osdistshort=$(echo "$osdistro" | sed -e 's/\(.\).*/\1/') && \
+    osdistshort=$(echo "$osdistro" | sed -e 's/\(...\).*/\1/') && \
     fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
     apt-get update -q && apt-get install -y asterisk-core-sounds-en && \
     dpkg -i \
@@ -79,8 +99,9 @@ RUN echo "Install checks:" && cd .. && . /etc/os-release && \
       asterisk-dbgsym_${fullversion}_*.d*eb \
       asterisk-modules_${fullversion}_*.deb \
       asterisk-modules-dbgsym_${fullversion}_*.d*eb
+
+# Application and library version checks:
 RUN asterisk -V | grep -F "${upversion}" && asterisk -V | grep -F "${debversion}"
-# Check pjsip version and library location.
 RUN objdump -T /usr/lib/libasteriskpj.so.2 | \
     grep '[[:blank:]][.]text[[:blank:]].*[[:blank:]]pj_init$' && \
     # Only if we have asterisk-config (not asterisk-config-empty) can we
@@ -89,16 +110,17 @@ RUN objdump -T /usr/lib/libasteriskpj.so.2 | \
     asterisk -cn >/dev/null 2>&1 & p=$!; sleep 2; \
     asterisk -nrx 'pjsip show version'; asterisk -nrx 'core stop now'; wait; \
     fi
-# Check that we're not using both openssl 1.0 and 1.1
-RUN find /build/asterisk-${upversion}/debian/tmp -name '*.so' -o -name asterisk -type f | \
-    sort | while read f; do if ldd "$f" | grep -qF libssl.so.1.0; then \
-    echo "$f: linked against openssl 1.0, may cause trouble" >&2; fi; done
+RUN echo '#include <stdio.h>\nvoid __ast_repl_malloc() {} void __ast_free() {} \
+      void ast_pjproject_max_log_level() {} void ast_option_pjproject_log_level() {} \
+      char const *pj_get_version(void); \
+      int main() { fprintf(stderr, "libasteriskpj: %s\\n", pj_get_version()); return 0; }' \
+      >/tmp/test.c && gcc /tmp/test.c -lasteriskpj -o /tmp/test && /tmp/test
 
 # Write output files (store build args in ENV first).
 ENV oscodename=$oscodename osdistro=$osdistro \
     upname=$upname upversion=$upversion debversion=$debversion
 CMD . /etc/os-release && \
-    osdistshort=$(echo "$osdistro" | sed -e 's/\(.\).*/\1/') && \
+    osdistshort=$(echo "$osdistro" | sed -e 's/\(...\).*/\1/') && \
     fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
     if ! test -d /dist; then echo "Please mount ./dist for output" >&2; false; fi && \
     echo && . /etc/os-release && mkdir /dist/${oscodename}/${upname}_${fullversion} && \

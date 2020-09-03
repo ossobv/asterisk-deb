@@ -74,6 +74,7 @@ override_dh_autoreconf:
 # ignore them.
 override_dh_auto_configure:
 	chmod 755 $(CURDIR)/debian/dummyprogs/fetch
+	# Skip debian DSFG-free version of pjproject fix
 	$(FETCH_ENV) ./configure			\
 		CFLAGS="-fgnu89-inline $(CFLAGS) $(CPPFLAGS)" LDFLAGS="$(LDFLAGS) -Wl,--as-needed" \
 		--host=$(DEB_HOST_GNU_TYPE)		\
@@ -137,13 +138,15 @@ SUBPACKS_EXTRA_DIRS_MOD = $(SUBPACKS_EXTRA_DIRS:%=%/usr/lib/asterisk/modules)
 
 override_dh_auto_install:
 	$(FETCH_ENV) dh_auto_install -- $(BUILDFLAGS) -j1 config samples
+	install -m644 -D debian/examples/safe_asterisk/startup.d--mail-backtrace.sh \
+		$(CURDIR)/debian/tmp/etc/asterisk/startup.d/mail-backtrace.sh
 	cp -a configs $(CURDIR)/debian/tmp/usr/share/asterisk/conf
 	$(RM) -f $(REMOVED_PROTO_FILES)
 	mkdir -p $(CURDIR)/debian/tmp/usr/bin/
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/man/man1
 	mkdir -p $(CURDIR)/debian/tmp/usr/share/dahdi/span_config.d
 	cp -a debian/asterisk-config-custom $(CURDIR)/debian/tmp/usr/bin/
-	cp -a debian/asterisk-config-custom $(CURDIR)/debian/tmp/usr/share/man/man1/
+	cp -a debian/asterisk-config-custom.1 $(CURDIR)/debian/tmp/usr/share/man/man1/
 	cp -a debian/50-asterisk $(CURDIR)/debian/tmp/usr/share/dahdi/span_config.d/
 	$(RM) -f $(CURDIR)/debian/tmp/usr/sbin/conf2ael
 	$(RM) -f $(CURDIR)/debian/tmp/usr/sbin/muted
