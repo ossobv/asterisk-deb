@@ -1,3 +1,10 @@
+asterisk (1:16.17.0-0osso1+deb10) buster; urgency=medium
+
+  * OSSO build of 16.17.0 for Buster (with gn patches)
+  * Refreshes: codec_amr.patch, but codec_amr.so is/was not enabled.
+
+ -- Walter Doekes (work) <wjdoekes@osso.nl>  Fri, 09 Apr 2021 09:12:53 +0200
+
 asterisk (1:16.13.0-0osso1+deb10) buster; urgency=medium
 
   * OSSO build of 16.13.0 for Buster (with gn patches)

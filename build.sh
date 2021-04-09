@@ -5,8 +5,8 @@ cd "$(dirname "$0")"  # jump to curdir
 osdistro=debian
 oscodename=buster
 upname=asterisk
-upversion=${1:-16.11.1}  # asterisk version, e.g. 13.22.0
-debversion=${2:-0osso0}  # deb build version, e.g. 0osso1
+upversion=${1:-16.17.0}  # asterisk version, e.g. 13.22.0
+debversion=${2:-0osso1}  # deb build version, e.g. 0osso1
 # echo "Usage: $0 11.25.3 0osso1" >&2
 
 # Docker disallows certain tokens in versions.
