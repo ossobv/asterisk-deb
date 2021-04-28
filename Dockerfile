@@ -22,9 +22,10 @@ RUN apt-get update -q && apt-get install -y \
 
 # Import ARGs
 ARG osdistro=debian
+ARG osdistshort=deb
 ARG oscodename=buster
 ARG upname=asterisk
-ARG upversion=11.25.3
+ARG upversion=16.17.0
 ARG debepoch=1:
 ARG debversion=0osso1
 
@@ -32,7 +33,6 @@ ARG debversion=0osso1
 RUN mkdir -p /build/debian
 COPY debian/changelog /build/debian/changelog
 RUN . /etc/os-release && \
-    osdistshort=$(echo "$osdistro" | sed -e 's/\(...\).*/\1/') && \
     fullversion="${upversion}-${debversion}+${osdistshort}${VERSION_ID}" && \
     expected="${upname} (${debepoch}${fullversion}) ${oscodename}; urgency=medium" && \
     head -n1 /build/debian/changelog && \
@@ -89,7 +89,6 @@ RUN echo "Check that chan_pjsip is linked against a dynamic lib:" && \
 
 # Install checks:
 RUN echo "Install checks:" && cd .. && . /etc/os-release && \
-    osdistshort=$(echo "$osdistro" | sed -e 's/\(...\).*/\1/') && \
     fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
     apt-get update -q && apt-get install -y asterisk-core-sounds-en && \
     dpkg -i \
@@ -116,16 +115,9 @@ RUN echo '#include <stdio.h>\nvoid __ast_repl_malloc() {} void __ast_free() {} \
       int main() { fprintf(stderr, "libasteriskpj: %s\\n", pj_get_version()); return 0; }' \
       >/tmp/test.c && gcc /tmp/test.c -lasteriskpj -o /tmp/test && /tmp/test
 
-# Write output files (store build args in ENV first).
-ENV oscodename=$oscodename osdistro=$osdistro \
-    upname=$upname upversion=$upversion debversion=$debversion
-CMD . /etc/os-release && \
-    osdistshort=$(echo "$osdistro" | sed -e 's/\(...\).*/\1/') && \
-    fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
-    if ! test -d /dist; then echo "Please mount ./dist for output" >&2; false; fi && \
-    echo && . /etc/os-release && mkdir /dist/${oscodename}/${upname}_${fullversion} && \
-    mv /build/*${fullversion}* /dist/${oscodename}/${upname}_${fullversion}/ && \
-    mv /build/${upname}_${upversion}.orig.tar.gz /dist/${oscodename}/${upname}_${fullversion}/ && \
-    chown -R ${UID}:root /dist/${oscodename} && \
-    cd / && find dist/${oscodename}/${upname}_${fullversion} -type f && \
-    echo && echo 'Output files created succesfully'
+# Write output files.
+RUN . /etc/os-release && fullversion=${upversion}-${debversion}+${osdistshort}${VERSION_ID} && \
+    mkdir -p /dist/${upname}_${fullversion} && \
+    mv /build/*${fullversion}* /dist/${upname}_${fullversion}/ && \
+    mv /build/${upname}_${upversion}.orig.tar.* /dist/${upname}_${fullversion}/ && \
+    cd / && find dist/${upname}_${fullversion} -type f >&2

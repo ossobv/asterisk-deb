@@ -1,4 +1,4 @@
 # Cache downloaded Asterisk_orig.tar.gz
 /.cache/
 # Output
-/dist/
+/Dockerfile.out/
