@@ -20,6 +20,15 @@ RUN apt-get update -q && apt-get install -y \
     bzip2 ca-certificates curl git \
     build-essential dh-autoreconf devscripts dpkg-dev equivs quilt
 
+# Set up build env
+RUN printf "%s\n" \
+    QUILT_PATCHES=debian/patches \
+    QUILT_NO_DIFF_INDEX=1 \
+    QUILT_NO_DIFF_TIMESTAMPS=1 \
+    'QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"' \
+    'QUILT_DIFF_OPTS="--show-c-function"' \
+    >~/.quiltrc
+
 # Import ARGs
 ARG osdistro=debian
 ARG osdistshort=deb
