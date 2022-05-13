@@ -2,7 +2,7 @@ Source: asterisk
 Priority: optional
 Section: comm
 Maintainer: Walter Doekes <wjdoekes+asterisk@osso.nl>
-XSBC-Original-Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
+X-Original-Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
 Uploaders:
  Bernhard Schmidt <berni@debian.org>,
  Daniel Pocock <daniel@pocock.com.au>,
