@@ -1,6 +1,6 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Asterisk
-Source: http://downloads.asterisk.org/pub/asterisk
+Source: https://downloads.asterisk.org/pub/asterisk
  Excluded files:
  * codecs/ilbc: due to patent issues
  * doc/ (admin guide and reference):
@@ -28,7 +28,7 @@ Copyright: 1999-2006, Brett Bryant <bbryant@digium.com>
   1999-2006, Thorsten Lockert <tholo@trollphone.org>
   1999-2010, Anthony Minessale II <anthmct@yahoo.com>
   1999-2010, Kevin P. Fleming <kpfleming@digium.com>
-  1999-2016, Digium, Inc.
+  1999-2019, Digium, Inc.
   2001,2005, Steve Underwood <steveu@coppice.org>
   2002, Pauline Middelink <middelink@polyware.nl>
   2002,2004, Christos Ricudis <ricudis@itc.auth.gr>
@@ -180,7 +180,6 @@ Comment:
  Makefiles listed explicitly to counteract */Makefile elsewhere.
 
 Files: include/solaris-compat/sys/queue.h
- main/editline/*
  utils/db1-ast/*
 Copyright: 1989-1994, The Regents of the University of California.
 License: BSD-4-Clause-UC
@@ -213,21 +212,10 @@ License: BSD-3-Clause~Xiph
 
 Files: codecs/speex/resample.c
  codecs/speex/speex_resampler.h
- main/editline/np/strlcat.c
- main/editline/np/strlcpy.c
 Copyright: 1998 Todd C. Miller <Todd.Miller@courtesan.com>
   2007-2008, Jean-Marc Valin
   2008, Thorvald Natvig
 License: BSD-3-Clause
-
-Files: main/editline/editline.3
- main/editline/editrc.5
- main/editline/np/fgetln.c
- main/editline/read.h
- main/editline/readline.c
- main/editline/readline.h
-Copyright: 1997-2001, The NetBSD Foundation, Inc.
-License: BSD-4-Clause~NetBSD
 
 Files: contrib/scripts/live_ast
  contrib/scripts/sip_nat_settings
@@ -343,11 +331,6 @@ License-Grant:
  the source tree.
 License: BSD-4-Clause-UC and ISC and GPL-2-Asterisk
 
-Files: main/editline/np/vis.c
-Copyright: 1989,1993, The Regents of the University of California.
-  1999, The NetBSD Foundation, Inc.
-License: BSD-4-Clause-UC
-
 Files: main/ast_expr2.c
  main/ast_expr2.h
  res/ael/ael.tab.h
@@ -451,14 +434,6 @@ Comment:
  the file has same licensing as the project generally.
  .
  See https://issues.asterisk.org/jira/browse/ASTERISK-24173
-
-Files: debian/patches/opus.patch
-Copyright: 2014, Lorenzo Miniero
-License-Grant:
- Distributed under the terms of the GNU General Public License
-License: GPL-2
-Comment:
- Version of license not mentioned.  Assumed to be version 2.
 
 License: GPL-2-Asterisk
  Asterisk is distributed under the GNU General Public License version 2
@@ -663,37 +638,6 @@ License: BSD-4-Clause-UC
  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-License: BSD-4-Clause~NetBSD
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are
- met:
- .
- 1. Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
- 2. Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
- 3. All advertising materials mentioning features or use of this
-    software must display the following acknowledgement: This product
-    includes software developed by the NetBSD Foundation, Inc. and its
-    contributors.
- 4. Neither the name of The NetBSD Foundation nor the names of its
-    contributors may be used to endorse or promote products derived from
-    this software without specific prior written permission.
- .
- THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND
- CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
- BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE
- FOUNDATION OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
- USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
- DAMAGE.
 
 License: BSD-4-Clause~Clapper
  Redistribution and use in source and binary forms are permitted

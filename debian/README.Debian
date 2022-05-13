@@ -172,7 +172,7 @@ IMAP-interfaced mail storage). Only one of those three could be
 installed. app_voicemail is normally expected to exist on an
 installation of Asterisk and hence it is recommended to include one of
 them. The simple file-based stoorage requires no extra setup, and hence
-is the defaulr.
+is the default.
 
 * asterisk-moh-opsound-gsm:
 Some relatively long and not too annoying music files in a format

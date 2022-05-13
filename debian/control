@@ -3,13 +3,6 @@ Priority: optional
 Section: comm
 Maintainer: Walter Doekes <wjdoekes+asterisk@osso.nl>
 X-Original-Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
-Uploaders:
- Bernhard Schmidt <berni@debian.org>,
- Daniel Pocock <daniel@pocock.com.au>,
- Jeremy Lainé <jeremy.laine@m4x.org>,
- Jonas Smedegaard <dr@jones.dk>,
- Mark Purcell <msp@debian.org>,
- Tzafrir Cohen <tzafrir@debian.org>
 Build-Depends:
  autoconf,
  automake,

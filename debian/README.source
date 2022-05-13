@@ -42,3 +42,10 @@ mk-origtargz --package pjproject --version 2.8 \
 It uses a local copy of the debian/copyright file of src:pjproject as input
 for deleted files. In the buildprocess the .tar.bz2 is copied into place
 and the checksum regenerated.
+
+When a new upstream Asterisk version switches to a new pjproject version you
+need to
+ - update the tarball according to the above description
+ - update the PJVER variable in debian/rules
+ - update the filename in debian/source/include-binaries
+
