@@ -51,18 +51,19 @@ RUN test -s /build/${upname}_${upversion}.orig.tar.gz || \
     >/build/${upname}_${upversion}.orig.tar.gz
 RUN cd /build && tar zxf "${upname}_${upversion}.orig.tar.gz" && \
     mv debian "${upname}-${upversion}/"
-WORKDIR "/build/${upname}-${upversion}"
 
 # Apt-get prerequisites according to control file.
-COPY debian/compat debian/control debian/
-RUN apt-get update -q && \
-    mk-build-deps --install --remove --tool "apt-get -y" debian/control
+COPY debian/compat debian/control /build/${upname}-${upversion}/debian/
+RUN apt-get update -q && cd /tmp && \
+    mk-build-deps --install --remove --tool "apt-get -y" \
+        /build/${upname}-${upversion}/debian/control
 
 # Hacks to fix d-shlibs problems, which are fixed in stretch/bionic.
 #COPY d-shlibs.patch /build/
 #RUN patch -p0 --directory=/ </build/d-shlibs.patch && apt-get update
 
-# Build!
+# Build.
+WORKDIR "/build/${upname}-${upversion}"
 COPY debian debian
 RUN DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc -sa
 
