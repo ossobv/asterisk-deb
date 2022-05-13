@@ -1,1 +1,1 @@
-usr/lib/asterisk/modules/chan_ooh323.so
+usr/lib/${DEB_HOST_MULTIARCH}/asterisk/modules/chan_ooh323.so

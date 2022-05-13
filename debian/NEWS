@@ -1,3 +1,34 @@
+asterisk (1:18.11.1~dfsg+~cs6.10.40431413-1) unstable; urgency=medium
+
+  Asterisk no longer provides the module chan_vpb,
+  and corresponding binary package asterisk-vpb is dropped.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Wed, 06 Apr 2022 15:16:07 +0200
+
+asterisk (1:16.16.1~dfsg+~2.10-2) unstable; urgency=medium
+
+  Asterisk now include all voicemail modules, under different names.
+  If you previously used either of the packages
+  asterisk-voicemail-imapstorage or asterisk-voicemail-odbcstorage
+  then make sure to change configuration to now instead enable
+  module app_voicemail_imap or app_voicemail_odbc, correspondingly.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Fri, 04 Feb 2022 21:59:09 +0100
+
+asterisk (1:16.16.1~dfsg+~2.10-2) unstable; urgency=medium
+
+  Asterisk modules are now stored in multiarch-compatible paths.
+
+  If you use only Debian-provided Asterisk packages, including the
+  asterisk-config package, just make sure to accept package changes if
+  asked during package upgrade.
+  Otherwise make sure setting "astmoddir" in /etc/asterisk/asterisk.conf
+  matches the location of installed modules
+  (e.g. "/usr/lib/x86_64-linux-gnu/asterisk/modules" on amd64 systems),
+  and rebuild/move custom-built modules to use same location.
+
+ -- Jonas Smedegaard <dr@jones.dk>  Thu, 20 Jan 2022 10:33:17 +0100
+
 asterisk (1:11.6.0~dfsg-3) unstable; urgency=medium
 
   The cdr_radius.so and cel_radius.so modules are now linked against

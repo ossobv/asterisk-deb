@@ -1,3 +1,14 @@
 Tests: asttestmods
-Restrictions: needs-root, isolation-container
-Depends: asterisk, asterisk-voicemail, asterisk-tests, asterisk-core-sounds-en-gsm, libxml2-utils
+Restrictions: needs-root, isolation-container, allow-stderr
+Depends:
+ asterisk,
+ asterisk-core-sounds-en-gsm,
+ asterisk-tests,
+ libxml2-utils,
+
+Tests: amr
+Restrictions: needs-root
+Depends:
+ asterisk,
+ asterisk-modules,
+ grep,

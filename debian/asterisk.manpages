@@ -1,4 +1,5 @@
-utils/*.1
-doc/*.8
-contrib/scripts/*.8
-debian/asterisk-config-custom.1
+doc/aelparse.8
+doc/smsq.8
+utils/astman.1
+usr/share/man/man1/*.1
+usr/share/man/man8/*.8

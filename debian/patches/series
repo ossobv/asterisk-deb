@@ -1,37 +1,21 @@
-# upstream fixes
-hack-multiple-app-voicemail
-# Not used ATM. See comment in patch:
-#make-clean-fixes
-#
-#h323-no-deps-on-asterisk
-#h323-workaround-openh323-segfault
-
-astgenkey-security
-
-# bugfixes on top of everything
-sound_files
-#h323-extra-target
-mpglib
-enable_addons
-
-ilbc_disable
-astdatadir
-
-reenable
-no_native_arch.patch
-smsq_enable.patch
-aelparse_enable.patch
-systemd.patch
-test_framework.patch
-
-# vp8.patch
-amr.patch
-
-ffmpeg-detection.patch
-ffmpeg-includes.patch
-
-build-reproducibly
-autoreconf-pjproject
+020210816~20b2741.patch
+1004_astgenkey-security.patch
+1006_systemd.patch
+1007_ffmpeg_detect.patch
+1008_ffmpeg_include.patch
+1009_build_reproducibly.patch
+#2001_keep_sounds_on_distclean.patch
+2002_no_download_sounds.patch
+2004_mgcp.patch
+#OSSO_DISABLED#2006_enable_test_framework.patch
+2008_disable_ilbc.patch
+2010_astdatadir.patch
+2011_amr_build_tools.patch
+2012_amr_codec.patch
+2013_mp3.patch
+2014_pjproject_unbreak.patch
+2015_opus.patch
+2016_opus_plc.patch
 
 # "temp" fix
 enable_old_modules.patch

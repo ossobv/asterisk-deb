@@ -1,10 +1,11 @@
-usr/sbin
+lib/systemd/system/asterisk.service
 usr/bin/asterisk-config-custom
-usr/lib/libasterisk*
-usr/share/asterisk/firmware
-usr/share/asterisk/keys
+usr/lib/${DEB_HOST_MULTIARCH}/libasterisk*
+usr/sbin
 usr/share/asterisk/conf
 usr/share/asterisk/documentation
+usr/share/asterisk/firmware
+usr/share/asterisk/keys
+usr/share/asterisk/phoneprov
 usr/share/asterisk/rest-api
 usr/share/dahdi/span_config.d/50-asterisk
-lib/systemd/system/asterisk.service

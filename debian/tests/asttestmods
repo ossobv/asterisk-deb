@@ -5,6 +5,7 @@ asterisk="$base_dir/asterisk"
 output_dir="$base_dir/output" # Writable by Asterisk
 conf_dir="$output_dir/conf"
 results_file="$PWD/$output_dir/results.txt"
+multiarch=$(dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 # test_message: some tests still fail. See
 #   https://issues.asterisk.org/jira/browse/ASTERISK-27172
@@ -43,7 +44,7 @@ run() {
 	$asterisk -rx "test generate results xml $results_file"
 	$asterisk -rx 'module show like test_' | awk '/Running/ {print $1}' \
 		| sort  > "$output_dir/mods_loaded"
-	ls /usr/lib/asterisk/modules/ | sort | grep ^test_ > "$output_dir/mods_all"
+	ls /usr/lib/$multiarch/asterisk/modules/ | sort | grep ^test_ > "$output_dir/mods_all"
 	if ! cmp -s "$output_dir/mods_loaded" "$output_dir/mods_all"; then
 		echo "Some test modules were not loaded:"
 		diff "$output_dir/mods_loaded" "$output_dir/mods_all"
@@ -60,7 +61,7 @@ run() {
 
 teardown() {
 	$asterisk -rx 'core stop now'
-	service asterisk start
+	service asterisk stop
 }
 
 setup

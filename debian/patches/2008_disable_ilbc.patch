@@ -1,17 +1,19 @@
 Description: disable building codec_ilbc
- As we have to strip the ilbc code from asterisk, we need to disable
- building codec_ilbc and cleaning the ilbc/ directory.
+ As we have to strip the ilbc code from asterisk,
+ we need to disable building codec_ilbc
+ and cleaning the ilbc/ directory.
  .
  Patch needs to be cleaned-up to be uploaded upstream.
  .
- FIXME: module now seems to potentially use libilbc. If it can be
- packaged into Debian, no reason to remove it.
+ FIXME: module now seems to potentially use libilbc.
+ If it can be packaged into Debian, no reason to remove it.
 Author: Tzafrir Cohen <tzafrir@debian.org>
 Bug-Debian: https://bugs.debian.org/665938
 Bug-Debian: https://bugs.debian.org/665937
 Forwarded-Upstream: no
-Last-Update: 2016-03-19
-
+Last-Update: 2022-01-22
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/codecs/codec_ilbc.c
 +++ b/codecs/codec_ilbc.c
 @@ -27,6 +27,7 @@
@@ -24,7 +26,7 @@ Last-Update: 2016-03-19
  
 --- a/codecs/Makefile
 +++ b/codecs/Makefile
-@@ -27,7 +27,6 @@ LIBLPC10 := $(SUB_LPC10)/liblpc10.a
+@@ -27,7 +27,6 @@
  
  SUB_DIRS := \
  	$(SUB_GSM) \

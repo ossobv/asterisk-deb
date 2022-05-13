@@ -1,0 +1,16 @@
+Description: avoid non-free PJPROJECT audio device driver bdimad
+Author: Jonas Smedegaard <dr@jones.dk>
+Last-Update: 2022-01-22
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/Xpjproject/pjmedia/build/Makefile
++++ b/Xpjproject/pjmedia/build/Makefile
+@@ -91,7 +91,7 @@
+ export PJMEDIA_AUDIODEV_SRCDIR = ../src/pjmedia-audiodev
+ export PJMEDIA_AUDIODEV_OBJS +=  audiodev.o audiotest.o errno.o \
+ 				 legacy_dev.o null_dev.o pa_dev.o wmme_dev.o \
+-				 alsa_dev.o bb10_dev.o bdimad_dev.o \
++				 alsa_dev.o bb10_dev.o \
+ 				 android_jni_dev.o opensl_dev.o oboe_dev.o
+ export PJMEDIA_AUDIODEV_CFLAGS += $(_CFLAGS)
+ export PJMEDIA_AUDIODEV_CXXFLAGS += $(_CXXFLAGS)

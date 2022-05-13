@@ -1,16 +1,17 @@
 Description: Avoid downloading extra sound files
- Asterisk configures several sound files to be installed that are not
- included in the distribution tarball. Those files are downloaded by the
- 'install' target.
+ Asterisk configures several sound files to be installed
+ that are not included in the distribution tarball.
+ Those files are downloaded by the 'install' target.
  .
- The exact files to be downloaded is configurable. Here we change the
- default to avoid downloading any. We believe those should be part of a
- separate source package (as they rarely change, and have their own
- versioning).
+ The exact files to be downloaded is configurable.
+ Here we change the default to avoid downloading any.
+ We believe those should be part of a separate source package
+ (as they rarely change, and have their own versioning).
 Author: Tzafrir Cohen <tzafrir.cohen@xorcom.com>
 Forwarded: no
-Last-Update: 2016-04-02
-
+Last-Update: 2022-01-22
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/sounds/sounds.xml
 +++ b/sounds/sounds.xml
 @@ -10,7 +10,6 @@

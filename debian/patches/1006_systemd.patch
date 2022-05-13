@@ -1,12 +1,13 @@
 Description: A systemd service
- Do away with safe_asterisk. But try very hard to let live_ast work with
- it.
+ Do away with safe_asterisk,
+ but try very hard to let live_ast work with it.
 Author: Tzafrir Cohen <tzafrir@debian.org>
-Last-Update: 2016-04-02
-
+Last-Update: 2022-01-22
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/contrib/scripts/live_ast
 +++ b/contrib/scripts/live_ast
-@@ -175,6 +175,43 @@ gen_live_conf() {
+@@ -175,6 +175,43 @@
    | sed  -e '/^#* \(Begin\|End\) Samples/d' >"$LIVE_CONF"
  }
  
@@ -50,7 +51,7 @@ Last-Update: 2016-04-02
  # (re?)generate the ./live/asterisk wrapper script
  gen_live_asterisk() {
    cat <<EOF >"$BASE_DIR/asterisk"
-@@ -244,6 +281,7 @@ EOF
+@@ -244,6 +281,7 @@
    chmod +x "$BASE_DIR/asterisk"
    # Generate a sample config file for live_ast itself:
    gen_live_conf
@@ -96,11 +97,11 @@ Last-Update: 2016-04-02
 +RestartSec=1
 +WorkingDirectory=__ASTERISK_VARLIB_DIR__
 +
-+# Asterisk handles its own log files. Don't clutter journal/ryslog with
-+# additional (ansi-colored) data. (-q is not quiet, -n silences color even for
-+# attached rasterisk.)
++# The following two lines are by default set to null so as to avoid
++# unnecessary console output to syslog. However, if you to, you can
++# further edit /etc/asterisk/logger.conf to log output to syslog.
 +StandardOutput=null
-+StandardError=journal
++StandardError=null
 +
 +# Extra settings:
 +# If you want to set them, you can add them to a file in the directory
@@ -139,7 +140,7 @@ Last-Update: 2016-04-02
 +WantedBy=multi-user.target
 --- a/Makefile
 +++ b/Makefile
-@@ -895,6 +895,8 @@ install-logrotate:
+@@ -895,6 +895,8 @@
  	rm -f contrib/scripts/asterisk.logrotate.tmp
  
  config:

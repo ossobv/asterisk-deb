@@ -1,16 +1,15 @@
-From: Tzafrir Cohen <tzafrir@debian.org>
 Description: Enable the test framework
-Last-Update: 2016-12-23
+ Test modules are normally only enabled in development mode.
+ This patch enables them without the need to enable dev-mode.
+ .
+ The modules provide simple tests. Try: asterisk -rx 'test execute all'
+ .
+ Those modules should not be confused with the tests in the asterisk-testsute package.
+Author: Tzafrir Cohen <tzafrir@debian.org>
 Forwarded: no
-
-Test modules are normally only enabled in development mode. This patch
-enables them without the need to enable dev-mode.
-
-The modules provide simple tests. Try: asterisk -rx 'test execute all'
-
-Those modules should not be confused with the tests in the
-asterisk-testsute package.
-
+Last-Update: 2022-01-22
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/build_tools/cflags-devmode.xml
 +++ b/build_tools/cflags-devmode.xml
 @@ -21,7 +21,4 @@
@@ -24,7 +23,7 @@ asterisk-testsute package.
 --- a/build_tools/cflags.xml
 +++ b/build_tools/cflags.xml
 @@ -128,4 +128,8 @@
- 			<defaultenabled>no</defaultenabled>
+ 			<defaultenabled>yes</defaultenabled>
  			<depend>native_arch</depend>
  		</member>
 +		<member name="TEST_FRAMEWORK" displayname="Enable Test Framework API">

@@ -14,8 +14,8 @@
 # Provides:          asterisk
 # Required-Start:    $remote_fs
 # Required-Stop:     $remote_fs
-# Should-Start:      $syslog $network $named mysql postgresql dahdi
-# Should-Stop:       $syslog $network $named mysql postgresql
+# Should-Start:      $syslog $network $named mariadb postgresql dahdi
+# Should-Stop:       $syslog $network $named mariadb postgresql
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Asterisk PBX

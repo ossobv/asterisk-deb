@@ -1,3 +1,3 @@
 # Plugins
-asterisk-modules binary: library-not-linked-against-libc usr/lib/asterisk/modules/*
-asterisk-modules binary: shared-lib-without-dependency-information usr/lib/asterisk/modules/*
+asterisk-modules binary: library-not-linked-against-libc usr/lib/*/asterisk/modules/*
+asterisk-modules binary: shared-library-lacks-prerequisites usr/lib/*/asterisk/modules/*

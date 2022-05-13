@@ -1,17 +1,20 @@
 Description: Modernize autotools FFmpeg linking
- FFmpeg is a _family_ of libraries sharing an optional base subdir. That
- is not properly reflected in the autoconf detection logic, and makes it
- impossible to handle alternate location - e.g. when using Libav.
+ FFmpeg is a _family_ of libraries sharing an optional base subdir.
+ That is not properly reflected in the autoconf detection logic,
+ and makes it impossible to handle alternate location -
+ e.g. when using Libav.
  .
- This patch queries pkg-config, used with recent FFmpeg, for files
- "libavcodec" and "libswscale", the family members currently used.
+ This patch queries pkg-config, used with recent FFmpeg,
+ for files "libavcodec" and "libswscale",
+ the family members currently used.
 Author: Jonas Smedegaard <dr@jones.dk>
-Bug-Debian: http://bugs.debian.org/531728
-Last-Update: 2016-04-02
-
+Bug-Debian: https://bugs.debian.org/531728
+Last-Update: 2022-01-22
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
 --- a/configure.ac
 +++ b/configure.ac
-@@ -537,7 +537,7 @@ AST_EXT_LIB_SETUP([COROSYNC], [Corosync]
+@@ -534,7 +534,7 @@
  AST_EXT_LIB_SETUP_OPTIONAL([COROSYNC_CFG_STATE_TRACK], [A callback only in corosync 1.x], [COROSYNC], [cfg])
  AST_EXT_LIB_SETUP([CRYPT], [password and data encryption], [crypt])
  AST_EXT_LIB_SETUP([DAHDI], [DAHDI], [dahdi])
@@ -20,7 +23,7 @@ Last-Update: 2016-04-02
  AST_EXT_LIB_SETUP([GSM], [External GSM], [gsm], [, use 'internal' GSM otherwise])
  AST_EXT_LIB_SETUP([ILBC], [System iLBC], [ilbc], [, use 'internal' iLBC otherwise])
  AST_EXT_LIB_SETUP([GTK2], [gtk2], [gtk2])
-@@ -2870,7 +2870,18 @@ AST_C_DEFINE_CHECK([SO_NOSIGPIPE], [SO_N
+@@ -2821,7 +2821,18 @@
  
  AST_EXT_TOOL_CHECK([SDL], [sdl-config])
  AST_EXT_LIB_CHECK([SDL_IMAGE], [SDL_image], [IMG_Load], [SDL_image.h], [${SDL_LIB}], [${SDL_INCLUDE}])
