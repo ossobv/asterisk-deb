@@ -1,9 +1,9 @@
-asterisk (1:16.26.0-0osso0+deb11) bullseye; urgency=medium
+asterisk (1:16.26.0-0osso1+DEBDIST) stable; urgency=medium
 
   * OSSO build of 16.26.0 (with gn patches)
-  * Refreshes: codec_amr.patch, but codec_amr.so is/was not enabled.
+  * Refreshes various patches, removes debian vp8 patch.
 
- -- Walter Doekes (work) <wjdoekes@osso.nl>  Fri, 13 May 2022 11:19:27 +0200
+ -- Walter Doekes (work) <wjdoekes@osso.nl>  Fri, 13 May 2022 14:26:35 +0200
 
 asterisk (1:16.17.0-0osso1+deb10) buster; urgency=medium
 

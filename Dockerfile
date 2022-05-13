@@ -30,22 +30,19 @@ RUN printf "%s\n" \
     >~/.quiltrc
 
 # Import ARGs
-ARG osdistro=debian
-ARG osdistshort=deb
-ARG oscodename=buster
-ARG upname=asterisk
-ARG upversion=16.26.0
-ARG debepoch=1:
-ARG debversion=0osso0
+ARG osdistro=debian osdistshort=deb oscodename=buster \
+    upname=asterisk upversion=16.17.0 debepoch=1: debversion=0osso0
 
 # Copy debian dir, check version
 RUN mkdir -p /build/debian
 COPY debian/changelog /build/debian/changelog
-RUN . /etc/os-release && \
+RUN . /etc/os-release && cd /build && \
+    sed -i -e "1s/+DEBDIST/+${osdistshort}${VERSION_ID}/" debian/changelog && \
+    sed -i -e "1s/) stable;/) ${oscodename};/" debian/changelog && \
     fullversion="${upversion}-${debversion}+${osdistshort}${VERSION_ID}" && \
     expected="${upname} (${debepoch}${fullversion}) ${oscodename}; urgency=medium" && \
-    head -n1 /build/debian/changelog && \
-    if test "$(head -n1 /build/debian/changelog)" != "${expected}"; \
+    head -n1 debian/changelog && \
+    if test "$(head -n1 debian/changelog)" != "${expected}"; \
     then echo "${expected}  <-- mismatch" >&2; false; fi
 
 # Set up upstream source, move debian dir and jump into dir.
@@ -74,6 +71,9 @@ RUN apt-get update -q && cd /tmp && \
 # Build.
 WORKDIR "/build/${upname}-${upversion}"
 COPY debian debian
+RUN . /etc/os-release && \
+    sed -i -e "1s/+DEBDIST/+${osdistshort}${VERSION_ID}/" debian/changelog && \
+    sed -i -e "1s/) stable;/) ${oscodename};/" debian/changelog
 # Always succeed (|| true) so we can examine failed results. There are
 # checks hereafter anyway.
 ARG forcebuild=
