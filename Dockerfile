@@ -74,7 +74,10 @@ RUN apt-get update -q && cd /tmp && \
 # Build.
 WORKDIR "/build/${upname}-${upversion}"
 COPY debian debian
-RUN DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc -sa
+# Always succeed (|| true) so we can examine failed results. There are
+# checks hereafter anyway.
+ARG forcebuild=
+RUN DEB_BUILD_OPTIONS=parallel=6 dpkg-buildpackage -us -uc -sa || true
 
 # Do linker checks:
 # (debian/tmp holds everything, debian/asterisk-modules only the modules
