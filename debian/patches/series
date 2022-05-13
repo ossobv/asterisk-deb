@@ -43,5 +43,3 @@ queue-realtime-fixes_AST-116.patch
 add_PickupOld1v4_app-ASTERISK-26464.patch
 add_ara_variable_options_column-ASTERISK-16501.patch
 add_rtstatic_ara_option_and_fix_queue_inuse-ASTERISK-nofwd.patch
-
-vp8.patch
