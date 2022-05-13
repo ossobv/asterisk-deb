@@ -6,11 +6,11 @@ This easer customer upgrade paths.
 
 --- a/apps/app_meetme.c
 +++ b/apps/app_meetme.c
-@@ -31,7 +31,6 @@
+@@ -40,7 +40,6 @@
  
  /*** MODULEINFO
  	<depend>dahdi</depend>
 -	<defaultenabled>no</defaultenabled>
  	<support_level>extended</support_level>
  	<replacement>app_confbridge</replacement>
-  ***/
+ 	<deprecated_in>19</deprecated_in>

@@ -13,7 +13,7 @@ asterisk-testsute package.
 
 --- a/build_tools/cflags-devmode.xml
 +++ b/build_tools/cflags-devmode.xml
-@@ -24,7 +24,4 @@
+@@ -21,7 +21,4 @@
  		<member name="THREAD_CRASH" displayname="Crash on mutex errors">
  			<support_level>extended</support_level>
  		</member>
@@ -23,7 +23,7 @@ asterisk-testsute package.
  	</category>
 --- a/build_tools/cflags.xml
 +++ b/build_tools/cflags.xml
-@@ -101,4 +101,8 @@
+@@ -128,4 +128,8 @@
  			<defaultenabled>no</defaultenabled>
  			<depend>native_arch</depend>
  		</member>

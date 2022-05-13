@@ -7,7 +7,7 @@ Don't add -march=native to standard CFLAGS. We need a generic binary.
 
 --- a/build_tools/cflags.xml
 +++ b/build_tools/cflags.xml
-@@ -134,7 +134,7 @@
+@@ -125,7 +125,7 @@
  		</member>
  		<member name="BUILD_NATIVE" displayname="Allow compiler to generate code optimized for the CPU on which the build is performed.">
  			<support_level>core</support_level>

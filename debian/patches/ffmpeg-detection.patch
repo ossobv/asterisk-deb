@@ -9,20 +9,18 @@ Author: Jonas Smedegaard <dr@jones.dk>
 Bug-Debian: http://bugs.debian.org/531728
 Last-Update: 2016-04-02
 
-Index: asterisk-16.11.1/configure.ac
-===================================================================
---- asterisk-16.11.1.orig/configure.ac
-+++ asterisk-16.11.1/configure.ac
-@@ -483,7 +483,7 @@ AST_EXT_LIB_SETUP([CRYPTO], [OpenSSL Cry
- AST_EXT_LIB_SETUP_OPTIONAL([OPENSSL_SRTP], [OpenSSL SRTP Extension Support], [CRYPTO], [crypto])
- AST_EXT_LIB_SETUP_OPTIONAL([OPENSSL_BIO_METHOD], [OpenSSL BIO Method Support], [CRYPTO], [crypto])
+--- a/configure.ac
++++ b/configure.ac
+@@ -537,7 +537,7 @@ AST_EXT_LIB_SETUP([COROSYNC], [Corosync]
+ AST_EXT_LIB_SETUP_OPTIONAL([COROSYNC_CFG_STATE_TRACK], [A callback only in corosync 1.x], [COROSYNC], [cfg])
+ AST_EXT_LIB_SETUP([CRYPT], [password and data encryption], [crypt])
  AST_EXT_LIB_SETUP([DAHDI], [DAHDI], [dahdi])
 -AST_EXT_LIB_SETUP([FFMPEG], [Ffmpeg and avcodec], [avcodec])
 +AST_EXT_LIB_SETUP([FFMPEG], [FFmpeg (avcodec and swscale)], [ffmpeg])
  AST_EXT_LIB_SETUP([GSM], [External GSM], [gsm], [, use 'internal' GSM otherwise])
  AST_EXT_LIB_SETUP([ILBC], [System iLBC], [ilbc], [, use 'internal' iLBC otherwise])
  AST_EXT_LIB_SETUP([GTK2], [gtk2], [gtk2])
-@@ -2816,7 +2816,18 @@ AST_C_DEFINE_CHECK([SO_NOSIGPIPE], [SO_N
+@@ -2870,7 +2870,18 @@ AST_C_DEFINE_CHECK([SO_NOSIGPIPE], [SO_N
  
  AST_EXT_TOOL_CHECK([SDL], [sdl-config])
  AST_EXT_LIB_CHECK([SDL_IMAGE], [SDL_image], [IMG_Load], [SDL_image.h], [${SDL_LIB}], [${SDL_INCLUDE}])

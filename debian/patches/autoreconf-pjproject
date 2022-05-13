@@ -8,8 +8,8 @@ Author: Bernhard Schmidt <berni@debian.org>
 Last-Update: 2018-12-21
 --- a/third-party/pjproject/Makefile
 +++ b/third-party/pjproject/Makefile
-@@ -100,6 +100,11 @@
- 	@mv pjproject-$(PJPROJECT_VERSION) source
+@@ -102,6 +102,11 @@ source/.unpacked: $(DOWNLOAD_DIR)/$(TARB
+ 		mv pjproject-$(PJPROJECT_VERSION) source
  	$(ECHO_PREFIX) Applying patches "$(realpath patches)" "$(realpath .)/source"
  	$(CMD_PREFIX) ../apply_patches $(QUIET_CONFIGURE) "$(realpath patches)" "$(realpath .)/source"
 +	# Debian patch: Update autoconf files to support newer architectures
@@ -19,4 +19,4 @@ Last-Update: 2018-12-21
 +	# End Debian patch
  	-@touch source/.unpacked
  
- source/version.mak: source/.unpacked
+ source/user.mak: $(if $(PJPROJECT_BUNDLED_OOT),,source/.unpacked) patches/user.mak

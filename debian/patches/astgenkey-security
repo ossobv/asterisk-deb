@@ -7,7 +7,7 @@ Last-Update: 2016-03-19
 
 --- a/contrib/scripts/astgenkey
 +++ b/contrib/scripts/astgenkey
-@@ -47,7 +47,11 @@
+@@ -47,7 +47,11 @@ done
  rm -f ${KEY}.key ${KEY}.pub
  
  echo "Generating SSL key '$KEY': "

@@ -528,7 +528,7 @@ Last-Update: 2016-08-29
 +}
 --- a/configure.ac
 +++ b/configure.ac
-@@ -471,6 +471,9 @@ THIRD_PARTY_CONFIGURE()
+@@ -522,6 +522,9 @@ THIRD_PARTY_CONFIGURE()
  # to make things easier for the users.
  
  AST_EXT_LIB_SETUP([ALSA], [Advanced Linux Sound Architecture], [asound])
@@ -538,7 +538,7 @@ Last-Update: 2016-08-29
  AST_EXT_LIB_SETUP([BFD], [Debug symbol decoding], [bfd])
  
  # BKTR is used for backtrace support on platforms that do not
-@@ -1550,6 +1553,10 @@ fi
+@@ -1607,6 +1610,10 @@ fi
  
  AST_EXT_LIB_CHECK([ALSA], [asound], [snd_pcm_open], [alsa/asoundlib.h])
  
@@ -592,7 +592,7 @@ Last-Update: 2016-08-29
   * \retval 0 success
 --- a/main/codec_builtin.c
 +++ b/main/codec_builtin.c
-@@ -911,6 +911,54 @@ static struct ast_codec silk24 = {
+@@ -912,6 +912,54 @@ static struct ast_codec silk24 = {
  	.samples_count = silk_samples
  };
  
@@ -647,7 +647,7 @@ Last-Update: 2016-08-29
  #define CODEC_REGISTER_AND_CACHE(codec) \
  	({ \
  		int __res_ ## __LINE__ = 0; \
-@@ -943,6 +991,9 @@ int ast_codec_builtin_init(void)
+@@ -944,6 +992,9 @@ int ast_codec_builtin_init(void)
  {
  	int res = 0;
  
@@ -699,7 +699,7 @@ Last-Update: 2016-08-29
  	} else if (!strcmp(name, "png")) {
 --- a/main/rtp_engine.c
 +++ b/main/rtp_engine.c
-@@ -3683,6 +3683,9 @@ int ast_rtp_engine_init(void)
+@@ -3676,6 +3676,9 @@ int ast_rtp_engine_init(void)
  	set_next_mime_type(ast_format_vp8, 0,  "video", "VP8", 90000);
  	set_next_mime_type(ast_format_vp9, 0, "video", "VP9", 90000);
  
@@ -709,7 +709,7 @@ Last-Update: 2016-08-29
  	/* Define the static rtp payload mappings */
  	add_static_payload(0, ast_format_ulaw, 0);
  	#ifdef USE_DEPRECATED_G726
-@@ -3744,6 +3747,9 @@ int ast_rtp_engine_init(void)
+@@ -3737,6 +3740,9 @@ int ast_rtp_engine_init(void)
  	add_static_payload(127, ast_format_slin96, 0);
  	/* payload types above 127 are not valid */
  
@@ -721,7 +721,7 @@ Last-Update: 2016-08-29
  	debug_category_rtcp_id = ast_debug_category_register(AST_LOG_CATEGORY_RTCP);
 --- a/makeopts.in
 +++ b/makeopts.in
-@@ -130,6 +130,13 @@ AST_FORTIFY_SOURCE=@AST_FORTIFY_SOURCE@
+@@ -132,6 +132,13 @@ AST_FORTIFY_SOURCE=@AST_FORTIFY_SOURCE@
  ALSA_INCLUDE=@ALSA_INCLUDE@
  ALSA_LIB=@ALSA_LIB@
  

@@ -24,7 +24,7 @@ Last-Update: 2016-03-19
  
 --- a/codecs/Makefile
 +++ b/codecs/Makefile
-@@ -27,7 +27,6 @@
+@@ -27,7 +27,6 @@ LIBLPC10 := $(SUB_LPC10)/liblpc10.a
  
  SUB_DIRS := \
  	$(SUB_GSM) \

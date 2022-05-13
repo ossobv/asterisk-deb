@@ -34,9 +34,9 @@ ARG osdistro=debian
 ARG osdistshort=deb
 ARG oscodename=buster
 ARG upname=asterisk
-ARG upversion=16.17.0
+ARG upversion=16.26.0
 ARG debepoch=1:
-ARG debversion=0osso1
+ARG debversion=0osso0
 
 # Copy debian dir, check version
 RUN mkdir -p /build/debian

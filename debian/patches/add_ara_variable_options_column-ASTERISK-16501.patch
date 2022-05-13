@@ -7,7 +7,7 @@ Bug: https://issues.asterisk.org/jira/browse/ASTERISK-16501
 
 --- a/main/config.c
 +++ b/main/config.c
-@@ -3246,6 +3246,33 @@ struct ast_variable *ast_load_realtime_a
+@@ -3340,6 +3340,33 @@ struct ast_variable *ast_load_realtime_a
  	for (i = 1; ; i++) {
  		if ((eng = find_engine(family, i, db, sizeof(db), table, sizeof(table)))) {
  			if (eng->realtime_func && (res = eng->realtime_func(db, table, fields))) {
@@ -41,7 +41,7 @@ Bug: https://issues.asterisk.org/jira/browse/ASTERISK-16501
  				return res;
  			}
  		} else {
-@@ -3406,6 +3433,12 @@ struct ast_config *ast_load_realtime_mul
+@@ -3503,6 +3530,12 @@ struct ast_config *ast_load_realtime_mul
  	for (i = 1; ; i++) {
  		if ((eng = find_engine(family, i, db, sizeof(db), table, sizeof(table)))) {
  			if (eng->realtime_multi_func && (res = eng->realtime_multi_func(db, table, fields))) {

@@ -17,7 +17,7 @@ Last-Update: 2016-03-19
 
 --- a/apps/Makefile
 +++ b/apps/Makefile
-@@ -15,6 +15,8 @@
+@@ -15,6 +15,8 @@ MODULE_PREFIX=app
  MENUSELECT_CATEGORY=APPS
  MENUSELECT_DESCRIPTION=Applications
  
@@ -26,7 +26,7 @@ Last-Update: 2016-03-19
  MENUSELECT_OPTS_app_directory:=$(MENUSELECT_OPTS_app_voicemail)
  ifneq ($(findstring ODBC_STORAGE,$(MENUSELECT_OPTS_app_voicemail)),)
    MENUSELECT_DEPENDS_app_voicemail+=$(MENUSELECT_DEPENDS_ODBC_STORAGE)
-@@ -25,6 +27,24 @@
+@@ -25,6 +27,24 @@ endif
  
  all: _all
  
@@ -53,7 +53,7 @@ Last-Update: 2016-03-19
  $(call MOD_ADD_C,app_confbridge,$(wildcard confbridge/*.c))
 --- a/Makefile.moddir_rules
 +++ b/Makefile.moddir_rules
-@@ -29,7 +29,7 @@
+@@ -29,7 +29,7 @@ include $(ASTTOPDIR)/Makefile.rules
  # Use MODULE_EXCLUDE to specify additional modules to exclude.
  
  ifneq ($(MODULE_PREFIX),)

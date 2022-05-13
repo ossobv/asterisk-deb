@@ -20,14 +20,16 @@ osdistro=${oscodename%/*}   # debian (or ubuntu)
 oscodename=${oscodename#*/} # stretch (or bionic)
 osdistshort=${osdistro:0:3} # deb (or ubu)
 case $osdistro/$oscodename in
-debian/buster)  oscodenum=10;;
-debian/stretch) oscodenum=9;;
-debian/jessie)  oscodenum=8;;
-debian/wheezy)  oscodenum=7;;
-ubuntu/focal)   oscodenum=20.04;;
-ubuntu/bionic)  oscodenum=18.04;;
-ubuntu/xenial)  oscodenum=16.04;;
-ubuntu/trusty)  oscodenum=14.04;;
+debian/bullseye) oscodenum=11;;
+debian/buster)   oscodenum=10;;
+debian/stretch)  oscodenum=9;;
+debian/jessie)   oscodenum=8;;
+debian/wheezy)   oscodenum=7;;
+ubuntu/jammy)    oscodenum=22.04;;
+ubuntu/focal)    oscodenum=20.04;;
+ubuntu/bionic)   oscodenum=18.04;;
+ubuntu/xenial)   oscodenum=16.04;;
+ubuntu/trusty)   oscodenum=14.04;;
 *) echo "ERROR: undefined OS: $osdistro/$oscodename" >&2 && exit 1
 esac
 _shortver=$osdistshort$oscodenum

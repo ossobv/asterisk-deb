@@ -171,7 +171,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  }
 --- a/include/asterisk/channel.h
 +++ b/include/asterisk/channel.h
-@@ -2883,6 +2883,30 @@ struct ast_channel_iterator;
+@@ -2922,6 +2922,30 @@ struct ast_channel_iterator;
  struct ast_channel_iterator *ast_channel_iterator_destroy(struct ast_channel_iterator *i);
  
  /*!
@@ -204,7 +204,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
   * \param exten The extension that channels must be in
 --- a/main/channel.c
 +++ b/main/channel.c
-@@ -1322,6 +1322,29 @@ static int ast_channel_by_name_cb(void *
+@@ -1320,6 +1320,29 @@ static int ast_channel_by_name_cb(void *
  	return ret;
  }
  
@@ -234,7 +234,7 @@ Add PickupOld1v4() application that behaves like Pickup() in Asterisk 1.4.
  static int ast_channel_by_exten_cb(void *obj, void *arg, void *data, int flags)
  {
  	struct ast_channel *chan = obj;
-@@ -1384,6 +1407,30 @@ struct ast_channel_iterator *ast_channel
+@@ -1382,6 +1405,30 @@ struct ast_channel_iterator *ast_channel
  	return NULL;
  }
  

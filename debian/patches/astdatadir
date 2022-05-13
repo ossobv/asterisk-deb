@@ -10,7 +10,7 @@ Last-Update: 2016-03-19
 
 --- a/configure.ac
 +++ b/configure.ac
-@@ -51,7 +51,7 @@
+@@ -41,7 +41,7 @@ AC_SUBST([astlibdir],         ['${libdir
  AC_SUBST([astmoddir],         ['${libdir}/asterisk/modules'])dnl
  AC_SUBST([astmandir],         ['${mandir}'])dnl
  AC_SUBST([astvarlibdir],      ['${localstatedir}/lib/asterisk'])dnl

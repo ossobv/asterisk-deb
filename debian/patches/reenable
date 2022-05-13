@@ -11,8 +11,8 @@ Last-Update: 2016-03-19
 -	<defaultenabled>no</defaultenabled>
 +	<defaultenabled>yes</defaultenabled>
  	<support_level>deprecated</support_level>
-  ***/
- 
+ 	<deprecated_in>16</deprecated_in>
+ 	<removed_in>19</removed_in>
 --- a/channels/chan_mgcp.c
 +++ b/channels/chan_mgcp.c
 @@ -34,7 +34,6 @@
@@ -21,5 +21,5 @@ Last-Update: 2016-03-19
  /*** MODULEINFO
 -        <use type="module">res_pktccops</use>
  	<support_level>extended</support_level>
-  ***/
- 
+ 	<deprecated_in>19</deprecated_in>
+ 	<removed_in>21</removed_in>

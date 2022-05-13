@@ -19,7 +19,7 @@ Last-Update: 2016-03-19
 -	<defaultenabled>no</defaultenabled>
  	<support_level>deprecated</support_level>
  	<replacement>func_odbc</replacement>
-  ***/
+ 	<deprecated_in>1.8</deprecated_in>
 --- a/addons/chan_mobile.c
 +++ b/addons/chan_mobile.c
 @@ -36,7 +36,6 @@
@@ -59,7 +59,7 @@ Last-Update: 2016-03-19
 -	<defaultenabled>no</defaultenabled>
  	<support_level>deprecated</support_level>
  	<replacement>cdr_adaptive_odbc</replacement>
-  ***/
+ 	<deprecated_in>1.8</deprecated_in>
 --- a/addons/format_mp3.c
 +++ b/addons/format_mp3.c
 @@ -28,7 +28,6 @@

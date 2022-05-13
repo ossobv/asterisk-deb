@@ -75,7 +75,7 @@ Realtime queue views:
 
 --- a/apps/app_queue.c
 +++ b/apps/app_queue.c
-@@ -2449,7 +2449,9 @@ static void update_status(struct call_qu
+@@ -2582,7 +2582,9 @@ static void update_status(struct call_qu
  		 * information. If they are currently in a call then the leg to the agent will be
  		 * considered done and the call finished.
  		 */
@@ -86,7 +86,7 @@ Realtime queue views:
  			update_queue(q, m, m->callcompletedinsl, m->starttime);
  		}
  
-@@ -4286,7 +4288,8 @@ static void hangupcalls(struct queue_ent
+@@ -4475,7 +4477,8 @@ static void hangupcalls(struct queue_ent
  			 * dialed we explicitly remove them from the pending members
  			 * container so that subsequent call attempts occur.
  			 */
@@ -96,7 +96,7 @@ Realtime queue views:
  				pending_members_remove(outgoing->member);
  			}
  
-@@ -8679,7 +8682,7 @@ static int queue_function_mem_read(struc
+@@ -8984,7 +8987,7 @@ static int queue_function_mem_read(struc
  			mem_iter = ao2_iterator_init(q->members, 0);
  			while ((m = ao2_iterator_next(&mem_iter))) {
  				/* Count the agents who are logged in and presently answering calls */
@@ -105,7 +105,7 @@ Realtime queue views:
  					count++;
  				}
  				ao2_ref(m, -1);
-@@ -8691,7 +8694,7 @@ static int queue_function_mem_read(struc
+@@ -8996,7 +8999,7 @@ static int queue_function_mem_read(struc
  			mem_iter = ao2_iterator_init(q->members, 0);
  			while ((m = ao2_iterator_next(&mem_iter))) {
  				/* Count the agents who are logged in, not paused and not wrapping up */
