@@ -1,3 +1,17 @@
+asterisk (1:18.12.0-0osso0+DEBDIST) stable; urgency=medium
+
+  * OSSO build of 18.12.0 (with gn patches); initial test.
+  * We've taken most of the debian/latest branch from Salsa.
+  * We dropped DFSG pjproject, in favor of the Asterisk built in one.
+  * We added mp3 through the original addons scheme, instead of (X)mp3.
+  * We're missing: (X)amr, (X)opus. This might need fixing.
+  * IMPORTANT:
+    - The voicemail modules are now _all_ in asterisk-modules. But the
+      alternative builds (odbc, imap) are called app_voicemail_odbc.so and
+      app_voicemail_imap.so respectively.
+
+ -- Walter Doekes (work) <wjdoekes@osso.nl>  Mon, 16 May 2022 15:29:43 +0200
+
 asterisk (1:16.26.0-0osso1+DEBDIST) stable; urgency=medium
 
   * OSSO build of 16.26.0 (with gn patches)
