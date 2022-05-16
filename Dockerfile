@@ -15,7 +15,18 @@ RUN sed -i -e 's://[^/]*/\(debian\|ubuntu\)://apt.osso.nl/\1:' \
 #RUN printf 'deb http://PPA/ubuntu xenial COMPONENT\n\
 #deb-src http://PPA/ubuntu xenial COMPONENT\r\n' >/etc/apt/sources.list.d/osso-ppa.list
 #RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 0xBEAD51B6B36530F5
-RUN apt-get update -q && apt-get install -y apt-utils && apt-get dist-upgrade -y
+RUN apt-get update -q && apt-get install -y apt-utils eatmydata && \
+    LD_PRELOAD=libeatmydata.so apt-get dist-upgrade -y
+# Without libeatmydata.so
+#   real  10m21.511s
+#   user   0m2.435s
+#   sys    0m2.532s
+# With libeatmydata.so
+#   real  10m14.440s
+#   user   0m2.487s
+#   sys    0m2.489s
+# We can probably do without this fix, I see..
+ENV LD_PRELOAD libeatmydata.so
 RUN apt-get update -q && apt-get install -y \
       bzip2 ca-certificates curl git eatmydata \
       build-essential dh-autoreconf devscripts dpkg-dev equivs quilt
