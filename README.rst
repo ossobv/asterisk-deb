@@ -11,7 +11,7 @@ the necessary ``*.deb`` files. See detailed instructions below.
 Much thanks to the Debian team for creating the initial files and
 sharing them! The starting point for for this ``debian/`` dir is
 taken from the `Debian AnonSCM repository
-<http://anonscm.debian.org/cgit/pkg-voip/asterisk.git>`_.
+<https://salsa.debian.org/pkg-voip-team/asterisk/>`_.
 
 If you're happy with these files without any additional changes,
 you can get precompiled binary packages from the *OSSO ppa*
@@ -27,14 +27,27 @@ Building with Docker
     $ ./build.sh
     ...
 
-    $ find ./dist
+    $ find Dockerfile.out -type d -name 'asterisk_*' | sort
     ...
-    ./dist/jessie/asterisk_11.25.3-0osso1+deb8/asterisk_11.25.3-0osso1+deb8_amd64.changes
-    ./dist/jessie/asterisk_11.25.3-0osso1+deb8/asterisk_11.25.3-0osso1+deb8_amd64.deb
+    Dockerfile.out/bullseye/asterisk_16.26.0-0osso0+deb11
+    Dockerfile.out/bullseye/asterisk_16.26.0-0osso1+deb11
+    Dockerfile.out/buster/asterisk_16.13.0-0osso1+deb10
+    Dockerfile.out/buster/asterisk_16.17.0-0osso1+deb10
     ...
 
-That should be enough to get the debian packages. For verbose building,
-see below:
+    $ ls Dockerfile.out/bullseye/asterisk_16.26.0-0osso1+deb11
+    asterisk_16.26.0-0osso1+deb11_amd64.buildinfo
+    asterisk_16.26.0-0osso1+deb11_amd64.changes
+    asterisk_16.26.0-0osso1+deb11_amd64.deb
+    asterisk_16.26.0-0osso1+deb11.debian.tar.xz
+    asterisk_16.26.0-0osso1+deb11.dsc
+    asterisk_16.26.0.orig.tar.gz
+    asterisk-config_16.26.0-0osso1+deb11_all.deb
+    asterisk-config-empty_16.26.0-0osso1+deb11_all.deb
+    ...
+
+That should be enough to get the debian packages. For manual building,
+see below. Do note that those docs are somewhat outdated.
 
 
 
@@ -246,8 +259,8 @@ OSSO DOES NOT GUARANTEE THAT THE FILES ARE SANE.
 .. code-block:: console
 
     $ sudo sh -c 'cat >/etc/apt/sources.list.d/osso-ppa-osso.list' <<EOF
-    deb http://ppa.osso.nl/debian jessie osso
-    deb-src http://ppa.osso.nl/debian jessie osso
+    deb http://ppa.osso.nl/debian buster asterisk-18
+    # .. or http://ppa.osso.nl/debian buster asterisk-16
     EOF
     $ wget -qO- https://ppa.osso.nl/support+ppa@osso.nl.gpg | sudo apt-key add -
     $ sudo tee /etc/apt/preferences.d/asterisk >/dev/null << EOF

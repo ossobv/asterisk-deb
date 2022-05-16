@@ -1,1 +1,1 @@
-usr/lib/${DEB_HOST_MULTIARCH}/asterisk/modules/format_mp3.so
+usr/lib/*/asterisk/modules/format_mp3.so

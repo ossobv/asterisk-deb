@@ -10,12 +10,12 @@
 #OSSO_DISABLED#2006_enable_test_framework.patch
 2008_disable_ilbc.patch
 2010_astdatadir.patch
-2011_amr_build_tools.patch
-2012_amr_codec.patch
-2013_mp3.patch
-2014_pjproject_unbreak.patch
-2015_opus.patch
-2016_opus_plc.patch
+#OSSO_DISABLED_FIXME#2011_amr_build_tools.patch
+#OSSO_DISABLED_FIXME#2012_amr_codec.patch
+#OSSO_DISABLED_FIXME#2013_mp3.patch
+#OSSO_DISABLED#2014_pjproject_unbreak.patch
+#OSSO_DISABLED#2015_opus.patch
+#OSSO_DISABLED#2016_opus_plc.patch
 
 # "temp" fix
 enable_old_modules.patch

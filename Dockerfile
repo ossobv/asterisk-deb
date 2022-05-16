@@ -11,14 +11,14 @@ ENV DEBIAN_FRONTEND noninteractive
 # cache.
 RUN echo 'APT::Install-Recommends "0";' >/etc/apt/apt.conf.d/01norecommends
 RUN sed -i -e 's://[^/]*/\(debian\|ubuntu\)://apt.osso.nl/\1:' \
-    /etc/apt/sources.list
+      /etc/apt/sources.list
 #RUN printf 'deb http://PPA/ubuntu xenial COMPONENT\n\
 #deb-src http://PPA/ubuntu xenial COMPONENT\r\n' >/etc/apt/sources.list.d/osso-ppa.list
 #RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 0xBEAD51B6B36530F5
 RUN apt-get update -q && apt-get install -y apt-utils && apt-get dist-upgrade -y
 RUN apt-get update -q && apt-get install -y \
-    bzip2 ca-certificates curl git \
-    build-essential dh-autoreconf devscripts dpkg-dev equivs quilt
+      bzip2 ca-certificates curl git eatmydata \
+      build-essential dh-autoreconf devscripts dpkg-dev equivs quilt
 
 # Set up build env
 RUN printf "%s\n" \
@@ -74,6 +74,19 @@ COPY debian debian
 RUN . /etc/os-release && \
     sed -i -e "1s/+DEBDIST/+${osdistshort}${VERSION_ID}/" debian/changelog && \
     sed -i -e "1s/) stable;/) ${oscodename};/" debian/changelog
+# Extra prerequisites.
+# This is done differently in the Debian salsa version, where Xamr,
+# Xmp3, Xopus and Xpjproject reside as source locations.
+RUN apt-get update -q && apt-get install -qy subversion && \
+    cd /build/${upname}-${upversion} && contrib/scripts/get_mp3_source.sh
+# dh_clean will remove the addons/mp3 which we just fetched. Turn it
+# into a patch file.
+RUN mkdir /tmp/null && \
+    diff -uNrw /tmp/null addons/mp3 | \
+      sed -e 's@^--- /tmp/null@--- a/addons/mp3@;s@^+++ @+++ b/@' \
+      >debian/patches/addons_mp3 && \
+    echo addons_mp3 >>debian/patches/series && \
+    rm -rf addons/mp3
 # Always succeed (|| true) so we can examine failed results. There are
 # checks hereafter anyway.
 ARG forcebuild=
@@ -114,13 +127,13 @@ RUN echo "Install checks:" && cd .. && . /etc/os-release && \
 
 # Application and library version checks:
 RUN asterisk -V | grep -F "${upversion}" && asterisk -V | grep -F "${debversion}"
-RUN objdump -T /usr/lib/libasteriskpj.so.2 | \
+RUN objdump -T /usr/lib/*/libasteriskpj.so.2 | \
     grep '[[:blank:]][.]text[[:blank:]].*[[:blank:]]pj_init$' && \
     # Only if we have asterisk-config (not asterisk-config-empty) can we
     # start asterisk and get info from it.
     if test -f /etc/asterisk/asterisk.conf; then \
     asterisk -cn >/dev/null 2>&1 & p=$!; sleep 2; \
-    asterisk -nrx 'pjsip show version'; asterisk -nrx 'core stop now'; wait; \
+    asterisk -rx 'pjsip show version'; asterisk -rx 'core stop now'; wait; \
     fi
 RUN echo '#include <stdio.h>\nvoid __ast_repl_malloc() {} void __ast_free() {} \
       void ast_pjproject_max_log_level() {} void ast_option_pjproject_log_level() {} \

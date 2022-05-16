@@ -1,6 +1,6 @@
 lib/systemd/system/asterisk.service
 usr/bin/asterisk-config-custom
-usr/lib/${DEB_HOST_MULTIARCH}/libasterisk*
+usr/lib/*/libasterisk*
 usr/sbin
 usr/share/asterisk/conf
 usr/share/asterisk/documentation

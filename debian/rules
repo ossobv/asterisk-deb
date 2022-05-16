@@ -26,14 +26,8 @@ LDFLAGS += -Wl,--as-needed
 
 # Sanity check for a stable release:
 SAVED_ABI_HASH = 1fb7f5c06d7a2052e38d021b3d8ca151
-
-# resolve PJPROJECT version
-PJMAJ = $(shell grep -Po '^export PJ_VERSION_MAJOR\s+:=\s+\K\d+' Xpjproject/version.mak)
-PJMIN = $(shell grep -Po '^export PJ_VERSION_MINOR\s+:=\s+\K\d+' Xpjproject/version.mak)
-PJREV = $(shell grep -Po '^export PJ_VERSION_REV\s+:=\s+\K\d+' Xpjproject/version.mak)
-PJVER := $(PJMAJ)$(if $(PJMIN),.$(PJMIN)$(if $(PJREV),.$(PJREV)))
-
-PJDIR = debian/build-pjproject
+# Different hash for OSSO build:
+SAVED_ABI_HASH = da6642af068ee5e6490c5b1d2cc1d238
 
 # don't let asterisk mess with build flags
 BUILDFLAGS += AST_FORTIFY_SOURCE= DEBUG= OPTIMIZE=
@@ -52,7 +46,7 @@ endif
 ADDONS_ENABLE = app_macro app_voicemail_imap app_voicemail_odbc
 ADDONS_ENABLE += app_mysql res_config_mysql cdr_mysql
 ADDONS_ENABLE += chan_mobile chan_ooh323
-ADDONS_ENABLE += aelparse format_mp3 smsq TEST_FRAMEWORK
+ADDONS_ENABLE += aelparse format_mp3 smsq
 ADDONS_DISABLE = BUILD_NATIVE
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 ADDONS_ENABLE += BETTER_BACKTRACES DEBUG_THREADS
@@ -74,19 +68,16 @@ override_dh_autoreconf:
 	echo $(DEB_VERSION_UPSTREAM_REVISION) > .version
 	dh_autoreconf -- ./bootstrap.sh
 
-execute_before_dh_auto_configure:
+override_dh_auto_configure:
 	chmod 755 debian/dummyprogs/fetch
 	# don't create DSFG-free version of pjproject source (keep upstream)
 
-	cp --force --recursive --target-directory=. Xamr/codecs Xamr/include Xamr/res
+#FIXME: see https://salsa.debian.org/pkg-voip-team/asterisk/-/tree/debian/latest/Xamr
+#	cp --force --recursive --target-directory=. Xamr/codecs Xamr/include Xamr/res
 
-	rm --force addons/mp3
-	mkdir addons/mp3
-	cp --force --target-directory=addons/mp3 Xmp3/*
+#FIXME: see https://salsa.debian.org/pkg-voip-team/asterisk/-/tree/debian/latest/Xopus
+#	cp --force --recursive --target-directory=. Xopus/codecs Xopus/formats
 
-	cp --force --recursive --target-directory=. Xopus/codecs Xopus/formats
-
-override_dh_auto_configure:
 	TMPDIR="$(CURDIR)/$(PJDIR)" $(FETCH_ENV) dh_auto_configure -- \
 		--disable-asteriskssl \
 		--with-gsm \
@@ -96,17 +87,13 @@ override_dh_auto_configure:
 		$(if $(findstring debug,$(DEB_BUILD_OPTIONS)),--enable-dev-mode) \
 		|| { cat config.log; exit 1; }
 
-#		--with-cap \
-
-execute_before_dh_auto_build:
+override_dh_auto_build:
 	$(MAKE) menuselect.makeopts BUILD_CFLAGS="$(CFLAGS)" BUILD_LDFLAGS="$(LDFLAGS)"
 	for module in $(ADDONS_ENABLE); do menuselect/menuselect --enable $$module menuselect.makeopts; done
 	for module in $(ADDONS_DISABLE); do menuselect/menuselect --disable $$module menuselect.makeopts; done
 
-override_dh_auto_build:
 	$(FETCH_ENV) dh_auto_build -- $(BUILDFLAGS)
 
-execute_after_dh_auto_build:
 	# Sanity check: don't break the ABI for modules:
 	@abi_hash=$$(awk -F'"' '/AST_BUILDOPT_SUM/ {print $$2}' \
 	  include/asterisk/buildopts.h); \
@@ -124,13 +111,15 @@ execute_after_dh_auto_build:
 		debian/dh_asterisk.1
 
 SND_FILE=asterisk-core-sounds-en-gsm-1.4.20.tar.gz
-execute_before_dh_clean:
+override_dh_clean:
 	[ ! -r sounds/$(SND_FILE) ] || mv sounds/$($SND_FILE) debian/
 	GREP=grep AWK=awk $(MAKE) distclean
 	[ ! -r debian/$(SND_FILE) ] || mv debian/$(SND_FILE) sounds/
 
 	[ ! -f .version.debian_sav ] || mv .version.debian_sav .version
 	[ ! -f configure.debian_sav ] || mv configure.debian_sav configure
+
+	dh_clean --
 
 override_dh_gencontrol:
 	AST_BUILDOPT_SUM=$$(grep AST_BUILDOPT_SUM include/asterisk/buildopts.h  \
@@ -141,7 +130,7 @@ REMOVED_PROTO_CONFS = dundi mgcp skinny unistim
 REMOVED_PROTO_FILES = $(REMOVED_PROTO_CONFS:%=debian/tmp/etc/asterisk/%.conf)
 SUBPACKS_EXTRA = ooh323 mysql mp3
 ifeq (linux,$(DEB_BUILD_ARCH_OS))
-SUBPACKS_EXTRA += dahdi mobile tests
+SUBPACKS_EXTRA += dahdi mobile
 endif
 SUBPACKS_EXTRA_DIRS = $(SUBPACKS_EXTRA:%=debian/asterisk-%)
 SUBPACKS_EXTRA_DIRS_MOD = $(SUBPACKS_EXTRA_DIRS:%=%/usr/lib/$(DEB_HOST_MULTIARCH)/asterisk/modules)
@@ -149,7 +138,6 @@ SUBPACKS_EXTRA_DIRS_MOD = $(SUBPACKS_EXTRA_DIRS:%=%/usr/lib/$(DEB_HOST_MULTIARCH
 override_dh_auto_install:
 	$(FETCH_ENV) dh_auto_install -- $(BUILDFLAGS) -j1 config samples install-headers
 
-execute_after_dh_auto_install:
 	cp -a configs debian/tmp/usr/share/asterisk/conf
 	$(RM) -f $(REMOVED_PROTO_FILES)
 	mkdir -p debian/tmp/usr/bin/
@@ -165,7 +153,9 @@ execute_after_dh_auto_install:
 	$(RM) -f debian/tmp/usr/sbin/hashtest*
 	$(RM) -f debian/tmp/usr/sbin/refcounter
 
-execute_after_dh_install-arch:
+override_dh_install-arch:
+	$(FETCH_ENV) dh_install --
+
 	extra_packs=$$(find $(SUBPACKS_EXTRA_DIRS_MOD) -name '*.so' -printf '%f\n');\
 	  cd debian/asterisk-modules/usr/lib/$(DEB_HOST_MULTIARCH)/asterisk/modules \
 	  && rm -f $$extra_packs
@@ -173,7 +163,9 @@ execute_after_dh_install-arch:
 override_dh_installchangelogs:
 	dh_installchangelogs -- CHANGES
 
-execute_after_dh_fixperms:
+override_dh_fixperms:
+	$(FETCH_ENV) dh_fixperms
+
 	# should follow dh_fixperms; asterisk configurations may contain
 	# sensitive information, such as passwords
 	if [ -d debian/asterisk-config ]; then \
