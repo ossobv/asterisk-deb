@@ -158,6 +158,33 @@ this:
 
 
 
+Disabling asteriskssl?
+----------------------
+
+In asterisk, the following commit was added::
+
+    $ git log --grep=r/1006
+    commit 92ef8a6fe1fe2adb79f1e928ffaf909e9afade67
+    Author: Kevin P. Fleming <kpfleming@digium.com>
+    Date:   Mon Jan 30 21:21:16 2012 +0000
+
+        Address OpenSSL initialization issues when using third-party libraries.
+
+This concerns "https://reviewboard.asterisk.org/r/1006/".
+
+The Debian packagers removed this using ``--disable-asteriskssl``, in
+https://salsa.debian.org/pkg-voip-team/asterisk/-/commit/7131c9ca605fb5c4f403617559f2d5ad0c20da8b
+with nothing more than a reference to the reviewboard URL, which is the
+documentation that explains the addition, not why one would disable it.
+
+In https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=828240 there are
+references to build failures when libasteriskssl was enabled. I think
+the need for libasteriskssl.so is not that great with libssl1.1+.
+Additionally, we use the Dockerfile post-build checks to confirm that
+all modules use the same libssl version.
+
+
+
 Quilting and patching
 ---------------------
 
