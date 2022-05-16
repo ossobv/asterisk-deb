@@ -50,8 +50,8 @@ RUN . /etc/os-release && cd /build && \
 # Trick to allow caching of asterisk*.tar.gz files. Download them
 # once using the curl command below into .cache/* if you want. The COPY
 # is made conditional by the "[2]" "wildcard". (We need one existing
-# file (README.rst) so the COPY doesn't fail.)
-COPY README.rst .cache/${upname}_${upversion}.orig.tar.g[z] /build/
+# file (dummy) so the COPY doesn't fail.)
+COPY dummy .cache/${upname}_${upversion}.orig.tar.g[z] /build/
 RUN test -s /build/${upname}_${upversion}.orig.tar.gz || \
     curl --fail "http://downloads.asterisk.org/pub/telephony/asterisk/old-releases/${upname}-${upversion}.tar.gz" \
     >/build/${upname}_${upversion}.orig.tar.gz
