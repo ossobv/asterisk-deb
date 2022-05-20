@@ -1,3 +1,11 @@
+asterisk (1:16.26.1-0osso1+DEBDIST) stable; urgency=medium
+
+  * OSSO build of 16.26.1 (with gn patches)
+  * Fixes ASTERISK-30065: pjsip: Open Websocket connection is not reused
+    for outgoing requests
+
+ -- Walter Doekes (work) <wjdoekes@osso.nl>  Fri, 20 May 2022 09:26:43 +0200
+
 asterisk (1:16.26.0-0osso1+DEBDIST) stable; urgency=medium
 
   * OSSO build of 16.26.0 (with gn patches)

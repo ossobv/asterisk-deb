@@ -94,10 +94,11 @@ RUN echo "Check that all required openssl versions are equal:" && \
 RUN echo "Check that chan_pjsip is linked against a dynamic lib:" && \
     if find /build/asterisk-${upversion}/debian/tmp -name 'chan_pjsip.so' -type f | \
         xargs ldd | grep -C10 libpj; then \
-      dpkg -l libpjproject2 && echo "(dynamic lib)" >&2; \
+      dpkg -l libpjproject2 && echo "(dynamic libpjproject lib)" >&2; \
     else \
       find /build/asterisk-${upversion}/debian/tmp -name 'libasteriskpj.so' | \
-        xargs nm -D | grep ' T pj_get_version$' && echo "(is embedded)" >&2; \
+        xargs nm -D | grep ' T pj_get_version$' && \
+          echo "(is embedded in libasteriskpj.so)" >&2; \
     fi
 
 # Install checks:
@@ -120,7 +121,7 @@ RUN objdump -T /usr/lib/libasteriskpj.so.2 | \
     # start asterisk and get info from it.
     if test -f /etc/asterisk/asterisk.conf; then \
     asterisk -cn >/dev/null 2>&1 & p=$!; sleep 2; \
-    asterisk -nrx 'pjsip show version'; asterisk -nrx 'core stop now'; wait; \
+    asterisk -rx 'pjsip show version'; asterisk -rx 'core stop now'; wait; \
     fi
 RUN echo '#include <stdio.h>\nvoid __ast_repl_malloc() {} void __ast_free() {} \
       void ast_pjproject_max_log_level() {} void ast_option_pjproject_log_level() {} \
